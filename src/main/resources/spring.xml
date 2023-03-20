@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:tx="http://www.springframework.org/schema/tx"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
+
+
+    <!-- 使用 annotation 自动注册bean,并检查@Controller, @Service, @Repository注解已被注入 -->
+    <context:component-scan base-package="com.nanyan" />
+
+    <!-- 配置c3p0连接池 -->
+    <bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource">
+        <property name="driverClass" value="com.mysql.cj.jdbc.Driver"/>
+        <property name="jdbcUrl" value="jdbc:mysql://8.130.67.239:3306/money_manage?useSSL=true&amp;useUnicode=true&amp;characterEncoding=utf8"/>
+        <property name="user" value="nanyan"/>
+        <property name="password" value="G5308560"/>
+    </bean>
+
+
+    <!-- sessionfactory创建 -->
+    <bean id="sessionFactory" class="org.springframework.orm.hibernate5.LocalSessionFactoryBean">
+        <property name="dataSource" ref="dataSource"/>
+        <!--使用注解加载实体类-->
+        <property name="packagesToScan" value="com.nanyan.entity"/>
+
+        <!-- hibernate 属性配置 -->
+        <property name="hibernateProperties">
+            <props>
+                <prop key="hibernate.dialect">org.hibernate.dialect.MySQLDialect</prop>
+                <prop key="hibernate.show_sql">false</prop>
+                <prop key="hibernate.format_sql">true</prop>
+                <prop key="hibernate.hbm2ddl.auto">update</prop>
+                <prop key="hibernate.connection.useUnicode">true</prop>
+                <prop key="hibernate.connection.characterEncoding">utf8</prop>
+                <prop key="hibernate.connection.url">jdbc:mysql://8.130.67.239:3306/money_manage?useSSL=true&amp;useUnicode=true&amp;characterEncoding=utf8&amp;serverTimezone=Asia/Shanghai</prop>
+                <prop key="hibernate.connection.driver_class">com.mysql.cj.jdbc.Driver</prop>
+                <prop key="hibernate.connection.username">nanyan</prop>
+                <prop key="hibernate.connection.password">G5308560</prop>
+                <!-- ... 其他属性配置 -->
+            </props>
+        </property>
+    </bean>
+
+    <!--Hibernate的事务管理器 -->
+    <bean id="transactionManager" class="org.springframework.orm.hibernate5.HibernateTransactionManager">
+        <property name="sessionFactory" ref="sessionFactory"/>
+    </bean>
+
+    <!-- 用注解来实现事务管理 -->
+    <tx:annotation-driven transaction-manager="transactionManager" />
+
+</beans>
