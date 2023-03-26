@@ -30,11 +30,21 @@
     <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
   </listener>
 
+
+<!--  配置servlet的过滤器-->
+  <filter>
+    <filter-name>LoginFilter</filter-name>
+    <filter-class>com.nanyan.filter.LoginFilter</filter-class>
+  </filter>
+  <filter-mapping>
+    <filter-name>LoginFilter</filter-name>
+    <url-pattern>/*</url-pattern>
+  </filter-mapping>
+
+
   <welcome-file-list>
-    <welcome-file>./login.jsp</welcome-file>
+    <welcome-file>./home.jsp</welcome-file>
   </welcome-file-list>
-
-
 
 </web-app>
 

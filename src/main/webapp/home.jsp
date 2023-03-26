@@ -3,9 +3,9 @@
 <html>
 <head>
     <meta charset="utf-8">
-    <title>layuimini-iframe版 v2 - 基于Layui的后台管理系统前端模板</title>
-    <meta name="keywords" content="layuimini,layui,layui模板,layui后台,后台模板,admin,admin模板,layui mini">
-    <meta name="description" content="layuimini基于layui的轻量级前端后台管理框架，最简洁、易用的后台框架模板，面向所有层次的前后端程序,只需提供一个接口就直接初始化整个框架，无需复杂操作。">
+    <title>家庭理财系统</title>
+<%--    <meta name="keywords" content="layuimini,layui,layui模板,layui后台,后台模板,admin,admin模板,layui mini">--%>
+<%--    <meta name="description" content="layuimini基于layui的轻量级前端后台管理框架，最简洁、易用的后台框架模板，面向所有层次的前后端程序,只需提供一个接口就直接初始化整个框架，无需复杂操作。">--%>
     <meta name="renderer" content="webkit">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <meta http-equiv="Access-Control-Allow-Origin" content="*">
@@ -26,6 +26,7 @@
     </style>
 </head>
 <body class="layui-layout-body layuimini-all">
+<link href="https://cdn.bootcdn.net/ajax/libs/font-awesome/6.3.0/css/all.min.css" rel="stylesheet">
 <div class="layui-layout layui-layout-admin">
 
     <div class="layui-header header">
@@ -142,7 +143,7 @@
             clearUrl: "statics/layui/api/clear.json", // 缓存清理接口
             urlHashLocation: true,      // 是否打开hash定位
             bgColorDefault: false,      // 主题默认配置
-            multiModule: true,          // 是否开启多模块
+            multiModule: false,          // 是否开启多模块
             menuChildOpen: false,       // 是否默认展开菜单
             loadingTime: 0,             // 初始化加载时间
             pageAnim: true,             // iframe窗口动画

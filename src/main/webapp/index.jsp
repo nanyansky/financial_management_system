@@ -10,13 +10,14 @@
 <html>
 <head>
     <meta charset="utf-8">
-    <title>主页一</title>
+    <title>主页</title>
     <meta name="renderer" content="webkit">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
     <link rel="stylesheet" href="statics/layui/lib/layui-v2.6.3/css/layui.css" media="all">
     <link rel="stylesheet" href="statics/layui/lib/font-awesome-4.7.0/css/font-awesome.min.css" media="all">
     <link rel="stylesheet" href="statics/layui/css/public.css" media="all">
+    <link rel="stylesheet" href="statics/layui/lib/layui-v2.6.3/css/layui.css" media="all">
 </head>
 <style>
     .layui-top-box {padding:40px 20px 20px 20px;color:#fff}
@@ -28,6 +29,7 @@
     .main_btn > p {height:40px;}
 </style>
 <body>
+<link href="https://cdn.bootcdn.net/ajax/libs/font-awesome/6.3.0/css/all.min.css" rel="stylesheet">
 <div class="layuimini-container">
     <div class="layuimini-main layui-top-box">
         <div class="layui-row layui-col-space10">
@@ -41,9 +43,7 @@
                                 <h5>用户统计</h5>
                             </div>
                             <div class="panel-content">
-                                <h1 class="no-margins">1234</h1>
-                                <div class="stat-percent font-bold text-gray"><i class="fa fa-commenting"></i> 1234</div>
-                                <small>当前分类总记录数</small>
+                                <h1 class="no-margins"><i class="fa fa-user"></i> ${sessionScope.userNumber} 位</h1>
                             </div>
                         </div>
                     </div>
@@ -56,12 +56,10 @@
                         <div class="panel-body">
                             <div class="panel-title">
                                 <span class="label pull-right layui-bg-cyan">实时</span>
-                                <h5>商品统计</h5>
+                                <h5>收入统计</h5>
                             </div>
                             <div class="panel-content">
-                                <h1 class="no-margins">1234</h1>
-                                <div class="stat-percent font-bold text-gray"><i class="fa fa-commenting"></i> 1234</div>
-                                <small>当前分类总记录数</small>
+                                <h1 class="no-margins"><i class="fa fa-wallet"></i> 1234 笔</h1>
                             </div>
                         </div>
                     </div>
@@ -74,12 +72,10 @@
                         <div class="panel-body">
                             <div class="panel-title">
                                 <span class="label pull-right layui-bg-orange">实时</span>
-                                <h5>浏览统计</h5>
+                                <h5>支出统计</h5>
                             </div>
                             <div class="panel-content">
-                                <h1 class="no-margins">1234</h1>
-                                <div class="stat-percent font-bold text-gray"><i class="fa fa-commenting"></i> 1234</div>
-                                <small>当前分类总记录数</small>
+                                <h1 class="no-margins"><i class="fas fa-hand-holding-usd"></i> 1234 笔</h1>
                             </div>
                         </div>
                     </div>
@@ -91,12 +87,10 @@
                         <div class="panel-body">
                             <div class="panel-title">
                                 <span class="label pull-right layui-bg-green">实时</span>
-                                <h5>订单统计</h5>
+                                <h5>剩余总额</h5>
                             </div>
                             <div class="panel-content">
-                                <h1 class="no-margins">1234</h1>
-                                <div class="stat-percent font-bold text-gray"><i class="fa fa-commenting"></i> 1234</div>
-                                <small>当前分类总记录数</small>
+                                <h1 class="no-margins"><i class="fa fa-pie-chart"></i> 1234 元</h1>
                             </div>
                         </div>
                     </div>
@@ -109,6 +103,7 @@
         <div class="layui-row layui-col-space10">
             <div class="layui-col-md12">
                 <blockquote class="layui-elem-quote main_btn">
+<%--                    <p>测试</p>--%>
                     <p>本模板基于layui2.5.4以及font-awesome-4.7.0进行实现。layui开发文档地址：<a class="layui-btn layui-btn-xs layui-btn-danger" target="_blank" href="http://www.layui.com/doc">layui文档</a></p>
                     <p>技术交流QQ群（561838086）：<a target="_blank" href="https://jq.qq.com/?_wv=1027&k=5JRGVfe"><img border="0" src="//pub.idqqimg.com/wpa/images/group.png" alt="layuimini" title="layuimini"></a>（加群请备注来源：如gitee、github、官网等）</p>
                     <p>喜欢此后台模板的可以给我的GitHub和Gitee加个Star支持一下</p>
@@ -124,44 +119,14 @@
 
     <div class="layui-box">
         <div class="layui-row layui-col-space10">
+
             <div class="layui-col-md6">
-                <table id="user" lay-filter="test"></table>
-<%--                <table class="layui-table">--%>
-<%--                    --%>
-<%--                    <thead>--%>
-<%--                    <tr>--%>
-<%--                        <th>昵称</th>--%>
-<%--                        <th>加入时间</th>--%>
-<%--                        <th>签名</th>--%>
-<%--                    </tr>--%>
-<%--                    </thead>--%>
-<%--                    <tbody>--%>
-<%--                    <tr>--%>
-<%--                        <td>贤心</td>--%>
-<%--                        <td>2016-11-29</td>--%>
-<%--                        <td>人生就像是一场修行</td>--%>
-<%--                    </tr>--%>
-<%--                    <tr>--%>
-<%--                        <td>许闲心</td>--%>
-<%--                        <td>2016-11-28</td>--%>
-<%--                        <td>于千万人之中遇见你所遇见的人，于千万年之中，时间的无涯的荒野里…</td>--%>
-<%--                    </tr>--%>
-<%--                    <tr>--%>
-<%--                        <td>许闲心</td>--%>
-<%--                        <td>2016-11-28</td>--%>
-<%--                        <td>于千万人之中遇见你所遇见的人，于千万年之中，时间的无涯的荒野里…</td>--%>
-<%--                    </tr>--%>
-<%--                    <tr>--%>
-<%--                        <td>许闲心</td>--%>
-<%--                        <td>2016-11-28</td>--%>
-<%--                        <td>于千万人之中遇见你所遇见的人，于千万年之中，时间的无涯的荒野里…</td>--%>
-<%--                    </tr>--%>
-<%--                    </tbody>--%>
-<%--                </table>--%>
-
-
+                <h2 align="center">用户列表</h2>
+                <table id="user" lay-filter="user"></table>
             </div>
+
             <div class="layui-col-md6">
+                <h2 align="center">用户日志</h2>
                 <ul class="layui-timeline">
                     <li class="layui-timeline-item">
                         <i class="layui-icon layui-timeline-axis">&#xe63f;</i>
@@ -210,7 +175,8 @@
     </div>
 </div>
 
-<script src="statics/layui/lib/layui-v2.6.3/layui.js" charset="utf-8">
+<script src="statics/layui/lib/layui-v2.6.3/layui.js" charset="utf-8"></script>
+<script>
 
     layui.use('table', function(){
         var table = layui.table;
@@ -218,32 +184,23 @@
         //第一个实例
         table.render({
             elem: '#user'
-            ,height: 312
-            ,url: 'http://layui.org.cn/demo/table/user/-page=1&limit=30.js' //数据接口
-            ,page: true //开启分页
+            // ,height: 420
+            ,url: '/user/getUserListByPage.action' //数据接口
+            ,page: false //开启分页
             ,cols: [[ //表头
-                {field: 'id', title: 'ID', width:80, sort: true, fixed: 'left'}
-                ,{field: 'username', title: '用户名', width:80}
-                ,{field: 'sex', title: '性别', width:80, sort: true}
-                ,{field: 'city', title: '城市', width:80}
-                ,{field: 'sign', title: '签名', width: 177}
-                ,{field: 'experience', title: '积分', width: 80, sort: true}
-                ,{field: 'score', title: '评分', width: 80, sort: true}
-                ,{field: 'classify', title: '职业', width: 80}
-                ,{field: 'wealth', title: '财富', width: 135, sort: true}
+                 {field: 'id', title: 'ID', minWidth:60, sort: true, fixed: 'left',align: 'center'}
+                ,{field: 'userName', title: '用户名', minWidth:80,align: 'center'}
+                ,{field: 'sex', title: '性别', minWidth:80, sort: true,align: 'center'}
+                ,{field: 'registerTime',title: "加入时间",minWidth: 170,sort: true,align: 'center'}
+                ,{field: 'phoneNumber',title: "电话号码",minWidth: 130,align: 'center'}
+                ,{field: 'isAdmin', title: '是否管理员', minWidth: 120,sort: true,align: 'center'}
+                // ,{field: 'isDeleted', title: '账户状态', width: 110, sort: true}
             ]]
-            // ,cols: [[ //表头
-            //     {field: 'id', title: 'ID', width:80, sort: true, fixed: 'left'}
-            //     ,{field: 'username', title: '用户名', width:80}
-            //     ,{field: 'sex', title: '性别', width:80, sort: true}
-            //     ,{field: 'register_time',title: "加入时间",width: 80,sort: true}
-            //     ,{field: 'is_admin', title: '是否管理员', width: 80}
-            //     ,{field: 'is_deleted', title: '账户状态', width: 80, sort: true}
-            // ]]
         });
-
     });
 
 </script>
+
+
 </body>
 </html>

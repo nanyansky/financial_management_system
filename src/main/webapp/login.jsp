@@ -68,16 +68,22 @@
             <div class="center">
                 <div class="item">
                     <span class="icon icon-2"></span>
-                    <input type="text" name="username" lay-verify="required" placeholder="请输入登录账号" maxlength="24"/>
+                    <input type="text" name="userName" lay-verify="required"  placeholder="请输入登录账号" maxlength="24"/>
                 </div>
 
                 <div class="item">
                     <span class="icon icon-3"></span>
-                    <input type="password" name="password" lay-verify="required" placeholder="请输入密码" maxlength="20">
+                    <input type="password" name="password" lay-verify="required"  placeholder="请输入密码" maxlength="20">
                     <span class="bind-password icon icon-4"></span>
                 </div>
-            </div>
 
+                <div id="validatePanel" class="item" style="width: 137px;">
+                    <input type="text" name="captcha" lay-verify="required" placeholder="请输入验证码" maxlength="4">
+<%--                    <img id="refreshCaptcha" class="validateImg"  src="statics/layui/images/captcha.jpg" >--%>
+                    <img id="refreshCaptcha" class="validateImg" src="user/getVcode.action">
+                </div>
+
+            </div>
             <div class="layui-form-item" style="text-align:center; width:100%;height:100%;margin:0px;">
                 <button class="login-btn" lay-submit="" lay-filter="login">立即登录</button>
             </div>
@@ -87,7 +93,7 @@
 <div class="footer">
     ©版权所有 2014-2018 叁贰柒工作室<span class="padding-5">|</span><a target="_blank" href="http://www.miitbeian.gov.cn">粤ICP备16006642号-2</a>
 </div>
-<script src="statics/layui/lib/layui-v2.6.3/layui.js" charset=GBK></script>
+<script src="statics/layui/lib/layui-v2.6.3/layui.js" charset="utf-8"></script>
 <script>
     layui.use(['form','jquery','layer'], function () {
         var $ = layui.jquery,
@@ -107,13 +113,13 @@
             }
         });
 
-        $('.icon-nocheck').on('click', function () {
-            if ($(this).hasClass('icon-check')) {
-                $(this).removeClass('icon-check');
-            } else {
-                $(this).addClass('icon-check');
-            }
-        });
+
+        // 点击刷新验证码
+        $('.validateImg').on('click',function (){
+            var src = "user/getVcode.action?"+Math.random();//加时间戳，防止浏览器利用缓存
+            console.log("更换成功！")
+            $(this).attr("src",src);
+        })
 
         // 进行登录操作
         form.on('submit(login)', function (data) {

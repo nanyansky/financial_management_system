@@ -1,25 +1,33 @@
 package com.nanyan.action;
 
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
+import com.alibaba.fastjson.serializer.SerializeConfig;
+import com.alibaba.fastjson.serializer.SimpleDateFormatSerializer;
+import com.github.cliftonlabs.json_simple.JsonArray;
+import com.nanyan.entity.Test;
 import com.nanyan.entity.User;
 import com.nanyan.service.UserService;
+import com.nanyan.utils.VerifyCode;
 import com.opensymphony.xwork2.ActionSupport;
+import com.opensymphony.xwork2.ModelDriven;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.struts2.ServletActionContext;
 import org.apache.struts2.action.ServletRequestAware;
-import org.apache.struts2.convention.annotation.Action;
-import org.apache.struts2.convention.annotation.Namespace;
-import org.apache.struts2.convention.annotation.ParentPackage;
-import org.apache.struts2.convention.annotation.Result;
+import org.apache.struts2.convention.annotation.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
+import java.awt.image.BufferedImage;
+import java.io.IOException;
 import java.sql.Timestamp;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -32,82 +40,94 @@ import java.util.Map;
 
 
 @Controller
-@Slf4j
 @Scope("prototype")// 多例
 @Namespace("/user")// 对应配置文件中的每个action的name
-@ParentPackage("json-default")
+@ParentPackage("user")
 public class UserAction extends ActionSupport {
 
-    HttpServletRequest request = ServletActionContext.getRequest();
-    private String username;
+    //处理时间转JSON串问题
+    private static SerializeConfig serializeConfig = new SerializeConfig();
+    static {
+        String dateFormat = "yyyy-MM-dd HH:mm:ss";
+        serializeConfig.put(Timestamp.class, new SimpleDateFormatSerializer(dateFormat));
+    }
+
+    private int page;
+    private int limit;
+    HttpSession session = ServletActionContext.getRequest().getSession();
+    private String userName;
     private String password;
+    private String captcha;
+    private String phoneNumber;
+    private int isAdmin;
+    private String sex;
+    private int id;
+    private int status;
+
+
+    private User user;
+
+    private Test test;
+    public Test getTest() {
+        return test;
+    }
+    public void setTest(Test test) {
+        this.test = test;
+    }
 
     private Map<String, Object> dataMap = new HashMap<String, Object>();
     private JSONObject jsonObject;
-
-
 
     @Autowired
     private UserService userService;
 
 
-    @Action(value = "save", results = {
-            @Result(name = "success", location = "/home.jsp")
-    })
-    public String save(){
-        Timestamp d = new Timestamp(System.currentTimeMillis());
-        User user = new User();
-        user.setUserName("test2");
-        user.setPassword("123");
-        user.setIsAdmin(0);
-        user.setIsDeleted(0);
-        user.setRegisterTime(d);
-
-        userService.save(user);
-        return "success";
-    }
-
-    @Action(value = "rmUser",results = {@Result(type = "json",params = {"root","jsonObject"})})
-    public String rmUser(){
-        return SUCCESS;
-    }
-
-    @Action(value = "getUser", results = {
-            @Result(type = "json",params = {"root","jsonObject"})
-    })
-    public String getUser(){
-//        User user = userService.getUser(1);
-        User user = (User) request.getSession().getAttribute("user");
-        System.out.println(user);
-        jsonObject = (JSONObject) JSON.toJSON(user);
-        System.out.println(jsonObject);
-        return SUCCESS;
-    }
-
+    /**
+     * @description: 登录Action
+     * @param:  NONE
+     * @return: java.lang.String
+     * @author nanyan
+     * @date:  21:23
+     */
     @Action(value = "userLogin", results = {
             @Result(type = "json",params = {"root","jsonObject"})
     })
     public String userLogin(){
+        //获取User数量，并在登录时就执行setAttribute
+        session.setAttribute("userNumber",userService.getUserNumber());
+        String sessionVcode = (String) session.getAttribute("session_vcode");
+        System.out.println(user);
         //调试用，优化时删除
-        log.info(username +" + "+password);
-        dataMap.put("username",username);
+        dataMap.put("username",userName);
         dataMap.put("password",password);
+        dataMap.put("Vcode",sessionVcode);
 
 
-
-        User tmpUser = userService.findByUserName(username);
-        //用户不存在
-        if(tmpUser == null){
+        if(!sessionVcode.equalsIgnoreCase(captcha.trim())){
             dataMap.put("code",0);
-            dataMap.put("message","用户不存在！");
+            dataMap.put("message","验证码错误！");
             jsonObject = new JSONObject(dataMap);
-            log.info(String.valueOf(jsonObject));
             return SUCCESS;
         }
 
+        User tmpUser = userService.findByUserName(userName);
+        //用户不存在
+        if(tmpUser == null || tmpUser.getIsDeleted() == 1){
+            dataMap.put("code",0);
+            dataMap.put("message","用户不存在或已删除！");
+            jsonObject = new JSONObject(dataMap);
+            return SUCCESS;
+        }
+        //用户已被禁用
+        if(tmpUser.getStatus() == 0){
+            dataMap.put("code",0);
+            dataMap.put("message","该账户已被禁用，请联系管理员！");
+            jsonObject = new JSONObject(dataMap);
+            return SUCCESS;
+        }
         //登录成功
         if(tmpUser.getPassword().equals(password)){
-            request.getSession().setAttribute("user",tmpUser);
+            session.setAttribute("user",tmpUser);
             dataMap.put("code",1);
             dataMap.put("message","登录成功！");
             jsonObject = new JSONObject(dataMap);
@@ -123,24 +143,236 @@ public class UserAction extends ActionSupport {
         }
     }
 
-
+    /**
+     * @description: 登出Action
+     * @param:  NONE
+     * @return: java.lang.String
+     * @author nanyan
+     * @date:  21:23
+     */
     @Action(value = "logout",results = {@Result(type = "json",params = {"root","jsonObject"})})
     public String logOut(){
-        request.getSession().removeAttribute("user");
+        session.removeAttribute("user");
         dataMap.put("code",1);
         dataMap.put("message","登出成功！");
         jsonObject = new  JSONObject(dataMap);
         return SUCCESS;
     }
 
+    /**
+     * @description: 获取用户列表接口
+     * @param:  NONE
+     * @return: java.lang.String
+     * @author nanyan
+     * @date:  21:25
+     */
+    @Action(value = "getUserListByPage",
+            results = {@Result(type = "json",params = {"root","jsonObject"})},
+            interceptorRefs = {@InterceptorRef(value = "LoginInterceptorStack")}
+    )
+    public String getUserList(){
+        //获取User数量
+        int userNumber = userService.getUserNumber();
+        //获取User列表
+        List<User> userList = userService.getUserListByPage(page,limit);
 
+        Map<String,Object> tmpMap = new HashMap<>();
 
-    public String getUsername() {
-        return username;
+        for (int i = 0; i < userList.size(); i++) {
+            tmpMap.put(String.valueOf(i),JSON.toJSON(userList.get(i),serializeConfig));
+        }
+
+        dataMap.put("code",0);
+        dataMap.put("count",userNumber);
+        dataMap.put("data",tmpMap);
+//        System.out.println(dataMap);
+        jsonObject = new  JSONObject(dataMap);
+        return SUCCESS;
     }
 
-    public void setUsername(String username) {
-        this.username = username;
+
+    @Action(value = "getVcode")
+    public String getVerifyCode(){
+        /*
+         * 1. 创建验证码类
+         */
+        VerifyCode vc = new VerifyCode();
+        /*
+         * 2. 得到验证码图片
+         */
+        BufferedImage image = vc.getImage();
+        /*
+         * 3. 把图片上的文本保存到session中
+         */
+        session.removeAttribute("session_vcode");
+        session.setAttribute("session_vcode", vc.getText());
+        /*
+         * 4. 把图片响应给客户端
+         */
+        try {
+            VerifyCode.output(image, ServletActionContext.getResponse().getOutputStream());
+        } catch (IOException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+
+        return null;
+    }
+
+
+    @Action(value = "addUser",
+            results = {@Result(type = "json",params = {"root","jsonObject"})},
+            interceptorRefs = {@InterceptorRef(value = "LoginInterceptorStack")}
+    )
+    public String addUser(){
+        User orgUser = userService.findByUserName(userName);
+        System.out.println("存在的用户："+orgUser);
+
+        if(orgUser == null){
+            User tmpUser = new User();
+            tmpUser.setUserName(userName);
+            tmpUser.setPassword(password);
+            tmpUser.setPhoneNumber(phoneNumber);
+            tmpUser.setIsAdmin(isAdmin);
+            tmpUser.setSex(sex);
+
+            System.out.println("要添加的用户："+tmpUser);
+            userService.addUser(tmpUser);
+            //添加完成后刷新数量
+            session.setAttribute("userNumber",userService.getUserNumber());
+
+            dataMap.put("code",1);
+            dataMap.put("message","添加成功！");
+            jsonObject = new JSONObject(dataMap);
+        }
+        else {
+            dataMap.put("code",0);
+            dataMap.put("message","用户名已存在！");
+            jsonObject = new JSONObject(dataMap);
+        }
+        return SUCCESS;
+    }
+
+    @Action(value = "findByUserName",
+            results = {@Result(type = "json",params = {"root","jsonObject"})},
+            interceptorRefs = {@InterceptorRef(value = "LoginInterceptorStack")}
+    )
+    public String findByUserName(){
+        User tmpUser = userService.findByUserName(userName);
+        dataMap.put("code",0);
+        dataMap.put("message","查找成功！");
+        dataMap.put("data",tmpUser);
+        jsonObject = new JSONObject(dataMap);
+        return SUCCESS;
+    }
+
+    @Action(value = "findListByUserName",
+            results = {@Result(type = "json",params = {"root","jsonObject"})},
+            interceptorRefs = {@InterceptorRef(value = "LoginInterceptorStack")}
+    )
+    public String findListByUserName(){
+        List<User> list = userService.findListByUserName(userName);
+
+//        JSONObject data = new JSONObject();
+        Map<String,Object> tmpMap = new HashMap<>();
+
+        for (int i = 0; i < list.size(); i++) {
+            tmpMap.put(String.valueOf(i),JSON.toJSON(list.get(i),serializeConfig));
+//            data.put(String.valueOf(i),JSON.toJSON(list.get(i),serializeConfig));
+        }
+
+        dataMap.put("code",0);
+        dataMap.put("count",list.size());
+        dataMap.put("data",tmpMap);
+//        System.out.println(dataMap);
+        jsonObject = new  JSONObject(dataMap);
+//        System.out.println("查找后："+jsonObject);
+        return SUCCESS;
+    }
+
+    @Action(value = "changeUserStatus",
+            results = {@Result(type = "json",params = {"root","jsonObject"})},
+            interceptorRefs = {@InterceptorRef(value = "LoginInterceptorStack")}
+    )
+    public String changeUserStatus(){
+        userService.changeUserStatus(id,status);
+        dataMap.put("message","操作成功！");
+        jsonObject = new JSONObject(dataMap);
+        return SUCCESS;
+    }
+
+    @Action(value = "deleteById",
+            results = {@Result(type = "json",params = {"root","jsonObject"})},
+            interceptorRefs = {@InterceptorRef(value = "LoginInterceptorStack")}
+    )
+    public String deleteById(){
+        System.out.println("要删除的用户ID: "+id);
+        userService.deleteById(id);
+
+        //删除后刷新数量
+        session.setAttribute("userNumber",userService.getUserNumber());
+
+        dataMap.put("code",1);
+        dataMap.put("message","删除成功！");
+        jsonObject = new JSONObject(dataMap);
+        return SUCCESS;
+    }
+
+    @Action(value = "editUser",
+            results = {@Result(type = "json",params = {"root","jsonObject"})},
+            interceptorRefs = {@InterceptorRef(value = "LoginInterceptorStack")}
+    )
+    public String editUser(){
+
+        User orgUser = userService.findByUserName(userName);
+        System.out.println("存在的用户："+orgUser);
+
+        if(orgUser == null){
+            User tmpUser = new User();
+            tmpUser.setId(id);
+            tmpUser.setUserName(userName);
+            tmpUser.setPassword(password);
+            tmpUser.setPhoneNumber(phoneNumber);
+            tmpUser.setIsAdmin(isAdmin);
+            tmpUser.setSex(sex);
+
+            System.out.println(tmpUser);
+            userService.editUser(id,tmpUser);
+            dataMap.put("code",1);
+            dataMap.put("message","修改成功！");
+            jsonObject = new JSONObject(dataMap);
+        }
+        else {
+            dataMap.put("code",0);
+            dataMap.put("message","用户名已存在！");
+            jsonObject = new JSONObject(dataMap);
+        }
+        return SUCCESS;
+    }
+
+
+    public int getPage() {
+        return page;
+    }
+
+    public void setPage(int page) {
+        this.page = page;
+    }
+
+    public int getLimit() {
+        return limit;
+    }
+
+    public void setLimit(int limit) {
+        this.limit = limit;
+    }
+
+    public String getUserName() {
+        return userName;
+    }
+
+    public void setUserName(String userName) {
+        this.userName = userName;
     }
 
     public String getPassword() {
@@ -166,5 +398,61 @@ public class UserAction extends ActionSupport {
     public void setJsonObject(JSONObject jsonObject) {
         this.jsonObject = jsonObject;
     }
+
+    public String getCaptcha() {
+        return captcha;
+    }
+
+    public String getPhoneNumber() {
+        return phoneNumber;
+    }
+
+    public void setPhoneNumber(String phoneNumber) {
+        this.phoneNumber = phoneNumber;
+    }
+
+    public int getIsAdmin() {
+        return isAdmin;
+    }
+
+    public void setIsAdmin(int isAdmin) {
+        this.isAdmin = isAdmin;
+    }
+
+    public String getSex() {
+        return sex;
+    }
+
+    public void setSex(String sex) {
+        this.sex = sex;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public int getStatus() {
+        return status;
+    }
+
+    public void setStatus(int status) {
+        this.status = status;
+    }
+
+    public void setCaptcha(String captcha) {
+        this.captcha = captcha;
+    }
+
+    public User getUser(){
+        return user;
+    }
+    public void setUser(User user) {
+        this.user = user;
+    }
+
 
 }
