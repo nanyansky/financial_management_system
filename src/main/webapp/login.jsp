@@ -3,7 +3,7 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <title>后台管理-登陆</title>
+    <title>家庭理财系统-登录</title>
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <meta http-equiv="Access-Control-Allow-Origin" content="*">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
@@ -60,7 +60,7 @@
 <div class="main-body">
     <div class="login-main">
         <div class="login-top">
-            <span>LayuiMini后台登录</span>
+            <span>家庭理财系统登录</span>
             <span class="bg1"></span>
             <span class="bg2"></span>
         </div>
@@ -68,7 +68,7 @@
             <div class="center">
                 <div class="item">
                     <span class="icon icon-2"></span>
-                    <input type="text" name="userName" lay-verify="required"  placeholder="请输入登录账号" maxlength="24"/>
+                    <input type="text" name="userName" lay-verify="required"  placeholder="请输入用户名" maxlength="24"/>
                 </div>
 
                 <div class="item">
@@ -77,6 +77,8 @@
                     <span class="bind-password icon icon-4"></span>
                 </div>
 
+
+
                 <div id="validatePanel" class="item" style="width: 137px;">
                     <input type="text" name="captcha" lay-verify="required" placeholder="请输入验证码" maxlength="4">
 <%--                    <img id="refreshCaptcha" class="validateImg"  src="statics/layui/images/captcha.jpg" >--%>
@@ -84,15 +86,18 @@
                 </div>
 
             </div>
+
+            <div class="tip" style="text-align:right">
+                <a href="register.jsp" style="color: #0000FF;font-size: small">还没有账号？去注册</a>
+            </div>
+
             <div class="layui-form-item" style="text-align:center; width:100%;height:100%;margin:0px;">
                 <button class="login-btn" lay-submit="" lay-filter="login">立即登录</button>
             </div>
         </form>
     </div>
 </div>
-<div class="footer">
-    ©版权所有 2014-2018 叁贰柒工作室<span class="padding-5">|</span><a target="_blank" href="http://www.miitbeian.gov.cn">粤ICP备16006642号-2</a>
-</div>
+
 <script src="statics/layui/lib/layui-v2.6.3/layui.js" charset="utf-8"></script>
 <script>
     layui.use(['form','jquery','layer'], function () {

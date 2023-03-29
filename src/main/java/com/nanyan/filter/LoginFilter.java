@@ -33,8 +33,8 @@ public class LoginFilter implements Filter {
 
         //不需要拦截的请求
         String[] urls = {
-                "/login",
                 "/login.jsp",
+                "/register.jsp",
                 "/logout",
                 "statics",
                 ".ico"

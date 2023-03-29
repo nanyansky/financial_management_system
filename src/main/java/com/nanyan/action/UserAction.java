@@ -63,6 +63,8 @@ public class UserAction extends ActionSupport {
     private String sex;
     private int id;
     private int status;
+    private String old_password;
+    private String new_password;
 
 
     private User user;
@@ -81,6 +83,56 @@ public class UserAction extends ActionSupport {
     @Autowired
     private UserService userService;
 
+    /**
+     * @description: 用户注册
+     * @param:
+     * @return: java.lang.String
+     * @author nanyan
+     * @date:  15:50
+     */
+    @Action(value = "userRegister", results = {
+            @Result(type = "json",params = {"root","jsonObject"})
+    })
+    public String userRegister(){
+        try {
+
+            String sessionVcode = (String) session.getAttribute("session_vcode");
+            if(!sessionVcode.equalsIgnoreCase(captcha.trim())){
+                dataMap.put("code",0);
+                dataMap.put("message","验证码错误！");
+                jsonObject = new JSONObject(dataMap);
+                return SUCCESS;
+            }
+            //查找是否存在同名用户
+            User tmpUser = userService.findByUserName(userName);
+            if(tmpUser == null){
+
+                User newUser = new User();
+                newUser.setUserName(userName);
+                newUser.setPassword(password);
+                newUser.setSex(sex);
+                newUser.setPhoneNumber(phoneNumber);
+                userService.addUser(newUser);
+
+                dataMap.put("code",1);
+                dataMap.put("message","注册成功！请等待管理员审核！");
+                jsonObject = new JSONObject(dataMap);
+                return SUCCESS;
+            }
+            else{
+                dataMap.put("code",0);
+                dataMap.put("message","用户已存在！");
+                jsonObject = new JSONObject(dataMap);
+                return SUCCESS;
+            }
+        } catch (Exception e) {
+            dataMap.put("code",0);
+            dataMap.put("message","服务器错误，请重试！");
+            jsonObject = new JSONObject(dataMap);
+            return SUCCESS;
+        }
+    }
+
 
     /**
      * @description: 登录Action
@@ -93,52 +145,60 @@ public class UserAction extends ActionSupport {
             @Result(type = "json",params = {"root","jsonObject"})
     })
     public String userLogin(){
-        //获取User数量，并在登录时就执行setAttribute
-        session.setAttribute("userNumber",userService.getUserNumber());
-        String sessionVcode = (String) session.getAttribute("session_vcode");
-        System.out.println(user);
-        //调试用，优化时删除
-        dataMap.put("username",userName);
-        dataMap.put("password",password);
-        dataMap.put("Vcode",sessionVcode);
+        try {
+            //获取User数量，并在登录时就执行setAttribute
+            session.setAttribute("userNumber",userService.getUserNumber());
+            String sessionVcode = (String) session.getAttribute("session_vcode");
+            System.out.println(user);
+
+            //调试用，优化时删除
+//        dataMap.put("username",userName);
+//        dataMap.put("password",password);
+//        dataMap.put("Vcode",sessionVcode);
 
 
-        if(!sessionVcode.equalsIgnoreCase(captcha.trim())){
-            dataMap.put("code",0);
-            dataMap.put("message","验证码错误！");
-            jsonObject = new JSONObject(dataMap);
-            return SUCCESS;
-        }
+            if(!sessionVcode.equalsIgnoreCase(captcha.trim())){
+                dataMap.put("code",0);
+                dataMap.put("message","验证码错误！");
+                jsonObject = new JSONObject(dataMap);
+                return SUCCESS;
+            }
 
-        User tmpUser = userService.findByUserName(userName);
-        //用户不存在
-        if(tmpUser == null || tmpUser.getIsDeleted() == 1){
+            User tmpUser = userService.findByUserName(userName);
+            //用户不存在
+            if(tmpUser == null){
+                dataMap.put("code",0);
+                dataMap.put("message","用户不存在或已删除！");
+                jsonObject = new JSONObject(dataMap);
+                return SUCCESS;
+            }
+            //用户已被禁用
+            if(tmpUser.getStatus() == 0){
+                dataMap.put("code",0);
+                dataMap.put("message","该账户已被禁用，请联系管理员！");
+                jsonObject = new JSONObject(dataMap);
+                return SUCCESS;
+            }
+            //登录成功
+            if(tmpUser.getPassword().equals(password)){
+                session.setAttribute("user",tmpUser);
+                dataMap.put("code",1);
+                dataMap.put("message","登录成功！");
+                jsonObject = new JSONObject(dataMap);
+                System.out.println(jsonObject);
+                return SUCCESS;
+            }
+            else {
+                dataMap.put("code",0);
+                dataMap.put("message","密码错误！");
+                jsonObject = new JSONObject(dataMap);
+                System.out.println(jsonObject);
+                return SUCCESS;
+            }
+        } catch (Exception e) {
             dataMap.put("code",0);
-            dataMap.put("message","用户不存在或已删除！");
+            dataMap.put("message","服务器错误，请重试！");
             jsonObject = new JSONObject(dataMap);
-            return SUCCESS;
-        }
-        //用户已被禁用
-        if(tmpUser.getStatus() == 0){
-            dataMap.put("code",0);
-            dataMap.put("message","该账户已被禁用，请联系管理员！");
-            jsonObject = new JSONObject(dataMap);
-            return SUCCESS;
-        }
-        //登录成功
-        if(tmpUser.getPassword().equals(password)){
-            session.setAttribute("user",tmpUser);
-            dataMap.put("code",1);
-            dataMap.put("message","登录成功！");
-            jsonObject = new JSONObject(dataMap);
-            System.out.println(jsonObject);
-            return SUCCESS;
-        }
-        else {
-            dataMap.put("code",0);
-            dataMap.put("message","密码错误！");
-            jsonObject = new JSONObject(dataMap);
-            System.out.println(jsonObject);
             return SUCCESS;
         }
     }
@@ -171,23 +231,30 @@ public class UserAction extends ActionSupport {
             interceptorRefs = {@InterceptorRef(value = "LoginInterceptorStack")}
     )
     public String getUserList(){
-        //获取User数量
-        int userNumber = userService.getUserNumber();
-        //获取User列表
-        List<User> userList = userService.getUserListByPage(page,limit);
+        try {
+            //获取User数量
+            int userNumber = userService.getUserNumber();
+            //获取User列表
+            List<User> userList = userService.getUserListByPage(page,limit);
 
-        Map<String,Object> tmpMap = new HashMap<>();
+            Map<String,Object> tmpMap = new HashMap<>();
 
-        for (int i = 0; i < userList.size(); i++) {
-            tmpMap.put(String.valueOf(i),JSON.toJSON(userList.get(i),serializeConfig));
-        }
+            for (int i = 0; i < userList.size(); i++) {
+                tmpMap.put(String.valueOf(i),JSON.toJSON(userList.get(i),serializeConfig));
+            }
 
-        dataMap.put("code",0);
-        dataMap.put("count",userNumber);
-        dataMap.put("data",tmpMap);
+            dataMap.put("code",0);
+            dataMap.put("count",userNumber);
+            dataMap.put("data",tmpMap);
 //        System.out.println(dataMap);
-        jsonObject = new  JSONObject(dataMap);
-        return SUCCESS;
+            jsonObject = new  JSONObject(dataMap);
+            return SUCCESS;
+        } catch (Exception e) {
+            dataMap.put("code",0);
+            dataMap.put("message","服务器错误，请重试！");
+            jsonObject = new JSONObject(dataMap);
+            return SUCCESS;
+        }
     }
 
 
@@ -225,32 +292,39 @@ public class UserAction extends ActionSupport {
             interceptorRefs = {@InterceptorRef(value = "LoginInterceptorStack")}
     )
     public String addUser(){
-        User orgUser = userService.findByUserName(userName);
-        System.out.println("存在的用户："+orgUser);
+        try {
+            User orgUser = userService.findByUserName(userName);
+            System.out.println("存在的用户："+orgUser);
 
-        if(orgUser == null){
-            User tmpUser = new User();
-            tmpUser.setUserName(userName);
-            tmpUser.setPassword(password);
-            tmpUser.setPhoneNumber(phoneNumber);
-            tmpUser.setIsAdmin(isAdmin);
-            tmpUser.setSex(sex);
+            if(orgUser == null){
+                User tmpUser = new User();
+                tmpUser.setUserName(userName);
+                tmpUser.setPassword(password);
+                tmpUser.setPhoneNumber(phoneNumber);
+                tmpUser.setIsAdmin(isAdmin);
+                tmpUser.setSex(sex);
 
-            System.out.println("要添加的用户："+tmpUser);
-            userService.addUser(tmpUser);
-            //添加完成后刷新数量
-            session.setAttribute("userNumber",userService.getUserNumber());
+                System.out.println("要添加的用户："+tmpUser);
+                userService.addUser(tmpUser);
+                //添加完成后刷新数量
+                session.setAttribute("userNumber",userService.getUserNumber());
 
-            dataMap.put("code",1);
-            dataMap.put("message","添加成功！");
-            jsonObject = new JSONObject(dataMap);
-        }
-        else {
+                dataMap.put("code",1);
+                dataMap.put("message","添加成功！");
+                jsonObject = new JSONObject(dataMap);
+            }
+            else {
+                dataMap.put("code",0);
+                dataMap.put("message","用户名已存在！");
+                jsonObject = new JSONObject(dataMap);
+            }
+            return SUCCESS;
+        } catch (Exception e) {
             dataMap.put("code",0);
-            dataMap.put("message","用户名已存在！");
+            dataMap.put("message","服务器错误，请重试！");
             jsonObject = new JSONObject(dataMap);
+            return SUCCESS;
         }
-        return SUCCESS;
     }
 
     @Action(value = "findByUserName",
@@ -258,12 +332,19 @@ public class UserAction extends ActionSupport {
             interceptorRefs = {@InterceptorRef(value = "LoginInterceptorStack")}
     )
     public String findByUserName(){
-        User tmpUser = userService.findByUserName(userName);
-        dataMap.put("code",0);
-        dataMap.put("message","查找成功！");
-        dataMap.put("data",tmpUser);
-        jsonObject = new JSONObject(dataMap);
-        return SUCCESS;
+        try {
+            User tmpUser = userService.findByUserName(userName);
+            dataMap.put("code",0);
+            dataMap.put("message","查找成功！");
+            dataMap.put("data",tmpUser);
+            jsonObject = new JSONObject(dataMap);
+            return SUCCESS;
+        } catch (Exception e) {
+            dataMap.put("code",0);
+            dataMap.put("message","服务器错误，请重试！");
+            jsonObject = new JSONObject(dataMap);
+            return SUCCESS;
+        }
     }
 
     @Action(value = "findListByUserName",
@@ -271,23 +352,30 @@ public class UserAction extends ActionSupport {
             interceptorRefs = {@InterceptorRef(value = "LoginInterceptorStack")}
     )
     public String findListByUserName(){
-        List<User> list = userService.findListByUserName(userName);
+        try {
+            List<User> list = userService.findListByUserName(userName);
 
 //        JSONObject data = new JSONObject();
-        Map<String,Object> tmpMap = new HashMap<>();
+            Map<String,Object> tmpMap = new HashMap<>();
 
-        for (int i = 0; i < list.size(); i++) {
-            tmpMap.put(String.valueOf(i),JSON.toJSON(list.get(i),serializeConfig));
-//            data.put(String.valueOf(i),JSON.toJSON(list.get(i),serializeConfig));
-        }
+            for (int i = 0; i < list.size(); i++) {
+                tmpMap.put(String.valueOf(i),JSON.toJSON(list.get(i),serializeConfig));
+    //            data.put(String.valueOf(i),JSON.toJSON(list.get(i),serializeConfig));
+            }
 
-        dataMap.put("code",0);
-        dataMap.put("count",list.size());
-        dataMap.put("data",tmpMap);
+            dataMap.put("code",0);
+            dataMap.put("count",list.size());
+            dataMap.put("data",tmpMap);
 //        System.out.println(dataMap);
-        jsonObject = new  JSONObject(dataMap);
+            jsonObject = new  JSONObject(dataMap);
 //        System.out.println("查找后："+jsonObject);
-        return SUCCESS;
+            return SUCCESS;
+        } catch (Exception e) {
+            dataMap.put("code",0);
+            dataMap.put("message","服务器错误，请重试！");
+            jsonObject = new JSONObject(dataMap);
+            return SUCCESS;
+        }
     }
 
     @Action(value = "changeUserStatus",
@@ -295,10 +383,17 @@ public class UserAction extends ActionSupport {
             interceptorRefs = {@InterceptorRef(value = "LoginInterceptorStack")}
     )
     public String changeUserStatus(){
-        userService.changeUserStatus(id,status);
-        dataMap.put("message","操作成功！");
-        jsonObject = new JSONObject(dataMap);
-        return SUCCESS;
+        try {
+            userService.changeUserStatus(id,status);
+            dataMap.put("message","操作成功！");
+            jsonObject = new JSONObject(dataMap);
+            return SUCCESS;
+        } catch (Exception e) {
+            dataMap.put("code",0);
+            dataMap.put("message","服务器错误，请重试！");
+            jsonObject = new JSONObject(dataMap);
+            return SUCCESS;
+        }
     }
 
     @Action(value = "deleteById",
@@ -306,16 +401,23 @@ public class UserAction extends ActionSupport {
             interceptorRefs = {@InterceptorRef(value = "LoginInterceptorStack")}
     )
     public String deleteById(){
-        System.out.println("要删除的用户ID: "+id);
-        userService.deleteById(id);
+        try {
+            System.out.println("要删除的用户ID: "+id);
+            userService.deleteById(id);
 
-        //删除后刷新数量
-        session.setAttribute("userNumber",userService.getUserNumber());
+            //删除后刷新数量
+            session.setAttribute("userNumber",userService.getUserNumber());
 
-        dataMap.put("code",1);
-        dataMap.put("message","删除成功！");
-        jsonObject = new JSONObject(dataMap);
-        return SUCCESS;
+            dataMap.put("code",1);
+            dataMap.put("message","删除成功！");
+            jsonObject = new JSONObject(dataMap);
+            return SUCCESS;
+        } catch (Exception e) {
+            dataMap.put("code",0);
+            dataMap.put("message","服务器错误，请重试！");
+            jsonObject = new JSONObject(dataMap);
+            return SUCCESS;
+        }
     }
 
     @Action(value = "editUser",
@@ -324,31 +426,70 @@ public class UserAction extends ActionSupport {
     )
     public String editUser(){
 
-        User orgUser = userService.findByUserName(userName);
-        System.out.println("存在的用户："+orgUser);
+        try {
+            User orgUser = userService.findByUserName(userName);
+            System.out.println("存在的用户："+orgUser);
 
-        if(orgUser == null){
-            User tmpUser = new User();
-            tmpUser.setId(id);
-            tmpUser.setUserName(userName);
-            tmpUser.setPassword(password);
-            tmpUser.setPhoneNumber(phoneNumber);
-            tmpUser.setIsAdmin(isAdmin);
-            tmpUser.setSex(sex);
+            if(orgUser == null){
+                User tmpUser = new User();
+                tmpUser.setId(id);
+                tmpUser.setUserName(userName);
+                tmpUser.setPassword(password);
+                tmpUser.setPhoneNumber(phoneNumber);
+                tmpUser.setIsAdmin(isAdmin);
+                tmpUser.setSex(sex);
 
-            System.out.println(tmpUser);
-            userService.editUser(id,tmpUser);
-            dataMap.put("code",1);
-            dataMap.put("message","修改成功！");
-            jsonObject = new JSONObject(dataMap);
-        }
-        else {
+                System.out.println(tmpUser);
+                userService.editUser(id,tmpUser);
+                dataMap.put("code",1);
+                dataMap.put("message","修改成功！");
+                jsonObject = new JSONObject(dataMap);
+            }
+            else {
+                dataMap.put("code",0);
+                dataMap.put("message","用户名已存在！");
+                jsonObject = new JSONObject(dataMap);
+            }
+            return SUCCESS;
+        } catch (Exception e) {
             dataMap.put("code",0);
-            dataMap.put("message","用户名已存在！");
+            dataMap.put("message","服务器错误，请重试！");
             jsonObject = new JSONObject(dataMap);
+            return SUCCESS;
         }
-        return SUCCESS;
     }
+
+
+    @Action(value = "changePwdByUsername",
+            results = {@Result(type = "json",params = {"root","jsonObject"})},
+            interceptorRefs = {@InterceptorRef(value = "LoginInterceptorStack")}
+    )
+    public String changePwdByUsername(){
+        try {
+            User tmpUser = (User) session.getAttribute("user");
+
+            //原密码错误
+            if(!old_password.equals(tmpUser.getPassword())){
+                dataMap.put("code",0);
+                dataMap.put("message","原密码错误，请重试！");
+                jsonObject = new JSONObject(dataMap);
+                return SUCCESS;
+            }
+
+            userService.changePwdByUsername(tmpUser.getUserName(), new_password);
+            dataMap.put("code",1);
+            dataMap.put("message","操作成功！");
+            jsonObject = new JSONObject(dataMap);
+            return SUCCESS;
+
+        } catch (Exception e) {
+            dataMap.put("code",0);
+            dataMap.put("message","服务器错误，请重试！");
+            jsonObject = new JSONObject(dataMap);
+            return SUCCESS;
+        }
+    }
+
 
 
     public int getPage() {
@@ -441,6 +582,22 @@ public class UserAction extends ActionSupport {
 
     public void setStatus(int status) {
         this.status = status;
+    }
+
+    public String getOld_password() {
+        return old_password;
+    }
+
+    public void setOld_password(String old_password) {
+        this.old_password = old_password;
+    }
+
+    public String getNew_password() {
+        return new_password;
+    }
+
+    public void setNew_password(String new_password) {
+        this.new_password = new_password;
     }
 
     public void setCaptcha(String captcha) {

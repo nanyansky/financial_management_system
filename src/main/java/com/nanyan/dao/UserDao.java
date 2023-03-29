@@ -131,6 +131,14 @@ public class UserDao{
         query.executeUpdate();
     }
 
+    public void changePwdByUsername(String username,String newPwd){
+        Session currentSession = sessionFactory.getCurrentSession();
+        Query query = currentSession.createQuery("update User set password = :password where userName = :username and isDeleted != 1");
+        query.setParameter("username",username);
+        query.setParameter("password",newPwd);
+        query.executeUpdate();
+    }
+
 
 
 //

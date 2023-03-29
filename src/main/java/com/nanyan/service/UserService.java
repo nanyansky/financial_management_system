@@ -27,4 +27,6 @@ public interface UserService {
     public void deleteById(int id);
 
     public void editUser(int id,User user);
+
+    public void changePwdByUsername(String username,String password);
 }

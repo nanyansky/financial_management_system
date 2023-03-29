@@ -65,5 +65,10 @@ public class UserServiceImpl implements UserService {
         userDao.editUser(id,user);
     }
 
+    @Override
+    public void changePwdByUsername(String username, String password) {
+        userDao.changePwdByUsername(username,password);
+    }
+
 
 }

@@ -3,7 +3,7 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <title>后台管理-登陆</title>
+    <title>家庭理财系统-注册</title>
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <meta http-equiv="Access-Control-Allow-Origin" content="*">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
@@ -55,12 +55,13 @@
             .login-main .login-bottom {width:360px !important;}
         }
     </style>
+    <link rel="stylesheet" href="statics/layui/lib/font-awesome-4.7.0/css/font-awesome.min.css" media="all">
 </head>
 <body>
 <div class="main-body">
     <div class="login-main">
         <div class="login-top">
-            <span>LayuiMini后台登录</span>
+            <span>家庭理财系统注册</span>
             <span class="bg1"></span>
             <span class="bg2"></span>
         </div>
@@ -68,31 +69,54 @@
             <div class="center">
                 <div class="item">
                     <span class="icon icon-2"></span>
-                    <input type="text" name="username" lay-verify="required"  placeholder="请输入登录账号" maxlength="24"/>
+                    <input type="text" name="userName" lay-verify="required"  placeholder="请输入用户名" maxlength="24"/>
                 </div>
 
                 <div class="item">
                     <span class="icon icon-3"></span>
-                    <input type="password" name="password" lay-verify="required"  placeholder="请输入密码" maxlength="20">
+                    <input type="password" name="password" id="pwd1" lay-verify="required"  placeholder="请输入密码" maxlength="20">
                     <span class="bind-password icon icon-4"></span>
+                </div>
+
+                <div class="item">
+                    <span class="icon icon-3"></span>
+                    <input type="password" name="password" id="pwd2" onblur="confirmPwd()" lay-verify="required"  placeholder="请确认密码" maxlength="20">
+                    <span class="bind-password icon icon-4"></span> </br>
+                    <span id="pwd2Span" style="color: red;font-family: 楷体"></span></p>
+                </div>
+
+                <div class="item">
+                    <span class="icon icon-1"></span>
+                    <input type="text" name="phoneNumber" lay-verify="required"  placeholder="请输入电话号码" maxlength="11"/>
+                </div>
+
+                <div class="layui-form-item">
+                    <label class="layui-form-label required" style="text-align: left;color: rgb(208,220,231); font-size: medium">性别</label>
+                    <div class="layui-input-block">
+                        <input type="radio" name="sex" value="男" title="男" checked="">
+                        <input type="radio" name="sex" value="女" title="女">
+                    </div>
                 </div>
 
                 <div id="validatePanel" class="item" style="width: 137px;">
                     <input type="text" name="captcha" lay-verify="required" placeholder="请输入验证码" maxlength="4">
-                    <%--                    <img id="refreshCaptcha" class="validateImg"  src="statics/layui/images/captcha.jpg" >--%>
+<%--                    <img id="refreshCaptcha" class="validateImg"  src="statics/layui/images/captcha.jpg" >--%>
                     <img id="refreshCaptcha" class="validateImg" src="user/getVcode.action">
                 </div>
 
             </div>
+
+            <div class="tip" style="text-align:right">
+                <a href="login.jsp" style="color: #0000FF;font-size: small">已有账号？去登录</a>
+            </div>
+
             <div class="layui-form-item" style="text-align:center; width:100%;height:100%;margin:0px;">
-                <button class="login-btn" lay-submit="" lay-filter="login">立即登录</button>
+                <button id="re-btn" class="login-btn" lay-submit="" lay-filter="userRegister">注册</button>
             </div>
         </form>
     </div>
 </div>
-<div class="footer">
-    ©版权所有 2014-2018 叁贰柒工作室<span class="padding-5">|</span><a target="_blank" href="http://www.miitbeian.gov.cn">粤ICP备16006642号-2</a>
-</div>
+
 <script src="statics/layui/lib/layui-v2.6.3/layui.js" charset="utf-8"></script>
 <script>
     layui.use(['form','jquery','layer'], function () {
@@ -121,18 +145,19 @@
             $(this).attr("src",src);
         })
 
+
         // 进行登录操作
-        form.on('submit(login)', function (data) {
+        form.on('submit(userRegister)', function (data) {
             console.log(data);
             data = data.field;
             console.log(data);
 
-            $.post("/user/userLogin.action",data,function (result){
+            $.post("/user/userRegister.action",data,function (result){
                 console.log(result);
 
                 if(result.code === 1){
                     layer.msg(result.message);
-                    location.href = "/home.jsp";
+                    location.href = "/login.jsp";
                 }
                 else{
                     layer.msg(result.message);
@@ -141,6 +166,21 @@
             return false;
         });
     });
+
+    function confirmPwd() {
+        var text1 = document.getElementById("pwd1").value;
+        var text2 = document.getElementById("pwd2").value;
+        if (text1 !== text2){
+            document.getElementById("pwd2Span").innerHTML = "两次输入的密码不一致";
+            document.getElementById("re-btn").disabled = true;
+            return false;
+        }
+        else {
+            document.getElementById("pwd2Span").innerHTML = "";
+            document.getElementById("re-btn").disabled = false;
+            return true;
+        }
+    }
 </script>
 </body>
 </html>

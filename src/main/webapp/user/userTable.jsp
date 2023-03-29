@@ -14,8 +14,8 @@
     <meta name="renderer" content="webkit">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-    <link rel="stylesheet" href="statics/layui/lib/layui-v2.6.3/css/layui.css" media="all">
-    <link rel="stylesheet" href="statics/layui/css/public.css" media="all">
+    <link rel="stylesheet" href="../statics/layui/lib/layui-v2.6.3/css/layui.css" media="all">
+    <link rel="stylesheet" href="../statics/layui/css/public.css" media="all">
 </head>
 <body>
 <div class="layuimini-container">
@@ -108,7 +108,7 @@
         </div>
     </div>
 </div>
-<script src="statics/layui/lib/layui-v2.6.3/layui.js" charset="utf-8"></script>
+<script src="../statics/layui/lib/layui-v2.6.3/layui.js" charset="utf-8"></script>
 
 <script>
     layui.use(['form', 'table', 'layer'], function () {
@@ -253,7 +253,6 @@
                 })
                 layer.close(index);
             })
-
         }
 
         //监听表单提交事件
