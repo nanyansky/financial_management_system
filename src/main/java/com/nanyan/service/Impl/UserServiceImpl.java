@@ -66,6 +66,11 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public void changeInfoByUsername(String tmpUsername, User user) {
+        userDao.changeInfoByUsername(tmpUsername,user);
+    }
+
+    @Override
     public void changePwdByUsername(String username, String password) {
         userDao.changePwdByUsername(username,password);
     }

@@ -1,6 +1,7 @@
 package com.nanyan.filter;
 
 import org.apache.struts2.ServletActionContext;
+import org.aspectj.lang.annotation.Pointcut;
 import org.springframework.util.AntPathMatcher;
 
 import javax.servlet.*;

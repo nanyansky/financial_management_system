@@ -428,7 +428,7 @@ public class UserAction extends ActionSupport {
 
         try {
             User orgUser = userService.findByUserName(userName);
-            System.out.println("存在的用户："+orgUser);
+//            System.out.println("存在的用户："+orgUser);
 
             if(orgUser == null){
                 User tmpUser = new User();
@@ -459,6 +459,43 @@ public class UserAction extends ActionSupport {
         }
     }
 
+
+
+    @Action(value = "changeInfoByUsername",
+            results = {@Result(type = "json",params = {"root","jsonObject"})},
+            interceptorRefs = {@InterceptorRef(value = "LoginInterceptorStack")}
+    )
+    public String changeInfoByUsername(){
+
+        try {
+            if(userService.findByUserName(userName) != null){
+                dataMap.put("code",0);
+                dataMap.put("message","用户名已存在，试试别的吧！");
+                jsonObject = new JSONObject(dataMap);
+                return SUCCESS;
+            }
+            String curUsername = ((User)session.getAttribute("user")).getUserName();
+            User tmpUser = new User();
+            tmpUser.setUserName(userName);
+            tmpUser.setPhoneNumber(phoneNumber);
+            tmpUser.setSex(sex);
+            userService.changeInfoByUsername(curUsername,tmpUser);
+
+            //刷新存在的User
+            session.removeAttribute("user");
+            session.setAttribute("user",userService.findByUserName(userName));
+
+            dataMap.put("code",1);
+            dataMap.put("message","修改成功！");
+            jsonObject = new JSONObject(dataMap);
+            return SUCCESS;
+        } catch (Exception e) {
+            dataMap.put("code",0);
+            dataMap.put("message","服务器错误，请重试！");
+            jsonObject = new JSONObject(dataMap);
+            return SUCCESS;
+        }
+    }
 
     @Action(value = "changePwdByUsername",
             results = {@Result(type = "json",params = {"root","jsonObject"})},

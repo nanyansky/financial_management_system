@@ -62,7 +62,7 @@
                     <a href="javascript:;">${sessionScope.user.userName}</a>
                     <dl class="layui-nav-child">
                         <dd>
-                            <a href="javascript:;" class="user-info"data-title="修改资料" data-icon="fa fa-gears">基本资料</a>
+                            <a href="javascript:;" layuimini-content-href="user/user-info.jsp" data-title="修改资料" data-icon="fa fa-gears">基本资料</a>
                         </dd>
                         <dd>
                             <a href="javascript:;" layuimini-content-href="user/user-password.jsp" data-title="修改密码" data-icon="fa fa-gears">修改密码</a>
@@ -151,7 +151,6 @@
 
 
 
-
     <div class="layui-body">
 
         <div class="layuimini-tab layui-tab-rollTool layui-tab" lay-filter="layuiminiTab" lay-allowclose="true">
@@ -205,12 +204,6 @@
         };
         miniAdmin.render(options);
 
-        var url; //提交地址
-        var mainIndex; //打开窗口的索引
-        var tmpUserName = ${sessionScope.user.userName};
-        var data;
-        console.log(tmpUserName);
-
         // 百度统计代码，只统计指定域名
         miniTongji.render({
             specific: true,
@@ -233,28 +226,28 @@
             },"json");
             return false;
         });
-
-        $('.user-info').on("click", function () {
-            //
-            // $.get("/user/findByUserName.action", tmpUserName, function (result){
-            //     console.log(result);
-            //     data = result.data;
-            // },"json");
-
-            mainIndex = layer.open({
-                type: 1,
-                title: "修改用户",
-                area: ["800px","500px"],
-                content: $("#addOrUpdateWindow"),
-                success: function (){
-                    //表单数据回写
-                    form.val("dataFrm",data)
-                    //添加修改的请求
-                    url = "/user/editUser.action"
-                }
-            })
-            return false;
-        });
+        //
+        // $('.user-info').on("click", function () {
+        //     //
+        //     // $.get("/user/findByUserName.action", tmpUserName, function (result){
+        //     //     console.log(result);
+        //     //     data = result.data;
+        //     // },"json");
+        //
+        //     mainIndex = layer.open({
+        //         type: 1,
+        //         title: "修改用户",
+        //         area: ["800px","500px"],
+        //         content: $("#addOrUpdateWindow"),
+        //         success: function (){
+        //             //表单数据回写
+        //             form.val("dataFrm",data)
+        //             //添加修改的请求
+        //             url = "/user/editUser.action"
+        //         }
+        //     })
+        //     return false;
+        // });
 
     });
 </script>

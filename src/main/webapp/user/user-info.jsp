@@ -30,35 +30,30 @@
             <div class="layui-form-item">
                 <label class="layui-form-label">用户名</label>
                 <div class="layui-input-block">
-                    <input type="hidden" name="id">
                     <input type="text" name="userName" lay-verify="required" autocomplete="off"
-                           placeholder="请输入用户名" class="layui-input">
+                           placeholder="请输入用户名" class="layui-input" value="${sessionScope.user.userName}">
                 </div>
             </div>
             <div class="layui-form-item">
                 <label class="layui-form-label required">手机</label>
                 <div class="layui-input-block">
-                    <input type="number" name="phoneNumber" lay-verify="required" lay-reqtext="手机不能为空" placeholder="请输入手机" value="" class="layui-input">
+                    <input type="number" name="phoneNumber" lay-verify="required" lay-reqtext="手机不能为空" placeholder="请输入手机" value="${sessionScope.user.phoneNumber}" class="layui-input">
                 </div>
             </div>
             <div class="layui-form-item">
                 <label class="layui-form-label required">性别</label>
                 <div class="layui-input-block">
-                    <input type="radio" name="sex" value="男" title="男" checked="">
-                    <input type="radio" name="sex" value="女" title="女">
+                    <input type="radio" name="sex" value="男" title="男" ${sessionScope.user.sex == "男" ? 'checked' : ''}>
+                    <input type="radio" name="sex" value="女" title="女" ${sessionScope.user.sex == "女" ? 'checked' : ''}>
                 </div>
             </div>
 
-            <div class="layui-form-item layui-row layui-col-xs12">
-                <div class="layui-input-block" style="text-align: center;">
-                    <button type="button" class="layui-btn" lay-submit lay-filter="doSubmit"><span
-                            class="layui-icon layui-icon-add-1"></span>提交
-                    </button>
-                    <button type="reset" class="layui-btn layui-btn-warm"><span
-                            class="layui-icon layui-icon-refresh-1"></span>重置
-                    </button>
+            <div class="layui-form-item">
+                <div class="layui-input-block">
+                    <button class="layui-btn layui-btn-normal" id="saveBtn" lay-submit lay-filter="saveBtn">确认保存</button>
                 </div>
             </div>
+
         </form>
 
     </div>
@@ -68,25 +63,28 @@
 <script>
     layui.use(['form','miniTab'], function () {
         var form = layui.form,
+            $ = layui.jquery,
             layer = layui.layer,
             miniTab = layui.miniTab;
-        var tmpUserName = ${sessionScope.user.userName};
 
-        $.get("/user/findByUserName.action",tmpUserName,function (result){
-            console.log(result);
-            form.val("dataFrm",result.data)
-        },"json");
+        //监听表单提交事件
+        form.on("submit(saveBtn)",function (data) {
+            $.post("/user/changeInfoByUsername.action",data.field,function (result) {
+                if(result.code === 1){
+                    layer.msg(result.message);
+                    window.setTimeout(function () {
+                        window.location.reload();
+                    },1500)
+                }
+                else {
+                    //提示信息
+                    layer.msg(result.message);
+                }
+            },"json");
 
-        //监听提交
-        form.on('submit(saveBtn)', function (data) {
-            var index = layer.alert(JSON.stringify(data.field), {
-                title: '最终的提交信息'
-            }, function () {
-                layer.close(index);
-                miniTab.deleteCurrentByIframe();
-            });
             return false;
-        });
+        })
+
 
     });
 </script>

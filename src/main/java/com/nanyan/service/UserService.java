@@ -28,5 +28,6 @@ public interface UserService {
 
     public void editUser(int id,User user);
 
+    public void changeInfoByUsername(String tmpUsername, User user);
     public void changePwdByUsername(String username,String password);
 }

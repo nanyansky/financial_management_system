@@ -131,6 +131,18 @@ public class UserDao{
         query.executeUpdate();
     }
 
+
+    public void changeInfoByUsername(String tmpUsername,User user){
+        Session currentSession = sessionFactory.getCurrentSession();
+        Query query = currentSession.createQuery("update User set userName = :username, phoneNumber = :phonuseNumber, sex =:sex where userName =:tmpUsername and isDeleted != 1");
+        query.setParameter("username",user.getUserName());
+        query.setParameter("phonuseNumber",user.getPhoneNumber());
+        query.setParameter("sex",user.getSex());
+        query.setParameter("tmpUsername",tmpUsername);
+
+        query.executeUpdate();
+    }
+
     public void changePwdByUsername(String username,String newPwd){
         Session currentSession = sessionFactory.getCurrentSession();
         Query query = currentSession.createQuery("update User set password = :password where userName = :username and isDeleted != 1");
