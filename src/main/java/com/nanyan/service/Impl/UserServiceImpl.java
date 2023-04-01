@@ -1,8 +1,10 @@
 package com.nanyan.service.Impl;
 
+import com.nanyan.annotation.OptLog;
 import com.nanyan.dao.UserDao;
 import com.nanyan.entity.User;
 import com.nanyan.service.UserService;
+import com.nanyan.utils.OperationType;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -33,6 +35,7 @@ public class UserServiceImpl implements UserService {
         return userDao.getUserNumber();
     }
 
+    @OptLog(describe = "用户登录", operationType = OperationType.LOGIN)
     @Override
     public void addUser(User user) {
         userDao.addUser(user);

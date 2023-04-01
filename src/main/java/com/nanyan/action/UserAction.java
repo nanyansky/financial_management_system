@@ -6,9 +6,11 @@ import com.alibaba.fastjson.JSONObject;
 import com.alibaba.fastjson.serializer.SerializeConfig;
 import com.alibaba.fastjson.serializer.SimpleDateFormatSerializer;
 import com.github.cliftonlabs.json_simple.JsonArray;
+import com.nanyan.annotation.OptLog;
 import com.nanyan.entity.Test;
 import com.nanyan.entity.User;
 import com.nanyan.service.UserService;
+import com.nanyan.utils.OperationType;
 import com.nanyan.utils.VerifyCode;
 import com.opensymphony.xwork2.ActionSupport;
 import com.opensymphony.xwork2.ModelDriven;
@@ -141,6 +143,7 @@ public class UserAction extends ActionSupport {
      * @author nanyan
      * @date:  21:23
      */
+//    @OptLog(describe = "用户登录",operationType = OperationType.LOGIN)
     @Action(value = "userLogin", results = {
             @Result(type = "json",params = {"root","jsonObject"})
     })
@@ -211,6 +214,7 @@ public class UserAction extends ActionSupport {
      * @date:  21:23
      */
     @Action(value = "logout",results = {@Result(type = "json",params = {"root","jsonObject"})})
+//    @OptLog(describe = "用户登出",operationType = OperationType.LOGOUT)
     public String logOut(){
         session.removeAttribute("user");
         dataMap.put("code",1);

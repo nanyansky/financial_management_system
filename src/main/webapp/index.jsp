@@ -99,23 +99,23 @@
         </div>
     </div>
 
-    <div class="layui-box">
-        <div class="layui-row layui-col-space10">
-            <div class="layui-col-md12">
-                <blockquote class="layui-elem-quote main_btn">
-<%--                    <p>测试</p>--%>
-                    <p>本模板基于layui2.5.4以及font-awesome-4.7.0进行实现。layui开发文档地址：<a class="layui-btn layui-btn-xs layui-btn-danger" target="_blank" href="http://www.layui.com/doc">layui文档</a></p>
-                    <p>技术交流QQ群（561838086）：<a target="_blank" href="https://jq.qq.com/?_wv=1027&k=5JRGVfe"><img border="0" src="//pub.idqqimg.com/wpa/images/group.png" alt="layuimini" title="layuimini"></a>（加群请备注来源：如gitee、github、官网等）</p>
-                    <p>喜欢此后台模板的可以给我的GitHub和Gitee加个Star支持一下</p>
-                    <p>GitHub地址：
-                        <iframe src="https://ghbtns.com/github-btn.html?user=zhongshaofa&repo=layuimini&type=star&count=true" frameborder="0" scrolling="0" width="100px" height="20px"></iframe>
-                        <iframe src="https://ghbtns.com/github-btn.html?user=zhongshaofa&repo=layuimini&type=fork&count=true" frameborder="0" scrolling="0" width="100px" height="20px"></iframe>
-                    </p>
-                    <p>Gitee地址：<a href="https://gitee.com/zhongshaofa/layuimini" target="_blank"><img src="https://gitee.com/zhongshaofa/layuimini/badge/star.svg?theme=dark" alt="star"></a> <a href="https://gitee.com/zhongshaofa/layuimini" target="_blank"><img src="https://gitee.com/zhongshaofa/layuimini/badge/fork.svg?theme=dark" alt="fork"></a></p>
-                </blockquote>
-            </div>
-        </div>
-    </div>
+<%--    <div class="layui-box">--%>
+<%--        <div class="layui-row layui-col-space10">--%>
+<%--            <div class="layui-col-md12">--%>
+<%--                <blockquote class="layui-elem-quote main_btn">--%>
+<%--&lt;%&ndash;                    <p>测试</p>&ndash;%&gt;--%>
+<%--                    <p>本模板基于layui2.5.4以及font-awesome-4.7.0进行实现。layui开发文档地址：<a class="layui-btn layui-btn-xs layui-btn-danger" target="_blank" href="http://www.layui.com/doc">layui文档</a></p>--%>
+<%--                    <p>技术交流QQ群（561838086）：<a target="_blank" href="https://jq.qq.com/?_wv=1027&k=5JRGVfe"><img border="0" src="//pub.idqqimg.com/wpa/images/group.png" alt="layuimini" title="layuimini"></a>（加群请备注来源：如gitee、github、官网等）</p>--%>
+<%--                    <p>喜欢此后台模板的可以给我的GitHub和Gitee加个Star支持一下</p>--%>
+<%--                    <p>GitHub地址：--%>
+<%--                        <iframe src="https://ghbtns.com/github-btn.html?user=zhongshaofa&repo=layuimini&type=star&count=true" frameborder="0" scrolling="0" width="100px" height="20px"></iframe>--%>
+<%--                        <iframe src="https://ghbtns.com/github-btn.html?user=zhongshaofa&repo=layuimini&type=fork&count=true" frameborder="0" scrolling="0" width="100px" height="20px"></iframe>--%>
+<%--                    </p>--%>
+<%--                    <p>Gitee地址：<a href="https://gitee.com/zhongshaofa/layuimini" target="_blank"><img src="https://gitee.com/zhongshaofa/layuimini/badge/star.svg?theme=dark" alt="star"></a> <a href="https://gitee.com/zhongshaofa/layuimini" target="_blank"><img src="https://gitee.com/zhongshaofa/layuimini/badge/fork.svg?theme=dark" alt="fork"></a></p>--%>
+<%--                </blockquote>--%>
+<%--            </div>--%>
+<%--        </div>--%>
+<%--    </div>--%>
 
     <div class="layui-box">
         <div class="layui-row layui-col-space10">
@@ -188,13 +188,13 @@
             ,url: '/user/getUserListByPage.action' //数据接口
             ,page: false //开启分页
             ,cols: [[ //表头
-                 {field: 'id', title: 'ID', minWidth:60, sort: true, fixed: 'left',align: 'center'}
+                 {field: 'id', title: 'ID', minWidth:60, fixed: 'left',align: 'center'}
                 ,{field: 'userName', title: '用户名', minWidth:80,align: 'center'}
-                ,{field: 'sex', title: '性别', minWidth:80, sort: true,align: 'center'}
-                ,{field: 'registerTime',title: "加入时间",minWidth: 170,sort: true,align: 'center'}
+                ,{field: 'sex', title: '性别', minWidth:80, align: 'center'}
+                ,{field: 'registerTime',title: "加入时间",minWidth: 170, align: 'center'}
                 ,{field: 'phoneNumber',title: "电话号码",minWidth: 130,align: 'center'}
-                ,{field: 'isAdmin', title: '是否管理员', minWidth: 120,sort: true,align: 'center'}
-                // ,{field: 'isDeleted', title: '账户状态', width: 110, sort: true}
+                ,{field: 'isAdmin', title: '是否管理员', minWidth: 120, align: 'center'}
+                ,{field: 'status', title: '账户状态', minwidth: 110, sort: true}
             ]]
         });
     });

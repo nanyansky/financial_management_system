@@ -1,6 +1,8 @@
 package com.nanyan.service;
 
+import com.nanyan.annotation.OptLog;
 import com.nanyan.entity.User;
+import com.nanyan.utils.OperationType;
 
 import java.util.List;
 
@@ -17,6 +19,7 @@ public interface UserService {
 
     public int getUserNumber();
 
+    @OptLog(describe = "用户登录",operationType = OperationType.LOGIN)
     public void addUser(User user);
 
     public User findByUserId(int id);
