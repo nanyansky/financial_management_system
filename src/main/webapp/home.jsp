@@ -183,11 +183,9 @@
 <script src="statics/layui/lib/layui-v2.6.3/layui.js" charset="utf-8"></script>
 <script src="statics/layui/js/lay-config.js?v=2.0.0" charset="utf-8"></script>
 <script>
-    layui.use(['form','table','jquery', 'layer', 'miniAdmin','miniTongji'], function () {
+    layui.use(['jquery', 'layer', 'miniAdmin','miniTongji'], function () {
         var $ = layui.jquery,
             layer = layui.layer,
-            form = layui.form,
-            table = layui.table,
             miniAdmin = layui.miniAdmin,
             miniTongji = layui.miniTongji;
 
@@ -226,29 +224,6 @@
             },"json");
             return false;
         });
-        //
-        // $('.user-info').on("click", function () {
-        //     //
-        //     // $.get("/user/findByUserName.action", tmpUserName, function (result){
-        //     //     console.log(result);
-        //     //     data = result.data;
-        //     // },"json");
-        //
-        //     mainIndex = layer.open({
-        //         type: 1,
-        //         title: "修改用户",
-        //         area: ["800px","500px"],
-        //         content: $("#addOrUpdateWindow"),
-        //         success: function (){
-        //             //表单数据回写
-        //             form.val("dataFrm",data)
-        //             //添加修改的请求
-        //             url = "/user/editUser.action"
-        //         }
-        //     })
-        //     return false;
-        // });
-
     });
 </script>
 </body>

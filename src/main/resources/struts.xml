@@ -36,7 +36,7 @@
     </package>
 
 
-    <package name="user" extends="json-default,struts-default">
+    <package name="Interceptor" extends="json-default,struts-default">
         <interceptors>
             <interceptor name="LoginInterceptor" class="com.nanyan.Interceptor.LoginInterceptor"/>
             <interceptor-stack name="LoginInterceptorStack">

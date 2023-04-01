@@ -38,13 +38,20 @@
           "href": "expense_type.jsp",
           "icon": "fa fa-list-alt",
           "target": "_self"
-        },
-        {
-          "title": "统计",
-          "href": "tongji.jsp",
-          "icon": "fa fa-pie-chart",
-          "target": "_self"
-        }]
+        }
+      ]
+    },
+    {
+      "title": "统计",
+      "href": "tongji.jsp",
+      "icon": "fa fa-pie-chart",
+      "target": "_self"
+    },
+    {
+      "title": "日志",
+      "href": "log_list.jsp",
+      "icon": "fa fad fa-blog",
+      "target": "_self"
     }
   ]
 }

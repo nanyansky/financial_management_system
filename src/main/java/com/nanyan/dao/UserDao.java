@@ -78,11 +78,11 @@ public class UserDao{
      * @author nanyan
      * @date:  22:15
      */
-    public List<User> findListByUserName(String username){
+    public List<User> findListByUserName(String username,int currentPage,int perPageRows){
         Session session = sessionFactory.getCurrentSession();
         String s = "%"+username+"%";
         Query query = session.createQuery("from User where userName like :query and isDeleted != 1").setParameter("query",s);
-        System.out.println(query.list());
+        query.setFirstResult(perPageRows*(currentPage-1)).setMaxResults(perPageRows);
         return query.list();
     }
 

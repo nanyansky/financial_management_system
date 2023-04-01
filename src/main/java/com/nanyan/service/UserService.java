@@ -1,5 +1,7 @@
 package com.nanyan.service;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import com.nanyan.annotation.OptLog;
 import com.nanyan.entity.User;
 import com.nanyan.utils.OperationType;
@@ -10,7 +12,6 @@ public interface UserService {
 
 //    public User getUser(int id);
 
-    public User findByUserName(String username);
 
 //    void save(User user);
 
@@ -19,18 +20,29 @@ public interface UserService {
 
     public int getUserNumber();
 
-    @OptLog(describe = "用户登录",operationType = OperationType.LOGIN)
     public void addUser(User user);
 
     public User findByUserId(int id);
 
-    public List<User> findListByUserName(String username);
 
-    public void changeUserStatus(int id, int status);
-    public void deleteById(int id);
 
-    public void editUser(int id,User user);
 
-    public void changeInfoByUsername(String tmpUsername, User user);
-    public void changePwdByUsername(String username,String password);
+
+
+    public JSONObject userRegister(String userName,String password,String sex,String phoneNumber,String captcha);
+
+    public JSONObject userLogin(String userName,String password,String captcha);
+
+    public JSONObject userLogOut(String username);
+
+    public JSONObject getUserList(int page,int limit);
+    public JSONObject addUser(String userName,String password,String phoneNumber,int isAdmin,String sex);
+    public JSONObject findByUserName(String userName);
+    public JSONObject findListByUserName(String userName,int page,int limit);
+    public JSONObject changeUserStatus(int id, int status);
+    public JSONObject deleteById(int id);
+    public JSONObject editUser(String userName,int id,String password,String phoneNumber,int isAdmin,String sex);
+    public JSONObject changeInfoByUsername(String userName,String phoneNumber,String sex);
+    public JSONObject changePwdByUsername(String new_password,String old_password);
+
 }

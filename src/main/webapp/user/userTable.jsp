@@ -124,7 +124,7 @@
             cols: [[
                 {field: 'id', title: 'ID', width:80,align: 'center'}
                 ,{field: 'userName', title: '用户名', minWidth:120, align: 'center'}
-                ,{field: 'sex', title: '性别', minWidth:120, sort: true, align: 'center'}
+                ,{field: 'sex', title: '性别', minWidth:120, align: 'center'}
                 ,{field: 'registerTime',title: "加入时间",minWidth: 120, align: 'center'}
                 ,{field: 'phoneNumber',title: "电话号码",minWidth: 120, align: 'center'}
                 ,{field: 'isAdmin', title: '是否管理员', minWidth: 120, align: 'center'}
