@@ -14,8 +14,8 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <link rel="stylesheet" href="./statics/layui/lib/layui-v2.6.3/css/layui.css" media="all">
-  <link rel="stylesheet" href="./statics/layui/css/public.css" media="all">
+  <link rel="stylesheet" href="../statics/layui/lib/layui-v2.6.3/css/layui.css" media="all">
+  <link rel="stylesheet" href="../statics/layui/css/public.css" media="all">
 </head>
 <body>
 <div class="layuimini-container">
@@ -47,7 +47,7 @@
 
   </div>
 </div>
-<script src="./statics/layui/lib/layui-v2.6.3/layui.js" charset="utf-8"></script>
+<script src="../statics/layui/lib/layui-v2.6.3/layui.js" charset="utf-8"></script>
 
 <script>
   layui.use(['form', 'table', 'layer'], function () {
@@ -58,10 +58,11 @@
 
     var tableIns = table.render({
       elem: '#currentTableId',
-      url: '/log/getLogList.action',
+      url: '/log/getLogListByPage.action',
       toolbar: '#toolbarDemo',
       cols: [[
-        {field: 'id', title: 'ID', width:80, align: 'center'}
+        { templet: function (d) {return parseInt(d.LAY_TABLE_INDEX) + 1;}, title: '序号', width: 80, fixed: 'left' }//序号列
+        // {field: 'id', title: 'ID', width:80, align: 'center'}
         ,{field: 'userName', title: '用户名', minWidth:120, align: 'center'}
         ,{field: 'operationTime', title: '操作时间', minWidth:120, align: 'center'}
         ,{field: 'operationType',title: "操作类别",minWidth: 120, align: 'center'}

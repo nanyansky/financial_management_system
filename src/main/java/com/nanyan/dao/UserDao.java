@@ -14,7 +14,6 @@ import java.sql.Timestamp;
 import java.util.List;
 
 @Repository
-@Slf4j
 @Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
 public class UserDao{
 
@@ -27,8 +26,19 @@ public class UserDao{
         String hql = "from User where userName = :username and isDeleted != 1";
         User user = (User) session.createQuery(hql).setParameter("username", username).uniqueResult();
         System.out.println("UserDao: "+user);
-        log.info("UserDao"+user);
         return user;
+    }
+
+    public int getUserNumber(){
+        Session session = sessionFactory.getCurrentSession();
+        Number ll = (Number) session.createQuery("select count(*) from User where isDeleted != 1").uniqueResult();
+        return ll.intValue();
+    }
+
+    public List<User> getUserList(){
+        Session session = sessionFactory.getCurrentSession();
+        Query query = session.createQuery("from User where isDeleted != 1 and status = 1");
+        return query.list();
     }
 
     public List<User> getUserListByPage(int currentPage,int perPageRows){
@@ -38,12 +48,21 @@ public class UserDao{
         return query.list();
     }
 
-    public int getUserNumber(){
-        Session session = sessionFactory.getCurrentSession();
-        Number ll = (Number) session.createQuery("select count(*) from User where isDeleted != 1").uniqueResult();
-        return ll.intValue();
-    }
 
+    /**
+     * @description: 根据用户名模糊查询用户列表
+     * @param: username
+     * @return: java.util.List<com.nanyan.entity.User>
+     * @author nanyan
+     * @date:  22:15
+     */
+    public List<User> getUserListByUserName(String username,int currentPage,int perPageRows){
+        Session session = sessionFactory.getCurrentSession();
+        String s = "%"+username+"%";
+        Query query = session.createQuery("from User where userName like :query and isDeleted != 1").setParameter("query",s);
+        query.setFirstResult(perPageRows*(currentPage-1)).setMaxResults(perPageRows);
+        return query.list();
+    }
 
     /**
      * @description: 添加用户
@@ -65,25 +84,10 @@ public class UserDao{
      * @author nanyan
      * @date:  20:13
      */
-    public User findByUserId(int id){
+    public User getUserById(int id){
         Session session = sessionFactory.getCurrentSession();
         User user = (User) session.createQuery("from User where id = :id and isDeleted != 1").setParameter("id", id).uniqueResult();
         return user;
-    }
-
-    /**
-     * @description: 根据用户名模糊查询用户列表
-     * @param: username
-     * @return: java.util.List<com.nanyan.entity.User>
-     * @author nanyan
-     * @date:  22:15
-     */
-    public List<User> findListByUserName(String username,int currentPage,int perPageRows){
-        Session session = sessionFactory.getCurrentSession();
-        String s = "%"+username+"%";
-        Query query = session.createQuery("from User where userName like :query and isDeleted != 1").setParameter("query",s);
-        query.setFirstResult(perPageRows*(currentPage-1)).setMaxResults(perPageRows);
-        return query.list();
     }
 
 
@@ -132,6 +136,14 @@ public class UserDao{
     }
 
 
+    /**
+     * @description: 用户自己修改信息
+     * @param: tmpUsername
+user
+     * @return: void
+     * @author nanyan
+     * @date:  13:23
+     */
     public void changeInfoByUsername(String tmpUsername,User user){
         Session currentSession = sessionFactory.getCurrentSession();
         Query query = currentSession.createQuery("update User set userName = :username, phoneNumber = :phonuseNumber, sex =:sex where userName =:tmpUsername and isDeleted != 1");
@@ -143,6 +155,14 @@ public class UserDao{
         query.executeUpdate();
     }
 
+    /**
+     * @description: 用户自己修改密码
+     * @param: username
+newPwd
+     * @return: void
+     * @author nanyan
+     * @date:  13:24
+     */
     public void changePwdByUsername(String username,String newPwd){
         Session currentSession = sessionFactory.getCurrentSession();
         Query query = currentSession.createQuery("update User set password = :password where userName = :username and isDeleted != 1");
@@ -151,38 +171,4 @@ public class UserDao{
         query.executeUpdate();
     }
 
-
-
-//
-//    //根据主键查询
-//    public void getUser(){
-//        //获取session
-//        Session session = HibernateUtils.getSession();
-//        //开启事务
-////        Transaction transaction = session.beginTransaction();
-//
-//        //get方法，主动加载，不用时也会查询，主键不存在返回null
-//        User user = session.get(User.class, 1);
-//        System.out.println(user);
-//        HibernateUtils.closeSession(session);
-//
-//        //load方法，延迟加载，用的时候才会查，性能稍好，主键不存在会报错
-//        User load = session.load(User.class, 1);
-//    }
-//
-//    //HQL语句查询所有用户
-//    public List<User> userList(){
-//        Session session = HibernateUtils.getSession();
-//
-//        //自定义HQL语句
-//        String hql = "from User";
-//        Query query = session.createQuery(hql);
-//        //执行查询
-//        List<User> list = query.list();
-//        //输出
-//        for (User u:list) {
-//            System.out.println(u);
-//        }
-//        return list;
-//    }
 }

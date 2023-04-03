@@ -34,12 +34,21 @@ public class OperationLogAction extends ActionSupport {
     @Autowired
     private OperationLogService operationLogService;
 
+    @Action(value = "getLogListByPage",
+            results = {@Result(type = "json",params = {"root","jsonObject"})},
+            interceptorRefs = {@InterceptorRef(value = "LoginInterceptorStack")}
+    )
+    public String getLogListByPage(){
+        jsonObject = operationLogService.getLogListByPage(page,limit);
+        return SUCCESS;
+    }
+
     @Action(value = "getLogList",
             results = {@Result(type = "json",params = {"root","jsonObject"})},
             interceptorRefs = {@InterceptorRef(value = "LoginInterceptorStack")}
     )
     public String getLogList(){
-        jsonObject = operationLogService.getLogList(page,limit);
+        jsonObject = operationLogService.getLogList();
         return SUCCESS;
     }
 

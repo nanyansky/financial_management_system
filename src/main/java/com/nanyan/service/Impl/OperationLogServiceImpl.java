@@ -25,7 +25,6 @@ import java.util.Map;
 @Service
 public class OperationLogServiceImpl implements OperationLogService {
 
-    private Map<String, Object> dataMap = new HashMap<String, Object>();
 
     //处理时间转JSON串问题
     private static SerializeConfig serializeConfig = new SerializeConfig();
@@ -46,13 +45,11 @@ public class OperationLogServiceImpl implements OperationLogService {
     }
 
     @Override
-    public JSONObject getLogList(int page,int limit) {
-
+    public JSONObject getLogList() {
+        Map<String, Object> dataMap = new HashMap<String, Object>();
         try {
             int logNumber = operationLogDao.getLogNumber();
-            List<OperationLog> logList = operationLogDao.getLogList(page,limit);
-
-            System.out.println(logList);
+            List<OperationLog> logList = operationLogDao.getLogList();
             Map<String,Object> tmpMap = new HashMap<>();
 
             for (int i = 0; i < logList.size(); i++) {
@@ -62,7 +59,32 @@ public class OperationLogServiceImpl implements OperationLogService {
             dataMap.put("code",0);
             dataMap.put("count",logNumber);
             dataMap.put("data",tmpMap);
-            System.out.println(dataMap);
+            return new JSONObject(dataMap);
+        } catch (Exception e) {
+            dataMap.put("code",0);
+            dataMap.put("message","服务器错误，请重试！");
+            return new JSONObject(dataMap);
+        }
+    }
+
+    @Override
+    public JSONObject getLogListByPage(int page,int limit) {
+        Map<String, Object> dataMap = new HashMap<String, Object>();
+        try {
+            int logNumber = operationLogDao.getLogNumber();
+            List<OperationLog> logList = operationLogDao.getLogListByPage(page,limit);
+
+//            System.out.println(logList);
+            Map<String,Object> tmpMap = new HashMap<>();
+
+            for (int i = 0; i < logList.size(); i++) {
+                tmpMap.put(String.valueOf(i), JSON.toJSON(logList.get(i),serializeConfig));
+            }
+
+            dataMap.put("code",0);
+            dataMap.put("count",logNumber);
+            dataMap.put("data",tmpMap);
+//            System.out.println(dataMap);
             return new  JSONObject(dataMap);
         } catch (Exception e) {
             dataMap.put("code",0);
@@ -73,6 +95,7 @@ public class OperationLogServiceImpl implements OperationLogService {
 
     @Override
     public JSONObject getLogListByUserName(String username, int page, int limit) {
+        Map<String, Object> dataMap = new HashMap<String, Object>();
         try {
             int logNumber = operationLogDao.getLogNumber();
             List<OperationLog> logList = operationLogDao.getLogListByUserName(username,page,limit);

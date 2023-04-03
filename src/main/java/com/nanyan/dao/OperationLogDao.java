@@ -32,11 +32,24 @@ public class OperationLogDao {
         currentSession.save(operationLog);
     }
 
+    //日志数量
+    public int getLogNumber(){
+        Session currentSession = sessionFactory.getCurrentSession();
+        Number logNumber = (Number) currentSession.createQuery("select count(*) from OperationLog").uniqueResult();
+        return logNumber.intValue();
+    }
+
     //日志列表
-    public List<OperationLog> getLogList(int currentPage,int perPageRows){
+    public List<OperationLog> getLogListByPage(int currentPage,int perPageRows){
         Session currentSession = sessionFactory.getCurrentSession();
         Query query = currentSession.createQuery("from OperationLog");
         query.setFirstResult(perPageRows*(currentPage-1)).setMaxResults(perPageRows);
+        return query.list();
+    }
+
+    public List<OperationLog> getLogList(){
+        Session currentSession = sessionFactory.getCurrentSession();
+        Query query = currentSession.createQuery("from OperationLog");
         return query.list();
     }
 
@@ -49,12 +62,7 @@ public class OperationLogDao {
         return query.list();
     }
 
-    //日志数量
-    public int getLogNumber(){
-        Session currentSession = sessionFactory.getCurrentSession();
-        Number logNumber = (Number) currentSession.createQuery("select count(*) from OperationLog").uniqueResult();
-        return logNumber.intValue();
-    }
+
 
 
 }

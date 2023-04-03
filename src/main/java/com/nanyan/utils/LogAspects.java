@@ -62,9 +62,8 @@ public class LogAspects {
 
         //获取参数
         Object[] args = joinPoint.getArgs();
-        Object[] arguments  = new Object[args.length];
 
-        //        获取用户名
+        //获取用户名
         User tmpUser = (User) session.getAttribute("user");
         String username = "";
         if(tmpUser != null){
@@ -72,7 +71,8 @@ public class LogAspects {
         }
         else {
             //用户注册时，session中无user，所以需要单独传参数
-            username = (String) args[0];
+//            username = (String) args[0];
+            username = args[0] == null ? "未知" : (String) args[0];
         }
 
         // 操作用户

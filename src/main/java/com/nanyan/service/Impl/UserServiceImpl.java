@@ -5,13 +5,14 @@ import com.alibaba.fastjson.JSONObject;
 import com.alibaba.fastjson.serializer.SerializeConfig;
 import com.alibaba.fastjson.serializer.SimpleDateFormatSerializer;
 import com.nanyan.annotation.OptLog;
+import com.nanyan.dao.ExpenseDao;
+import com.nanyan.dao.IncomeDao;
 import com.nanyan.dao.UserDao;
 import com.nanyan.entity.User;
 import com.nanyan.service.UserService;
 import com.nanyan.utils.OperationType;
 import org.apache.struts2.ServletActionContext;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpSession;
@@ -23,7 +24,6 @@ import java.util.Map;
 @Service
 public class UserServiceImpl implements UserService {
 
-    private Map<String, Object> dataMap = new HashMap<String, Object>();
 
     //处理时间转JSON串问题
     private static SerializeConfig serializeConfig = new SerializeConfig();
@@ -32,35 +32,17 @@ public class UserServiceImpl implements UserService {
         serializeConfig.put(Timestamp.class, new SimpleDateFormatSerializer(dateFormat));
     }
 
-
     @Resource
     UserDao userDao;
-
-
-    @Override
-    public List<User> getUserListByPage(int currentPage,int perPageRows) {
-        return userDao.getUserListByPage(currentPage,perPageRows);
-    }
-
-    @Override
-    public int getUserNumber() {
-        return userDao.getUserNumber();
-    }
-
-    @Override
-    public void addUser(User user) {
-        userDao.addUser(user);
-    }
-
-    @Override
-    public User findByUserId(int id) {
-        return userDao.findByUserId(id);
-    }
-
+    @Resource
+    IncomeDao incomeDao;
+    @Resource
+    ExpenseDao expenseDao;
 
     @Override
     @OptLog(content = "用户注册",operationType = OperationType.REGISTER)
     public JSONObject userRegister(String userName,String password,String sex,String phoneNumber,String captcha) {
+        Map<String, Object> dataMap = new HashMap<String, Object>();
         try {
             HttpSession session = ServletActionContext.getRequest().getSession();
             String sessionVcode = (String) session.getAttribute("session_vcode");
@@ -102,10 +84,15 @@ public class UserServiceImpl implements UserService {
     @Override
     @OptLog(content = "用户登录",operationType = OperationType.LOGIN)
     public JSONObject userLogin(String userName,String password,String captcha) {
+        Map<String, Object> dataMap = new HashMap<String, Object>();
         try {
             HttpSession session = ServletActionContext.getRequest().getSession();
-            //获取User数量，并在登录时就执行setAttribute
+            //获取User、income、expense数量，并在登录时就执行setAttribute
             session.setAttribute("userNumber",userDao.getUserNumber());
+            session.setAttribute("incomeNumber",incomeDao.getIncomeNumber());
+            session.setAttribute("expenseNumber",expenseDao.getExpenseNumber());
+            session.setAttribute("expenseCount",expenseDao.getExpenseCount());
+            session.setAttribute("incomeCount",incomeDao.getIncomeCount());
             String sessionVcode = (String) session.getAttribute("session_vcode");
 
             //调试用，优化时删除
@@ -163,6 +150,7 @@ public class UserServiceImpl implements UserService {
     @Override
     @OptLog(content = "用户登出", operationType = OperationType.LOGOUT)
     public JSONObject userLogOut(String username) {
+        Map<String, Object> dataMap = new HashMap<String, Object>();
         HttpSession session = ServletActionContext.getRequest().getSession();
         session.removeAttribute("user");
         dataMap.put("code",1);
@@ -171,7 +159,37 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public JSONObject getUserList(int page,int limit) {
+    public JSONObject getUserList() {
+        Map<String, Object> dataMap = new HashMap<String, Object>();
+        try {
+            //获取User数量
+            int userNumber = userDao.getUserNumber();
+            //获取User列表
+            List<User> userList = userDao.getUserList();
+
+            Map<String,Object> tmpMap = new HashMap<>();
+
+            for (int i = 0; i < userList.size(); i++) {
+                tmpMap.put(String.valueOf(i), JSON.toJSON(userList.get(i),serializeConfig));
+            }
+
+            System.out.println(dataMap);
+            dataMap.put("code",0);
+            dataMap.put("count",userNumber);
+            dataMap.put("data",tmpMap);
+//            System.out.println(dataMap);
+            return new  JSONObject(dataMap);
+        } catch (Exception e) {
+            dataMap.put("code",0);
+            dataMap.put("message","服务器错误，请重试！");
+            return new JSONObject(dataMap);
+        }
+    }
+
+
+    @Override
+    public JSONObject getUserListByPage(int page,int limit) {
+        Map<String, Object> dataMap = new HashMap<String, Object>();
         try {
             //获取User数量
             int userNumber = userDao.getUserNumber();
@@ -184,6 +202,7 @@ public class UserServiceImpl implements UserService {
                 tmpMap.put(String.valueOf(i), JSON.toJSON(userList.get(i),serializeConfig));
             }
 
+            System.out.println(dataMap);
             dataMap.put("code",0);
             dataMap.put("count",userNumber);
             dataMap.put("data",tmpMap);
@@ -199,6 +218,7 @@ public class UserServiceImpl implements UserService {
     @Override
     @OptLog(content = "添加用户", operationType = OperationType.INSERT)
     public JSONObject addUser(String userName,String password,String phoneNumber,int isAdmin,String sex) {
+        Map<String, Object> dataMap = new HashMap<String, Object>();
         try {
             HttpSession session = ServletActionContext.getRequest().getSession();
             User orgUser = userDao.findByUserName(userName);
@@ -236,6 +256,7 @@ public class UserServiceImpl implements UserService {
     @Override
     @OptLog(content = "查找用户", operationType = OperationType.SELECT)
     public JSONObject findByUserName(String userName) {
+        Map<String, Object> dataMap = new HashMap<String, Object>();
         try {
             User tmpUser = userDao.findByUserName(userName);
             dataMap.put("code",0);
@@ -251,9 +272,10 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @OptLog(content = "查找用户", operationType = OperationType.SELECT)
-    public JSONObject findListByUserName(String userName,int page,int limit) {
+    public JSONObject getUserListByUserName(String userName,int page,int limit) {
+        Map<String, Object> dataMap = new HashMap<String, Object>();
         try {
-            List<User> list = userDao.findListByUserName(userName,page,limit);
+            List<User> list = userDao.getUserListByUserName(userName,page,limit);
 
 //        JSONObject data = new JSONObject();
             Map<String,Object> tmpMap = new HashMap<>();
@@ -276,8 +298,9 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    @OptLog(content = "修改用户信息", operationType = OperationType.UPDATE)
+    @OptLog(content = "修改用户状态", operationType = OperationType.UPDATE)
     public JSONObject changeUserStatus(int id, int status) {
+        Map<String, Object> dataMap = new HashMap<String, Object>();
         try {
             userDao.changeUserStatus(id,status);
             dataMap.put("message","操作成功！");
@@ -292,6 +315,7 @@ public class UserServiceImpl implements UserService {
     @Override
     @OptLog(content = "修改用户信息", operationType = OperationType.UPDATE)
     public JSONObject deleteById(int id) {
+        Map<String, Object> dataMap = new HashMap<String, Object>();
         try {
             HttpSession session = ServletActionContext.getRequest().getSession();
             System.out.println("要删除的用户ID: "+id);
@@ -313,11 +337,13 @@ public class UserServiceImpl implements UserService {
     @Override
     @OptLog(content = "编辑用户资料", operationType = OperationType.UPDATE)
     public JSONObject editUser(String userName,int id,String password,String phoneNumber,int isAdmin,String sex) {
+        Map<String, Object> dataMap = new HashMap<String, Object>();
         try {
             User orgUser = userDao.findByUserName(userName);
 //            System.out.println("存在的用户："+orgUser);
 
-            if(orgUser == null){
+            //新改的用户名不存在或没改用户名
+            if(orgUser == null || orgUser.getId() == id){
                 User tmpUser = new User();
                 tmpUser.setId(id);
                 tmpUser.setUserName(userName);
@@ -347,6 +373,7 @@ public class UserServiceImpl implements UserService {
     @Override
     @OptLog(content = "修改用户信息", operationType = OperationType.UPDATE)
     public JSONObject changeInfoByUsername(String userName,String phoneNumber,String sex) {
+        Map<String, Object> dataMap = new HashMap<String, Object>();
         try {
             HttpSession session = ServletActionContext.getRequest().getSession();
             if(userDao.findByUserName(userName) != null){
@@ -378,6 +405,7 @@ public class UserServiceImpl implements UserService {
     @Override
     @OptLog(content = "修改用户信息", operationType = OperationType.UPDATE)
     public JSONObject changePwdByUsername(String new_password,String old_password) {
+        Map<String, Object> dataMap = new HashMap<String, Object>();
         try {
             HttpSession session = ServletActionContext.getRequest().getSession();
             User tmpUser = (User) session.getAttribute("user");
@@ -401,12 +429,4 @@ public class UserServiceImpl implements UserService {
         }
     }
 
-
-    public Map<String, Object> getDataMap() {
-        return dataMap;
-    }
-
-    public void setDataMap(Map<String, Object> dataMap) {
-        this.dataMap = dataMap;
-    }
 }

@@ -114,43 +114,24 @@ public class UserAction extends ActionSupport {
      * @author nanyan
      * @date:  21:25
      */
+    @Action(value = "getUserList",
+            results = {@Result(type = "json",params = {"root","jsonObject"})},
+            interceptorRefs = {@InterceptorRef(value = "LoginInterceptorStack")})
+    public String getUserList(){
+        jsonObject = userService.getUserList();
+        return SUCCESS;
+    }
+
     @Action(value = "getUserListByPage",
             results = {@Result(type = "json",params = {"root","jsonObject"})},
-            interceptorRefs = {@InterceptorRef(value = "LoginInterceptorStack")}
-    )
-    public String getUserList(){
-        jsonObject = userService.getUserList(page,limit);
+            interceptorRefs = {@InterceptorRef(value = "LoginInterceptorStack")})
+    public String getUserListByPage(){
+        jsonObject = userService.getUserListByPage(page,limit);
         return SUCCESS;
     }
 
 
-    @Action(value = "getVcode")
-    public String getVerifyCode(){
-        /*
-         * 1. 创建验证码类
-         */
-        VerifyCode vc = new VerifyCode();
-        /*
-         * 2. 得到验证码图片
-         */
-        BufferedImage image = vc.getImage();
-        /*
-         * 3. 把图片上的文本保存到session中
-         */
-        session.removeAttribute("session_vcode");
-        session.setAttribute("session_vcode", vc.getText());
-        /*
-         * 4. 把图片响应给客户端
-         */
-        try {
-            VerifyCode.output(image, ServletActionContext.getResponse().getOutputStream());
-        } catch (IOException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
 
-        return null;
-    }
 
 
     @Action(value = "addUser",
@@ -168,15 +149,15 @@ public class UserAction extends ActionSupport {
     )
     public String findByUserName(){
         jsonObject = userService.findByUserName(userName);
-        return SUCCESS;
-    }
+            return SUCCESS;
+}
 
-    @Action(value = "findListByUserName",
+    @Action(value = "getUserListByUserName",
             results = {@Result(type = "json",params = {"root","jsonObject"})},
             interceptorRefs = {@InterceptorRef(value = "LoginInterceptorStack")}
     )
-    public String findListByUserName(){
-        jsonObject = userService.findListByUserName(userName,page,limit);
+    public String getUserListByUserName(){
+        jsonObject = userService.getUserListByUserName(userName,page,limit);
         return SUCCESS;
     }
 
@@ -225,6 +206,34 @@ public class UserAction extends ActionSupport {
     public String changePwdByUsername(){
         jsonObject = userService.changePwdByUsername(new_password,old_password);
         return SUCCESS;
+    }
+
+    @Action(value = "getVcode")
+    public String getVerifyCode(){
+        /*
+         * 1. 创建验证码类
+         */
+        VerifyCode vc = new VerifyCode();
+        /*
+         * 2. 得到验证码图片
+         */
+        BufferedImage image = vc.getImage();
+        /*
+         * 3. 把图片上的文本保存到session中
+         */
+        session.removeAttribute("session_vcode");
+        session.setAttribute("session_vcode", vc.getText());
+        /*
+         * 4. 把图片响应给客户端
+         */
+        try {
+            VerifyCode.output(image, ServletActionContext.getResponse().getOutputStream());
+        } catch (IOException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+
+        return null;
     }
 
 

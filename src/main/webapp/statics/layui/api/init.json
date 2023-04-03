@@ -17,25 +17,25 @@
       "child": [
         {
           "title": "用户管理",
-          "href": "/user/userTable.jsp",
+          "href": "/admin/userTable.jsp",
           "icon": "fa fa-user",
           "target": "_self"
         },
         {
           "title": "收入管理",
-          "href": "income.jsp",
+          "href": "/admin/income.jsp",
           "icon": "fa fa-wallet",
           "target": "_self"
         },
         {
           "title": "支出管理",
-          "href": "expense.jsp",
+          "href": "/admin/expense.jsp",
           "icon": "fas fa-hand-holding-usd",
           "target": "_self"
         },
         {
-          "title": "支出类别",
-          "href": "expense_type.jsp",
+          "title": "支出类别管理",
+          "href": "/admin/expense_type.jsp",
           "icon": "fa fa-list-alt",
           "target": "_self"
         }
@@ -43,13 +43,13 @@
     },
     {
       "title": "统计",
-      "href": "tongji.jsp",
+      "href": "/user/tongji.jsp",
       "icon": "fa fa-pie-chart",
       "target": "_self"
     },
     {
       "title": "日志",
-      "href": "log_list.jsp",
+      "href": "/user/log_list.jsp",
       "icon": "fa fad fa-blog",
       "target": "_self"
     }

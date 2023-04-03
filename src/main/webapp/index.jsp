@@ -6,6 +6,8 @@
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%--导入格式化金额标签--%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -59,7 +61,8 @@
                                 <h5>收入统计</h5>
                             </div>
                             <div class="panel-content">
-                                <h1 class="no-margins"><i class="fa fa-wallet"></i> 1234 笔</h1>
+                                <h1 class="no-margins" style="display: inline"><i class="fa fa-wallet"></i> ${sessionScope.incomeNumber} 笔</h1>
+                                <h2 style="display: inline">(共 <fmt:formatNumber type="number" value="${sessionScope.incomeCount}" maxFractionDigits="2" pattern="0.00"/> 元)</h2>
                             </div>
                         </div>
                     </div>
@@ -75,7 +78,8 @@
                                 <h5>支出统计</h5>
                             </div>
                             <div class="panel-content">
-                                <h1 class="no-margins"><i class="fas fa-hand-holding-usd"></i> 1234 笔</h1>
+                                <h1 class="no-margins" style="display: inline"><i class="fas fa-hand-holding-usd"></i> ${sessionScope.expenseNumber} 笔</h1>
+                                <h2 style="display: inline">(共 <fmt:formatNumber type="number" value="${sessionScope.expenseCount}" maxFractionDigits="2" pattern="0.00"/> 元)</h2>
                             </div>
                         </div>
                     </div>
@@ -90,7 +94,7 @@
                                 <h5>剩余总额</h5>
                             </div>
                             <div class="panel-content">
-                                <h1 class="no-margins"><i class="fa fa-pie-chart"></i> 1234 元</h1>
+                                <h1 class="no-margins"><i class="fa fa-pie-chart"></i><fmt:formatNumber type="number" value="${sessionScope.incomeCount - sessionScope.expenseCount}" maxFractionDigits="2" pattern="0.00"/> 元</h1>
                             </div>
                         </div>
                     </div>
@@ -188,19 +192,24 @@
             ,url: '/user/getUserListByPage.action' //数据接口
             ,page: false //开启分页
             ,cols: [[ //表头
-                 {field: 'id', title: 'ID', minWidth:60, fixed: 'left',align: 'center'}
+                { templet: function (d) {return parseInt(d.LAY_TABLE_INDEX) + 1;}, title: '序号', width: 80, fixed: 'left' }//序号列                ,{field: 'id', title: 'ID', minWidth:60, fixed: 'left',align: 'center'}
                 ,{field: 'userName', title: '用户名', minWidth:80,align: 'center'}
                 ,{field: 'sex', title: '性别', minWidth:80, align: 'center'}
                 ,{field: 'registerTime',title: "加入时间",minWidth: 170, align: 'center'}
                 ,{field: 'phoneNumber',title: "电话号码",minWidth: 130,align: 'center'}
-                ,{field: 'isAdmin', title: '是否管理员', minWidth: 120, align: 'center'}
-                ,{field: 'status', title: '账户状态', minwidth: 110, sort: true}
+                ,{field: 'isAdmin', title: '是否管理员', minWidth: 120, align: 'center',templet: function (d) {
+                        return d.isAdmin === 1 ? "是" : "否";
+                    }}
             ]]
         });
     });
 
+
 </script>
 
+<%--<script type="text/html" id="xuhao">--%>
+<%--    {{d.LAY_TABLE_INDEX+1}}--%>
+<%--</script>--%>
 
 </body>
 </html>

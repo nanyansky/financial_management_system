@@ -27,16 +27,8 @@
     <constant name="actionPackages" value="im.lich.framework.application.modules" />
 
 
-    <package name="default" extends="struts-default" namespace="/">
-
-        <default-action-ref name="defaultAction"/>
-        <action name="defaultAction">
-            <result>/404.jsp</result>
-        </action>
-    </package>
-
-
     <package name="Interceptor" extends="json-default,struts-default">
+        <!--拦截器-->
         <interceptors>
             <interceptor name="LoginInterceptor" class="com.nanyan.Interceptor.LoginInterceptor"/>
             <interceptor-stack name="LoginInterceptorStack">
@@ -45,10 +37,19 @@
             </interceptor-stack>
         </interceptors>
 
+        <!--默认Action，404界面-->
+        <default-action-ref name="defaultAction"/>
+
         <!--配置全局的结果视图-->
         <global-results>
             <result name="login" type="redirect">/login.jsp</result>
         </global-results>
+
+        <!--默认Action，404界面-->
+        <action name="defaultAction">
+            <result>/404.jsp</result>
+        </action>
+
     </package>
 
 

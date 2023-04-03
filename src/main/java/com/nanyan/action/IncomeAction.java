@@ -1,0 +1,144 @@
+package com.nanyan.action;
+
+import com.alibaba.fastjson.JSONObject;
+import com.nanyan.service.IncomeService;
+import com.opensymphony.xwork2.ActionSupport;
+import org.apache.struts2.convention.annotation.*;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Controller;
+
+import javax.jws.Oneway;
+import java.sql.Timestamp;
+
+/**
+ * @author nanyan
+ * @version 1.0
+ * @description: TODO
+ * @date 2023/4/2 11:49
+ */
+
+@Controller
+@Scope("prototype")// 多例
+@Namespace("/income")// 对应配置文件中的每个action的name
+@ParentPackage("Interceptor")
+public class IncomeAction extends ActionSupport {
+    private int id;
+    private String userName;
+    private Timestamp incomeTime;
+    private String incomeSource;
+    private double incomeAmount;
+    private int isDeleted;
+
+    private int page;
+    private int limit;
+
+    private JSONObject jsonObject;
+    @Autowired
+    IncomeService incomeService;
+
+
+    @Action(value = "getIncomeList",
+            results = {@Result(type = "json",params = {"root","jsonObject"})},
+            interceptorRefs = {@InterceptorRef(value = "LoginInterceptorStack")})
+    public String getIncomeList(){
+        jsonObject = incomeService.getIncomeList();
+        return SUCCESS;
+    }
+
+    @Action(value = "getIncomeListByPage",
+            results = {@Result(type = "json",params = {"root","jsonObject"})},
+            interceptorRefs = {@InterceptorRef(value = "LoginInterceptorStack")})
+    public String getIncomeListByPage(){
+        jsonObject = incomeService.getIncomeListByPage(page,limit);
+        return SUCCESS;
+    }
+
+    @Action(value = "getIncomeListByUserName",
+            results = {@Result(type = "json",params = {"root","jsonObject"})},
+            interceptorRefs = {@InterceptorRef(value = "LoginInterceptorStack")})
+    public String getIncomeListByUserName(){
+        jsonObject = incomeService.getIncomeListByUserName(userName,page,limit);
+        return SUCCESS;
+    }
+
+    @Action(value = "addIncome",
+            results = {@Result(type = "json",params = {"root","jsonObject"})},
+            interceptorRefs = {@InterceptorRef(value = "LoginInterceptorStack")})
+    public String addIncome(){
+        jsonObject = incomeService.addIncome(userName,incomeSource,incomeAmount);
+        return SUCCESS;
+    }
+
+    @Action(value = "deleteIncomeById",
+            results = {@Result(type = "json",params = {"root","jsonObject"})},
+            interceptorRefs = {@InterceptorRef(value = "LoginInterceptorStack")})
+    public String deleteIncomeById(){
+        jsonObject = incomeService.deleteIncomeById(id);
+        return SUCCESS;
+    }
+
+    @Action(value = "editIncome",
+            results = {@Result(type = "json",params = {"root","jsonObject"})},
+            interceptorRefs = {@InterceptorRef(value = "LoginInterceptorStack")})
+    public String editIncome(){
+        jsonObject = incomeService.editIncome(userName,id,incomeSource,incomeAmount,isDeleted);
+        return SUCCESS;
+    }
+
+
+    public int getId() {
+        return id;
+    }
+    public void setId(int id) {
+        this.id = id;
+    }
+    public String getUserName() {
+        return userName;
+    }
+    public void setUserName(String userName) {
+        this.userName = userName;
+    }
+    public Timestamp getIncomeTime() {
+        return incomeTime;
+    }
+    public void setIncomeTime(Timestamp incomeTime) {
+        this.incomeTime = incomeTime;
+    }
+    public String getIncomeSource() {
+        return incomeSource;
+    }
+    public void setIncomeSource(String incomeSource) {
+        this.incomeSource = incomeSource;
+    }
+    public double getIncomeAmount() {
+        return incomeAmount;
+    }
+    public void setIncomeAmount(double incomeAmount) {
+        this.incomeAmount = incomeAmount;
+    }
+    public int getIsDeleted() {
+        return isDeleted;
+    }
+    public void setIsDeleted(int isDeleted) {
+        this.isDeleted = isDeleted;
+    }
+    public int getPage() {
+        return page;
+    }
+    public void setPage(int page) {
+        this.page = page;
+    }
+    public int getLimit() {
+        return limit;
+    }
+    public void setLimit(int limit) {
+        this.limit = limit;
+    }
+    public JSONObject getJsonObject() {
+        return jsonObject;
+    }
+    public void setJsonObject(JSONObject jsonObject) {
+        this.jsonObject = jsonObject;
+    }
+}
