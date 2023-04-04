@@ -41,7 +41,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @OptLog(content = "用户注册",operationType = OperationType.REGISTER)
-    public JSONObject userRegister(String userName,String password,String sex,String phoneNumber,String captcha) {
+    public JSONObject userRegister(String userName,String password,String email,String sex,String phoneNumber,String captcha) {
         Map<String, Object> dataMap = new HashMap<String, Object>();
         try {
             HttpSession session = ServletActionContext.getRequest().getSession();
@@ -58,6 +58,7 @@ public class UserServiceImpl implements UserService {
                 User newUser = new User();
                 newUser.setUserName(userName);
                 newUser.setPassword(password);
+                newUser.setEmail(email);
                 newUser.setSex(sex);
                 newUser.setPhoneNumber(phoneNumber);
                 userDao.addUser(newUser);
@@ -217,7 +218,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @OptLog(content = "添加用户", operationType = OperationType.INSERT)
-    public JSONObject addUser(String userName,String password,String phoneNumber,int isAdmin,String sex) {
+    public JSONObject addUser(String userName,String password,String email,String phoneNumber,int isAdmin,String sex) {
         Map<String, Object> dataMap = new HashMap<String, Object>();
         try {
             HttpSession session = ServletActionContext.getRequest().getSession();
@@ -228,6 +229,7 @@ public class UserServiceImpl implements UserService {
                 User tmpUser = new User();
                 tmpUser.setUserName(userName);
                 tmpUser.setPassword(password);
+                tmpUser.setEmail(email);
                 tmpUser.setPhoneNumber(phoneNumber);
                 tmpUser.setIsAdmin(isAdmin);
                 tmpUser.setSex(sex);
@@ -298,6 +300,35 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    @OptLog(content = "搜索用户", operationType = OperationType.SELECT)
+    public JSONObject searchUser(String userName, int isAdmin, int status,int page, int limit) {
+
+        Map<String, Object> dataMap = new HashMap<String, Object>();
+        try {
+            List<User> list = userDao.searchUser(userName,isAdmin,status,page,limit);
+
+//        JSONObject data = new JSONObject();
+            Map<String,Object> tmpMap = new HashMap<>();
+
+            for (int i = 0; i < list.size(); i++) {
+                tmpMap.put(String.valueOf(i),JSON.toJSON(list.get(i),serializeConfig));
+                //            data.put(String.valueOf(i),JSON.toJSON(list.get(i),serializeConfig));
+            }
+
+            dataMap.put("code",0);
+            System.out.println(userDao.searchUserNumber(userName,isAdmin,status));
+            dataMap.put("count",userDao.searchUserNumber(userName,isAdmin,status));
+            dataMap.put("data",tmpMap);
+//        System.out.println(dataMap);
+            return new  JSONObject(dataMap);
+        } catch (Exception e) {
+            dataMap.put("code",0);
+            dataMap.put("message","服务器错误，请重试！");
+            return new JSONObject(dataMap);
+        }
+    }
+
+    @Override
     @OptLog(content = "修改用户状态", operationType = OperationType.UPDATE)
     public JSONObject changeUserStatus(int id, int status) {
         Map<String, Object> dataMap = new HashMap<String, Object>();
@@ -336,7 +367,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @OptLog(content = "编辑用户资料", operationType = OperationType.UPDATE)
-    public JSONObject editUser(String userName,int id,String password,String phoneNumber,int isAdmin,String sex) {
+    public JSONObject editUser(String userName,int id,String password,String email,String phoneNumber,int isAdmin,String sex) {
         Map<String, Object> dataMap = new HashMap<String, Object>();
         try {
             User orgUser = userDao.findByUserName(userName);
@@ -348,6 +379,7 @@ public class UserServiceImpl implements UserService {
                 tmpUser.setId(id);
                 tmpUser.setUserName(userName);
                 tmpUser.setPassword(password);
+                tmpUser.setEmail(email);
                 tmpUser.setPhoneNumber(phoneNumber);
                 tmpUser.setIsAdmin(isAdmin);
                 tmpUser.setSex(sex);

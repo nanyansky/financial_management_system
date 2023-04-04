@@ -5,17 +5,13 @@ import com.alibaba.fastjson.JSONObject;
 import com.alibaba.fastjson.serializer.SerializeConfig;
 import com.alibaba.fastjson.serializer.SimpleDateFormatSerializer;
 import com.nanyan.annotation.OptLog;
-import com.nanyan.dao.ExpenseTypeDao;
-import com.nanyan.entity.Expense;
-import com.nanyan.entity.ExpenseType;
-import com.nanyan.service.ExpenseTypeService;
+import com.nanyan.dao.IncomeTypeDao;
+import com.nanyan.entity.IncomeType;
+import com.nanyan.service.IncomeTypeService;
 import com.nanyan.utils.OperationType;
-import org.apache.struts2.ServletActionContext;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
 
-import javax.servlet.http.HttpSession;
 import java.sql.Timestamp;
 import java.util.HashMap;
 import java.util.List;
@@ -28,7 +24,7 @@ import java.util.Map;
  * @date 2023/4/2 19:11
  */
 @Service
-public class ExpenseTypeServiceImpl implements ExpenseTypeService {
+public class IncomeTypeServiceImpl implements IncomeTypeService {
 
     //处理时间转JSON串问题
     private static SerializeConfig serializeConfig = new SerializeConfig();
@@ -38,25 +34,25 @@ public class ExpenseTypeServiceImpl implements ExpenseTypeService {
     }
 
     @Autowired
-    ExpenseTypeDao expenseTypeDao;
+    IncomeTypeDao incomeTypeDao;
 
     @Override
-    public JSONObject getExpenseTypeList() {
+    public JSONObject getIncomeTypeList() {
         Map<String, Object> dataMap = new HashMap<String, Object>();
         try {
-            //获取Expense数量
-            int expenseTypeNumber = expenseTypeDao.getExpenseTypeNumber();
-            //获取Expense列表
-            List<ExpenseType> expenseTypeList = expenseTypeDao.getExpenseTypeList();
+            //获取Income数量
+            int incomeTypeNumber = incomeTypeDao.getIncomeTypeNumber();
+            //获取Income列表
+            List<IncomeType> incomeTypeList = incomeTypeDao.getIncomeTypeList();
 
             Map<String,Object> tmpMap = new HashMap<>();
 
-            for (int i = 0; i < expenseTypeList.size(); i++) {
-                tmpMap.put(String.valueOf(i), JSON.toJSON(expenseTypeList.get(i),serializeConfig));
+            for (int i = 0; i < incomeTypeList.size(); i++) {
+                tmpMap.put(String.valueOf(i), JSON.toJSON(incomeTypeList.get(i),serializeConfig));
             }
 
             dataMap.put("code",0);
-            dataMap.put("count",expenseTypeNumber);
+            dataMap.put("count",incomeTypeNumber);
             dataMap.put("data",tmpMap);
             return new  JSONObject(dataMap);
         } catch (Exception e) {
@@ -67,22 +63,22 @@ public class ExpenseTypeServiceImpl implements ExpenseTypeService {
     }
 
     @Override
-    public JSONObject getExpenseTypeListByPage(int page, int limit) {
+    public JSONObject getIncomeTypeListByPage(int page, int limit) {
         Map<String, Object> dataMap = new HashMap<String, Object>();
         try {
-            //获取Expense数量
-            int expenseTypeNumber = expenseTypeDao.getExpenseTypeNumber();
-            //获取Expense列表
-            List<ExpenseType> expenseTypeList = expenseTypeDao.getExpenseTypeListByPage(page,limit);
+            //获取Income数量
+            int incomeTypeNumber = incomeTypeDao.getIncomeTypeNumber();
+            //获取Income列表
+            List<IncomeType> incomeTypeList = incomeTypeDao.getIncomeTypeListByPage(page,limit);
 
             Map<String,Object> tmpMap = new HashMap<>();
 
-            for (int i = 0; i < expenseTypeList.size(); i++) {
-                tmpMap.put(String.valueOf(i), JSON.toJSON(expenseTypeList.get(i),serializeConfig));
+            for (int i = 0; i < incomeTypeList.size(); i++) {
+                tmpMap.put(String.valueOf(i), JSON.toJSON(incomeTypeList.get(i),serializeConfig));
             }
 
             dataMap.put("code",0);
-            dataMap.put("count",expenseTypeNumber);
+            dataMap.put("count",incomeTypeNumber);
             dataMap.put("data",tmpMap);
             return new  JSONObject(dataMap);
         } catch (Exception e) {
@@ -93,10 +89,10 @@ public class ExpenseTypeServiceImpl implements ExpenseTypeService {
     }
 
     @Override
-    public JSONObject getExpenseTypeListByName(String name, int page, int limit) {
+    public JSONObject getIncomeTypeListByName(String name, int page, int limit) {
         Map<String, Object> dataMap = new HashMap<String, Object>();
         try {
-            List<ExpenseType> list = expenseTypeDao.getExpenseTypeListByName(name,page,limit);
+            List<IncomeType> list = incomeTypeDao.getIncomeTypeListByName(name,page,limit);
 
             Map<String,Object> tmpMap = new HashMap<>();
 
@@ -116,20 +112,20 @@ public class ExpenseTypeServiceImpl implements ExpenseTypeService {
     }
 
     @Override
-    @OptLog(content = "添加支出分类", operationType = OperationType.INSERT)
-    public JSONObject addExpenseType(String name) {
+    @OptLog(content = "添加收入分类", operationType = OperationType.INSERT)
+    public JSONObject addIncomeType(String name) {
         Map<String, Object> dataMap = new HashMap<String, Object>();
         try {
-            ExpenseType tmpExpenseType = expenseTypeDao.getExpenseTypeByName(name);
+            IncomeType tmpIncomeType = incomeTypeDao.getIncomeTypeByName(name);
 
 
-            if (tmpExpenseType == null) {
-                ExpenseType expenseType = new ExpenseType();
+            if (tmpIncomeType == null) {
+                IncomeType incomeType = new IncomeType();
 
-                expenseType.setName(name);
-                expenseType.setCreateTime(new Timestamp(System.currentTimeMillis()));
+                incomeType.setName(name);
+                incomeType.setCreateTime(new Timestamp(System.currentTimeMillis()));
 
-                expenseTypeDao.addExpenseType(expenseType);
+                incomeTypeDao.addIncomeType(incomeType);
 
                 dataMap.put("code",1);
                 dataMap.put("message","添加成功！");
@@ -147,11 +143,11 @@ public class ExpenseTypeServiceImpl implements ExpenseTypeService {
     }
 
     @Override
-    @OptLog(content = "删除支出分类", operationType = OperationType.DELETE)
-    public JSONObject deleteExpenseByTypeById(int id) {
+    @OptLog(content = "删除收入分类", operationType = OperationType.DELETE)
+    public JSONObject deleteIncomeByTypeById(int id) {
         Map<String, Object> dataMap = new HashMap<String, Object>();
         try {
-            expenseTypeDao.deleteExpenseByTypeById(id);
+            incomeTypeDao.deleteIncomeByTypeById(id);
 
             dataMap.put("code",1);
             dataMap.put("message","删除成功！");
@@ -164,19 +160,19 @@ public class ExpenseTypeServiceImpl implements ExpenseTypeService {
     }
 
     @Override
-    @OptLog(content = "编辑支出分类", operationType = OperationType.UPDATE)
-    public JSONObject editExpenseType(int id, String name) {
+    @OptLog(content = "编辑收入分类", operationType = OperationType.UPDATE)
+    public JSONObject editIncomeType(int id, String name) {
         Map<String, Object> dataMap = new HashMap<String, Object>();
         try {
-            ExpenseType tmpExpenseType = expenseTypeDao.getExpenseTypeByName(name);
+            IncomeType tmpIncomeType = incomeTypeDao.getIncomeTypeByName(name);
 
 
-            if (tmpExpenseType == null || tmpExpenseType.getId() == id) {
-                ExpenseType expenseType = new ExpenseType();
+            if (tmpIncomeType == null || tmpIncomeType.getId() == id) {
+                IncomeType incomeType = new IncomeType();
                 //添加用户id
-                expenseType.setName(name);
+                incomeType.setName(name);
 
-                expenseTypeDao.editExpenseType(id,expenseType);
+                incomeTypeDao.editIncomeType(id,incomeType);
 
                 dataMap.put("code",1);
                 dataMap.put("message","修改成功！");
@@ -194,10 +190,10 @@ public class ExpenseTypeServiceImpl implements ExpenseTypeService {
     }
 
     @Override
-    public JSONObject getExpenseTypeNameById(int id) {
+    public JSONObject getIncomeTypeNameById(int id) {
         Map<String, Object> dataMap = new HashMap<String, Object>();
-        String expenseTypeNameById = expenseTypeDao.getExpenseTypeNameById(id);
-        dataMap.put("name",expenseTypeNameById);
+        String incomeTypeNameById = incomeTypeDao.getIncomeTypeNameById(id);
+        dataMap.put("name",incomeTypeNameById);
         return new JSONObject(dataMap);
     }
 }

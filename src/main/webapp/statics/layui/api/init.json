@@ -38,6 +38,12 @@
           "href": "/admin/expense_type.jsp",
           "icon": "fa fa-list-alt",
           "target": "_self"
+        },
+        {
+          "title": "收入类别管理",
+          "href": "/admin/income_type.jsp",
+          "icon": "fa fa-list-alt",
+          "target": "_self"
         }
       ]
     },

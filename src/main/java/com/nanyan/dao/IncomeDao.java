@@ -1,6 +1,7 @@
 package com.nanyan.dao;
 
 import com.nanyan.entity.Income;
+import com.nanyan.entity.User;
 import lombok.extern.slf4j.Slf4j;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -11,7 +12,9 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.Timestamp;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author nanyan
@@ -54,14 +57,14 @@ public class IncomeDao {
         return query.list();
     }
 
-    /** 
-     * @description: 获取收入帐单列表(分页) 
+    /**
+     * @description: 获取收入帐单列表(分页)
      * @param: currentPage
-perPageRows 
-     * @return: java.util.List<com.nanyan.entity.Income> 
+perPageRows
+     * @return: java.util.List<com.nanyan.entity.Income>
      * @author nanyan
      * @date:  14:57
-     */ 
+     */
     public List<Income> getIncomeListByPage(int currentPage, int perPageRows){
         Session currentSession = sessionFactory.getCurrentSession();
         Query query = currentSession.createQuery("from Income where isDeleted != 1");
@@ -85,6 +88,75 @@ perPageRows
         query.setFirstResult(perPageRows*(currentPage-1)).setMaxResults(perPageRows);
         return query.list();
     }
+
+    public List<Income> searchIncome(String username, int incomeTypeId, Timestamp startTime, Timestamp endTime, int currentPage, int perPageRows){
+
+        Session currentSession = sessionFactory.getCurrentSession();
+
+        Map<String, Object> hqlQueryMap = new HashMap<>();
+        hqlQueryMap.put("username",username);
+        hqlQueryMap.put("incomeTypeId",incomeTypeId);
+        hqlQueryMap.put("startTime",startTime);
+        hqlQueryMap.put("endTime",endTime);
+        hqlQueryMap.put("s","%"+username+"%");
+
+        StringBuilder hql = new StringBuilder();
+        hql.append("from Income where isDeleted != 1 ");
+
+        if(hqlQueryMap.get("username") != ""){
+//            System.out.println("username: " + hqlQueryMap.get("username"));
+            hql.append(" and userName like :s");
+        }
+        if ((int)hqlQueryMap.get("incomeTypeId") != -1){
+//            System.out.println("isAdmin: " + hqlQueryMap.get("isAdmin"));
+            hql.append(" and incomeTypeId =:incomeTypeId");
+        }
+        if (hqlQueryMap.get("startTime") != null){
+            System.out.println("startTime: " + hqlQueryMap.get("startTime"));
+            hql.append(" and incomeTime between :startTime and :endTime");
+        }
+
+        Query query = currentSession.createQuery(hql.toString());
+//        System.out.println(hql.toString());
+        query.setProperties(hqlQueryMap);
+        query.setFirstResult(perPageRows*(currentPage-1)).setMaxResults(perPageRows);
+        return query.list();
+    }
+
+    public int searchIncomeNumber(String username, int incomeTypeId, Timestamp startTime, Timestamp endTime){
+
+        Session currentSession = sessionFactory.getCurrentSession();
+
+        Map<String, Object> hqlQueryMap = new HashMap<>();
+        hqlQueryMap.put("username",username);
+        hqlQueryMap.put("incomeTypeId",incomeTypeId);
+        hqlQueryMap.put("startTime",startTime);
+        hqlQueryMap.put("endTime",endTime);
+        hqlQueryMap.put("s","%"+username+"%");
+
+        StringBuilder hql = new StringBuilder();
+        hql.append("select count(*) from Income where isDeleted != 1 ");
+
+        if(hqlQueryMap.get("username") != ""){
+//            System.out.println("username: " + hqlQueryMap.get("username"));
+            hql.append(" and userName like :s");
+        }
+        if ((int)hqlQueryMap.get("incomeTypeId") != -1){
+//            System.out.println("isAdmin: " + hqlQueryMap.get("isAdmin"));
+            hql.append(" and incomeTypeId =:incomeTypeId");
+        }
+        if (hqlQueryMap.get("startTime") != null){
+            System.out.println("startTime: " + hqlQueryMap.get("startTime"));
+            hql.append(" and incomeTime between :startTime and :endTime");
+        }
+
+        Query query = currentSession.createQuery(hql.toString());
+//        System.out.println(hql.toString());
+        query.setProperties(hqlQueryMap);
+        Number number = (Number) query.uniqueResult();
+        return number.intValue();
+    }
+
 
     /**
      * @description: 添加收入账单
@@ -115,18 +187,20 @@ perPageRows
 
     /**
      * @description: 修改收入账单信息
-     * @param: id, income 
+     * @param: id, income
      * @return: void
      * @author nanyan
      * @date:  13:24
      */
     public void editIncome(int id, Income income){
         Session currentSession = sessionFactory.getCurrentSession();
-        Query query = currentSession.createQuery("update Income set userName =:username,userId =:userId, incomeSource =:incomeSource, incomeAmount =:incomeAmount, isDeleted =:isDeleted where id =:id");
+        Query query = currentSession.createQuery("update Income set userName =:username,userId =:userId,incomeTypeId=:incomeTypeId,incomeTime=:incomeTime, incomeContent =:incomeContent, incomeAmount =:incomeAmount, isDeleted =:isDeleted where id =:id");
         query.setParameter("id",id);
         query.setParameter("username",income.getUserName());
         query.setParameter("userId",income.getUserId());
-        query.setParameter("incomeSource",income.getIncomeSource());
+        query.setParameter("incomeTypeId",income.getIncomeTypeId());
+        query.setParameter("incomeTime",income.getIncomeTime());
+        query.setParameter("incomeContent",income.getIncomeContent());
         query.setParameter("incomeAmount",income.getIncomeAmount());
         query.setParameter("isDeleted",income.getIsDeleted());
 

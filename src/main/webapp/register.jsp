@@ -67,46 +67,56 @@
         </div>
         <form class="layui-form login-bottom">
             <div class="center">
-                <div class="item">
+                <div class="item" style="height: 24px">
                     <span class="icon icon-2"></span>
                     <input type="text" name="userName" lay-verify="required"  placeholder="请输入用户名" maxlength="24"/>
                 </div>
 
-                <div class="item">
+                <div class="item" style="height: 24px">
+                    <div class="layui-inline" style="width: 33px;height: 22px;position: relative">
+                        <span class="fal fa-envelope" style="font-size: medium;color: rgba(209,221,232);position: absolute;left:4px;"></span>
+                    </div>
+                    <input type="email" name="email" lay-verify="required"  placeholder="请输入邮箱" maxlength="24"/>
+                </div>
+
+                <div class="item" style="height: 24px">
                     <span class="icon icon-3"></span>
                     <input type="password" name="password" id="pwd1" lay-verify="required"  placeholder="请输入密码" maxlength="20">
                     <span class="bind-password icon icon-4"></span>
                 </div>
 
-                <div class="item">
+                <div class="item" style="height: 24px">
                     <span class="icon icon-3"></span>
                     <input type="password" name="password" id="pwd2" onblur="confirmPwd()" lay-verify="required"  placeholder="请确认密码" maxlength="20">
                     <span class="bind-password icon icon-4"></span> </br>
                     <span id="pwd2Span" style="color: red;font-family: 楷体"></span></p>
                 </div>
 
-                <div class="item">
+                <div class="item" style="height: 24px">
                     <span class="icon icon-1"></span>
                     <input type="text" name="phoneNumber" lay-verify="required"  placeholder="请输入电话号码" maxlength="11"/>
                 </div>
 
-                <div class="layui-form-item">
-                    <label class="layui-form-label required" style="text-align: left;color: rgb(208,220,231); font-size: medium">性别</label>
+                <div class="layui-form-item" style="height: 24px;position: relative">
+
+                    <span class="fad fa-venus-mars" style="font-size: medium;color: rgba(209,221,232);position: absolute;left:4px;top: 5px"></span>
+
+<%--                    <label class="layui-form-label required" style="text-align: left;color: rgb(208,220,231); font-size: medium">性别</label>--%>
                     <div class="layui-input-block">
                         <input type="radio" name="sex" value="男" title="男" checked="">
                         <input type="radio" name="sex" value="女" title="女">
                     </div>
                 </div>
 
-                <div id="validatePanel" class="item" style="width: 137px;">
+                <div id="validatePanel" class="item" style="width: 137px; height: 30px">
                     <input type="text" name="captcha" lay-verify="required" placeholder="请输入验证码" maxlength="4">
 <%--                    <img id="refreshCaptcha" class="validateImg"  src="statics/layui/images/captcha.jpg" >--%>
-                    <img id="refreshCaptcha" class="validateImg" src="user/getVcode.action">
+                    <img id="refreshCaptcha" class="validateImg" src="user/getVcode.action" style="height: 30px">
                 </div>
 
             </div>
 
-            <div class="tip" style="text-align:right">
+            <div class="tip" style="text-align:right;height: 24px">
                 <a href="login.jsp" style="color: #0000FF;font-size: small">已有账号？去登录</a>
             </div>
 

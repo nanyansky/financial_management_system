@@ -55,9 +55,15 @@
                 <li class="layui-nav-item" lay-unselect>
                     <a href="javascript:;" data-refresh="刷新"><i class="fa fa-refresh"></i></a>
                 </li>
+
                 <li class="layui-nav-item mobile layui-hide-xs" lay-unselect>
                     <a href="javascript:;" data-check-screen="full"><i class="fa fa-arrows-alt"></i></a>
                 </li>
+
+                <li class="layui-nav-item mobile layui-hide-xs" lay-unselect>
+                    <i style="color: black">您的身份是：<i style="font-weight: bold;color: red">${sessionScope.user.isAdmin == 1 ? "管理员" : "家庭成员"}</i></i>
+                </li>
+
                 <li class="layui-nav-item layuimini-setting">
                     <a href="javascript:;">${sessionScope.user.userName}</a>
                     <dl class="layui-nav-child">

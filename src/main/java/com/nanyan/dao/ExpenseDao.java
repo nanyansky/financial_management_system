@@ -1,6 +1,7 @@
 package com.nanyan.dao;
 
 import com.nanyan.entity.Expense;
+import com.nanyan.entity.Income;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.query.Query;
@@ -10,7 +11,9 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.Timestamp;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author nanyan
@@ -83,6 +86,75 @@ public class ExpenseDao {
         return query.list();
     }
 
+    public List<Expense> searchExpense(String username, int expenseTypeId, Timestamp startTime, Timestamp endTime, int currentPage, int perPageRows){
+
+        Session currentSession = sessionFactory.getCurrentSession();
+
+        Map<String, Object> hqlQueryMap = new HashMap<>();
+        hqlQueryMap.put("username",username);
+        hqlQueryMap.put("expenseTypeId",expenseTypeId);
+        hqlQueryMap.put("startTime",startTime);
+        hqlQueryMap.put("endTime",endTime);
+        hqlQueryMap.put("s","%"+username+"%");
+
+        StringBuilder hql = new StringBuilder();
+        hql.append("from Expense where isDeleted != 1 ");
+
+        if(hqlQueryMap.get("username") != ""){
+//            System.out.println("username: " + hqlQueryMap.get("username"));
+            hql.append(" and userName like :s");
+        }
+        if ((int)hqlQueryMap.get("expenseTypeId") != -1){
+//            System.out.println("isAdmin: " + hqlQueryMap.get("isAdmin"));
+            hql.append(" and expenseTypeId =:expenseTypeId");
+        }
+        if (hqlQueryMap.get("startTime") != null){
+            System.out.println("startTime: " + hqlQueryMap.get("startTime"));
+            hql.append(" and expenseTime between :startTime and :endTime");
+        }
+
+        Query query = currentSession.createQuery(hql.toString());
+//        System.out.println(hql.toString());
+        query.setProperties(hqlQueryMap);
+        query.setFirstResult(perPageRows*(currentPage-1)).setMaxResults(perPageRows);
+        return query.list();
+    }
+
+
+    public int searchExpenseNumber(String username, int expenseTypeId, Timestamp startTime, Timestamp endTime){
+
+        Session currentSession = sessionFactory.getCurrentSession();
+
+        Map<String, Object> hqlQueryMap = new HashMap<>();
+        hqlQueryMap.put("username",username);
+        hqlQueryMap.put("expenseTypeId",expenseTypeId);
+        hqlQueryMap.put("startTime",startTime);
+        hqlQueryMap.put("endTime",endTime);
+        hqlQueryMap.put("s","%"+username+"%");
+
+        StringBuilder hql = new StringBuilder();
+        hql.append("select count(*) from Expense where isDeleted != 1 ");
+
+        if(hqlQueryMap.get("username") != ""){
+//            System.out.println("username: " + hqlQueryMap.get("username"));
+            hql.append(" and userName like :s");
+        }
+        if ((int)hqlQueryMap.get("expenseTypeId") != -1){
+//            System.out.println("isAdmin: " + hqlQueryMap.get("isAdmin"));
+            hql.append(" and expenseTypeId =:expenseTypeId");
+        }
+        if (hqlQueryMap.get("startTime") != null){
+            System.out.println("startTime: " + hqlQueryMap.get("startTime"));
+            hql.append(" and expenseTime between :startTime and :endTime");
+        }
+
+        Query query = currentSession.createQuery(hql.toString());
+//        System.out.println(hql.toString());
+        query.setProperties(hqlQueryMap);
+        Number number = (Number) query.uniqueResult();
+        return number.intValue();
+    }
+    
     /**
      * @description: 添加支出账单
      * @param: expense
@@ -117,11 +189,13 @@ public class ExpenseDao {
      */
     public void editExpense(int id, Expense expense){
         Session currentSession = sessionFactory.getCurrentSession();
-        Query query = currentSession.createQuery("update Expense set userName =:username,userId =:userId, expenseTypeId =:expenseTypeId, expenseAmount =:expenseAmount, isDeleted =:isDeleted where id =:id");
+        Query query = currentSession.createQuery("update Expense set userName =:username,userId =:userId, expenseTypeId =:expenseTypeId,expenseTime=:expenseTime,expenseContent=:expenseContent, expenseAmount =:expenseAmount, isDeleted =:isDeleted where id =:id");
         query.setParameter("id",id);
         query.setParameter("username",expense.getUserName());
         query.setParameter("userId",expense.getUserId());
         query.setParameter("expenseTypeId",expense.getExpenseTypeId());
+        query.setParameter("expenseTime",expense.getExpenseTime());
+        query.setParameter("expenseContent",expense.getExpenseContent());
         query.setParameter("expenseAmount",expense.getExpenseAmount());
         query.setParameter("isDeleted",expense.getIsDeleted());
 

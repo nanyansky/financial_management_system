@@ -23,7 +23,8 @@ public class VerifyCode {
     private int h = 39;
     private Random r = new Random();
     private String[] fontNames  = {"宋体", "华文楷体", "黑体", "华文新魏", "华文隶书", "微软雅黑", "楷体_GB2312"};
-    private String codes  = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
+
+    private String codes  = "23456789abcdefghjklmnpqrstuvwxyzABCDEFGHJKLMNPQRSTUVWXYZ";//去掉了1,0,i,o几个容易混淆的字符
     private Color bgColor  = new Color(240, 240, 240);
     private String text ;
 

@@ -121,8 +121,32 @@ public class IncomeServoceImpl implements IncomeService {
     }
 
     @Override
+    @OptLog(content = "搜索收入账单", operationType = OperationType.SELECT)
+    public JSONObject searchIncome(String userName, int incomeTypeId, Timestamp startTime, Timestamp endTime,int page, int limit) {
+        Map<String, Object> dataMap = new HashMap<String, Object>();
+        try {
+            List<Income> list = incomeDao.searchIncome(userName,incomeTypeId,startTime,endTime,page,limit);
+
+            Map<String,Object> tmpMap = new HashMap<>();
+
+            for (int i = 0; i < list.size(); i++) {
+                tmpMap.put(String.valueOf(i),JSON.toJSON(list.get(i),serializeConfig));
+            }
+
+            dataMap.put("code",0);
+            dataMap.put("count",incomeDao.searchIncomeNumber(userName,incomeTypeId,startTime,endTime));
+            dataMap.put("data",tmpMap);
+            return new  JSONObject(dataMap);
+        } catch (Exception e) {
+            dataMap.put("code",0);
+            dataMap.put("message","服务器错误，请重试！");
+            return new JSONObject(dataMap);
+        }
+    }
+
+    @Override
     @OptLog(content = "添加收入记录", operationType = OperationType.INSERT)
-    public JSONObject addIncome(String userName, String incomeSource, double incomeAmount) {
+    public JSONObject addIncome(String userName,int incomeTypeId, Timestamp incomeTime, String incomeContent, double incomeAmount) {
         Map<String, Object> dataMap = new HashMap<String, Object>();
         try {
             HttpSession session = ServletActionContext.getRequest().getSession();
@@ -130,9 +154,11 @@ public class IncomeServoceImpl implements IncomeService {
             //添加用户id
             income.setUserId(userDao.findByUserName(userName).getId());
             income.setUserName(userName);
-            income.setIncomeSource(incomeSource);
+            income.setIncomeTypeId(incomeTypeId);
+            income.setIncomeTime(incomeTime);
+            income.setIncomeContent(incomeContent);
             income.setIncomeAmount(incomeAmount);
-            income.setIncomeTime(new Timestamp(System.currentTimeMillis()));
+            income.setCreateTime(new Timestamp(System.currentTimeMillis()));
 
             incomeDao.addIncome(income);
             //添加完成后刷新数量
@@ -175,7 +201,7 @@ public class IncomeServoceImpl implements IncomeService {
 
     @Override
     @OptLog(content = "编辑收入记录", operationType = OperationType.UPDATE)
-    public JSONObject editIncome(String userName, int id, String incomeSource, double incomeAmount, int isDeleted) {
+    public JSONObject editIncome(String userName, int id, int incomeTypeId, Timestamp incomeTime, String incomeContent, double incomeAmount, int isDeleted) {
         Map<String, Object> dataMap = new HashMap<String, Object>();
         try {
             HttpSession session = ServletActionContext.getRequest().getSession();
@@ -183,7 +209,9 @@ public class IncomeServoceImpl implements IncomeService {
             //添加用户id
             income.setUserId(userDao.findByUserName(userName).getId());
             income.setUserName(userName);
-            income.setIncomeSource(incomeSource);
+            income.setIncomeTypeId(incomeTypeId);
+            income.setIncomeTime(incomeTime);
+            income.setIncomeContent(incomeContent);
             income.setIncomeAmount(incomeAmount);
             income.setIsDeleted(isDeleted);
 

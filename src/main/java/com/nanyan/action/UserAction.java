@@ -46,6 +46,7 @@ public class UserAction extends ActionSupport {
     HttpSession session = ServletActionContext.getRequest().getSession();
     private String userName;
     private String password;
+    private String email;
     private String captcha;
     private String phoneNumber;
     private int isAdmin;
@@ -72,7 +73,7 @@ public class UserAction extends ActionSupport {
             @Result(type = "json",params = {"root","jsonObject"})
     })
     public String userRegister(){
-        jsonObject = userService.userRegister(userName, password, sex, phoneNumber, captcha);
+        jsonObject = userService.userRegister(userName, password, email,sex, phoneNumber, captcha);
         return SUCCESS;
     }
 
@@ -139,7 +140,7 @@ public class UserAction extends ActionSupport {
             interceptorRefs = {@InterceptorRef(value = "LoginInterceptorStack")}
     )
     public String addUser(){
-        jsonObject = userService.addUser(userName,password,phoneNumber,isAdmin,sex);
+        jsonObject = userService.addUser(userName,password,email,phoneNumber,isAdmin,sex);
         return SUCCESS;
     }
 
@@ -158,6 +159,16 @@ public class UserAction extends ActionSupport {
     )
     public String getUserListByUserName(){
         jsonObject = userService.getUserListByUserName(userName,page,limit);
+        return SUCCESS;
+    }
+
+
+    @Action(value = "searchUser",
+            results = {@Result(type = "json",params = {"root","jsonObject"})},
+            interceptorRefs = {@InterceptorRef(value = "LoginInterceptorStack")}
+    )
+    public String searchUser(){
+        jsonObject = userService.searchUser(userName,isAdmin,status,page,limit);
         return SUCCESS;
     }
 
@@ -184,7 +195,7 @@ public class UserAction extends ActionSupport {
             interceptorRefs = {@InterceptorRef(value = "LoginInterceptorStack")}
     )
     public String editUser(){
-        jsonObject = userService.editUser(userName,id,password,phoneNumber,isAdmin,sex);
+        jsonObject = userService.editUser(userName,id,password,email,phoneNumber,isAdmin,sex);
         return SUCCESS;
     }
 
@@ -268,6 +279,12 @@ public class UserAction extends ActionSupport {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+    public String getEmail() {
+        return email;
+    }
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     //会把本类所有getter方法序列化成字符串返回给jsp页面

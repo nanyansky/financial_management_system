@@ -120,8 +120,31 @@ public class ExpenseServiceImpl implements ExpenseService {
     }
 
     @Override
+    public JSONObject searchExpense(String username, int expenseTypeId, Timestamp startTime, Timestamp endTime, int page, int limit) {
+        Map<String, Object> dataMap = new HashMap<String, Object>();
+        try {
+            List<Expense> list = expenseDao.searchExpense(username,expenseTypeId,startTime,endTime,page,limit);
+
+            Map<String,Object> tmpMap = new HashMap<>();
+
+            for (int i = 0; i < list.size(); i++) {
+                tmpMap.put(String.valueOf(i),JSON.toJSON(list.get(i),serializeConfig));
+            }
+
+            dataMap.put("code",0);
+            dataMap.put("count",expenseDao.searchExpenseNumber(username, expenseTypeId, startTime, endTime));
+            dataMap.put("data",tmpMap);
+            return new  JSONObject(dataMap);
+        } catch (Exception e) {
+            dataMap.put("code",0);
+            dataMap.put("message","服务器错误，请重试！");
+            return new JSONObject(dataMap);
+        }
+    }
+
+    @Override
     @OptLog(content = "添加支出记录", operationType = OperationType.INSERT)
-    public JSONObject addExpense(String userName, int expenseTypeId, double expenseAmount) {
+    public JSONObject addExpense(String userName, int expenseTypeId,Timestamp expenseTime,String expenseContent, double expenseAmount) {
         Map<String, Object> dataMap = new HashMap<String, Object>();
         try {
             HttpSession session = ServletActionContext.getRequest().getSession();
@@ -130,8 +153,10 @@ public class ExpenseServiceImpl implements ExpenseService {
             expense.setUserId(userDao.findByUserName(userName).getId());
             expense.setUserName(userName);
             expense.setExpenseTypeId(expenseTypeId);
+            expense.setExpenseTime(expenseTime);
+            expense.setExpenseContent(expenseContent);
             expense.setExpenseAmount(expenseAmount);
-            expense.setExpenseTime(new Timestamp(System.currentTimeMillis()));
+            expense.setCreateTime(new Timestamp(System.currentTimeMillis()));
 
             expenseDao.addExpense(expense);
             //添加完成后刷新数量
@@ -174,7 +199,7 @@ public class ExpenseServiceImpl implements ExpenseService {
 
     @Override
     @OptLog(content = "编辑支出记录", operationType = OperationType.UPDATE)
-    public JSONObject editExpense(String userName,int id, int expenseTypeId, double expenseAmount) {
+    public JSONObject editExpense(String userName,int id, int expenseTypeId,Timestamp expenseTime,String expenseContent, double expenseAmount) {
         Map<String, Object> dataMap = new HashMap<String, Object>();
         try {
             HttpSession session = ServletActionContext.getRequest().getSession();
@@ -183,6 +208,8 @@ public class ExpenseServiceImpl implements ExpenseService {
             expense.setUserId(userDao.findByUserName(userName).getId());
             expense.setUserName(userName);
             expense.setExpenseTypeId(expenseTypeId);
+            expense.setExpenseTime(expenseTime);
+            expense.setExpenseContent(expenseContent);
             expense.setExpenseAmount(expenseAmount);
 
             expenseDao.editExpense(id,expense);

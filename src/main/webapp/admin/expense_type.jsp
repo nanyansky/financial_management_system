@@ -28,7 +28,7 @@
                 <form class="layui-form layui-form-pane" action="">
                     <div class="layui-form-item">
                         <div class="layui-inline">
-                            <label class="layui-form-label">标签名</label>
+                            <label class="layui-form-label">支出分类名</label>
                             <div class="layui-input-inline">
                                 <input type="text" name="name" autocomplete="off" class="layui-input">
                             </div>
@@ -60,7 +60,7 @@
         <div style="display: none;padding: 5px" id="addOrUpdateWindow">
             <form class="layui-form" style="width:90%;" id="dataFrm" lay-filter="dataFrm">
                 <div class="layui-form-item">
-                    <label class="layui-form-label">标签名</label>
+                    <label class="layui-form-label">支出分类名</label>
                     <div class="layui-input-block">
                         <input type="hidden" name="id">
                         <input type="text" name="name" lay-verify="required" autocomplete="off"
@@ -98,7 +98,7 @@
             cols: [[
                 { templet: function (d) {return parseInt(d.LAY_TABLE_INDEX) + 1;}, title: '序号', width: 80, fixed: 'left' }//序号列
                 // {field: 'id', title: 'ID', width:80,align: 'center'}
-                ,{field: 'name', title: '标签名', minWidth:120, align: 'center'}
+                ,{field: 'name', title: '支出分类名', minWidth:120, align: 'center'}
                 ,{field: 'createTime',title: "创建时间",minWidth: 120, align: 'center'}
                 ,{title: '操作', minWidth: 150, toolbar: '#currentTableBar', align: 'center'}
             ]],
@@ -155,7 +155,7 @@
         function openAddWindows() {
             mainIndex = layer.open({
                 type: 1,
-                title: "添加标签",
+                title: "添加支出分类",
                 area: ["400px","200px"],
                 content: $("#addOrUpdateWindow"),
                 success: function (){
@@ -172,7 +172,7 @@
         function openEditWindows(data) {
             mainIndex = layer.open({
                 type: 1,
-                title: "修改标签",
+                title: "修改支出分类",
                 area: ["400px","200px"],
                 content: $("#addOrUpdateWindow"),
                 success: function (){

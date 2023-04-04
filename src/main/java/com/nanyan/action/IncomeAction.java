@@ -25,10 +25,16 @@ import java.sql.Timestamp;
 public class IncomeAction extends ActionSupport {
     private int id;
     private String userName;
+    private int incomeTypeId;
     private Timestamp incomeTime;
-    private String incomeSource;
+    private Timestamp createTime;
+    private String incomeContent;
     private double incomeAmount;
     private int isDeleted;
+
+
+    private Timestamp startTime;
+    private Timestamp endTime;
 
     private int page;
     private int limit;
@@ -62,11 +68,19 @@ public class IncomeAction extends ActionSupport {
         return SUCCESS;
     }
 
+    @Action(value = "searchIncome",
+            results = {@Result(type = "json",params = {"root","jsonObject"})},
+            interceptorRefs = {@InterceptorRef(value = "LoginInterceptorStack")})
+    public String searchIncome(){
+        jsonObject = incomeService.searchIncome(userName,incomeTypeId,startTime,endTime,page,limit);
+        return SUCCESS;
+    }
+
     @Action(value = "addIncome",
             results = {@Result(type = "json",params = {"root","jsonObject"})},
             interceptorRefs = {@InterceptorRef(value = "LoginInterceptorStack")})
     public String addIncome(){
-        jsonObject = incomeService.addIncome(userName,incomeSource,incomeAmount);
+        jsonObject = incomeService.addIncome(userName,incomeTypeId,incomeTime,incomeContent,incomeAmount);
         return SUCCESS;
     }
 
@@ -82,7 +96,7 @@ public class IncomeAction extends ActionSupport {
             results = {@Result(type = "json",params = {"root","jsonObject"})},
             interceptorRefs = {@InterceptorRef(value = "LoginInterceptorStack")})
     public String editIncome(){
-        jsonObject = incomeService.editIncome(userName,id,incomeSource,incomeAmount,isDeleted);
+        jsonObject = incomeService.editIncome(userName,id,incomeTypeId,incomeTime,incomeContent,incomeAmount,isDeleted);
         return SUCCESS;
     }
 
@@ -105,24 +119,60 @@ public class IncomeAction extends ActionSupport {
     public void setIncomeTime(Timestamp incomeTime) {
         this.incomeTime = incomeTime;
     }
-    public String getIncomeSource() {
-        return incomeSource;
-    }
-    public void setIncomeSource(String incomeSource) {
-        this.incomeSource = incomeSource;
-    }
     public double getIncomeAmount() {
         return incomeAmount;
     }
     public void setIncomeAmount(double incomeAmount) {
         this.incomeAmount = incomeAmount;
     }
+
+    public int getIncomeTypeId() {
+        return incomeTypeId;
+    }
+
+    public void setIncomeTypeId(int incomeTypeId) {
+        this.incomeTypeId = incomeTypeId;
+    }
+
+    public Timestamp getCreateTime() {
+        return createTime;
+    }
+
+    public void setCreateTime(Timestamp createTime) {
+        this.createTime = createTime;
+    }
+
+    public String getIncomeContent() {
+        return incomeContent;
+    }
+
+    public void setIncomeContent(String incomeContent) {
+        this.incomeContent = incomeContent;
+    }
+
     public int getIsDeleted() {
         return isDeleted;
     }
     public void setIsDeleted(int isDeleted) {
         this.isDeleted = isDeleted;
     }
+
+    public Timestamp getStartTime() {
+        return startTime;
+    }
+
+    public void setStartTime(Timestamp startTime) {
+        this.startTime = startTime;
+    }
+
+    public Timestamp getEndTime() {
+        return endTime;
+    }
+
+    public void setEndTime(Timestamp endTime) {
+        this.endTime = endTime;
+    }
+
     public int getPage() {
         return page;
     }

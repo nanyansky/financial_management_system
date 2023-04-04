@@ -1,6 +1,7 @@
 package com.nanyan.dao;
 
 import com.nanyan.entity.OperationLog;
+import com.nanyan.entity.OperationLog;
 import com.nanyan.utils.OperationType;
 import lombok.extern.slf4j.Slf4j;
 import org.hibernate.Session;
@@ -10,7 +11,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.sql.Timestamp;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author nanyan
@@ -63,6 +67,65 @@ public class OperationLogDao {
     }
 
 
+    //搜索日志
+    public List<OperationLog> searchOperationLog(String username, Timestamp startTime, Timestamp endTime, int currentPage, int perPageRows){
+
+        Session currentSession = sessionFactory.getCurrentSession();
+
+        Map<String, Object> hqlQueryMap = new HashMap<>();
+        hqlQueryMap.put("username",username);
+        hqlQueryMap.put("startTime",startTime);
+        hqlQueryMap.put("endTime",endTime);
+        hqlQueryMap.put("s","%"+username+"%");
+
+        StringBuilder hql = new StringBuilder();
+        hql.append("from OperationLog where 1=1");
+
+        if(hqlQueryMap.get("username") != ""){
+//            System.out.println("username: " + hqlQueryMap.get("username"));
+            hql.append(" and userName like :s");
+        }
+        if (hqlQueryMap.get("startTime") != null){
+            System.out.println("startTime: " + hqlQueryMap.get("startTime"));
+            hql.append(" and operationTime between :startTime and :endTime");
+        }
+
+        Query query = currentSession.createQuery(hql.toString());
+//        System.out.println(hql.toString());
+        query.setProperties(hqlQueryMap);
+        query.setFirstResult(perPageRows*(currentPage-1)).setMaxResults(perPageRows);
+        return query.list();
+    }
+
+    //符合条件日志总数
+    public int searchOperationLogNumber(String username, Timestamp startTime, Timestamp endTime){
+
+        Session currentSession = sessionFactory.getCurrentSession();
+
+        Map<String, Object> hqlQueryMap = new HashMap<>();
+        hqlQueryMap.put("username",username);
+        hqlQueryMap.put("startTime",startTime);
+        hqlQueryMap.put("endTime",endTime);
+        hqlQueryMap.put("s","%"+username+"%");
+
+        StringBuilder hql = new StringBuilder();
+        hql.append("select count(*) from OperationLog where 1=1");
+
+        if(hqlQueryMap.get("username") != ""){
+//            System.out.println("username: " + hqlQueryMap.get("username"));
+            hql.append(" and userName like :s");
+        }
+        if (hqlQueryMap.get("startTime") != null){
+            System.out.println("startTime: " + hqlQueryMap.get("startTime"));
+            hql.append(" and operationTime between :startTime and :endTime");
+        }
+
+        Query query = currentSession.createQuery(hql.toString());
+//        System.out.println(hql.toString());
+        query.setProperties(hqlQueryMap);
+        Number number = (Number) query.uniqueResult();
+        return number.intValue();
+    }
 
 
 }

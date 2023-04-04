@@ -45,7 +45,7 @@
                                 <h5>用户统计</h5>
                             </div>
                             <div class="panel-content">
-                                <h1 class="no-margins"><i class="fa fa-user"></i> ${sessionScope.userNumber} 位</h1>
+                                <h2 class="no-margins"><i class="fa fa-user"></i> ${sessionScope.userNumber} 位</h2>
                             </div>
                         </div>
                     </div>
@@ -61,8 +61,8 @@
                                 <h5>收入统计</h5>
                             </div>
                             <div class="panel-content">
-                                <h1 class="no-margins" style="display: inline"><i class="fa fa-wallet"></i> ${sessionScope.incomeNumber} 笔</h1>
-                                <h2 style="display: inline">(共 <fmt:formatNumber type="number" value="${sessionScope.incomeCount}" maxFractionDigits="2" pattern="0.00"/> 元)</h2>
+                                <h2 class="no-margins" style="display: inline"><i class="fa fa-wallet"></i> ${sessionScope.incomeNumber} 笔</h2>
+                                <h3 style="display: inline">(共 <fmt:formatNumber type="number" value="${sessionScope.incomeCount}" maxFractionDigits="2" pattern="0.00"/> 元)</h3>
                             </div>
                         </div>
                     </div>
@@ -78,8 +78,8 @@
                                 <h5>支出统计</h5>
                             </div>
                             <div class="panel-content">
-                                <h1 class="no-margins" style="display: inline"><i class="fas fa-hand-holding-usd"></i> ${sessionScope.expenseNumber} 笔</h1>
-                                <h2 style="display: inline">(共 <fmt:formatNumber type="number" value="${sessionScope.expenseCount}" maxFractionDigits="2" pattern="0.00"/> 元)</h2>
+                                <h2 class="no-margins" style="display: inline"><i class="fas fa-hand-holding-usd"></i> ${sessionScope.expenseNumber} 笔</h2>
+                                <h3 style="display: inline">(共 <fmt:formatNumber type="number" value="${sessionScope.expenseCount}" maxFractionDigits="2" pattern="0.00"/> 元)</h3>
                             </div>
                         </div>
                     </div>
@@ -94,7 +94,7 @@
                                 <h5>剩余总额</h5>
                             </div>
                             <div class="panel-content">
-                                <h1 class="no-margins"><i class="fa fa-pie-chart"></i><fmt:formatNumber type="number" value="${sessionScope.incomeCount - sessionScope.expenseCount}" maxFractionDigits="2" pattern="0.00"/> 元</h1>
+                                <h2 class="no-margins"><i class="fa fa-pie-chart"> </i><fmt:formatNumber type="number" value="${sessionScope.incomeCount - sessionScope.expenseCount}" maxFractionDigits="2" pattern="0.00"/> 元</h2>
                             </div>
                         </div>
                     </div>

@@ -11,6 +11,7 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
 
 import javax.servlet.http.HttpSession;
+import java.sql.Timestamp;
 
 /**
  * @author nanyan
@@ -28,6 +29,9 @@ public class OperationLogAction extends ActionSupport {
     private int limit;
     HttpSession session = ServletActionContext.getRequest().getSession();
     private String userName;
+
+    private Timestamp startTime;
+    private Timestamp endTime;
 
     private JSONObject jsonObject;
 
@@ -61,6 +65,15 @@ public class OperationLogAction extends ActionSupport {
         return SUCCESS;
     }
 
+    @Action(value = "searchOperationLog",
+            results = {@Result(type = "json",params = {"root","jsonObject"})},
+            interceptorRefs = {@InterceptorRef(value = "LoginInterceptorStack")}
+    )
+    public String searchOperationLog(){
+        jsonObject = operationLogService.searchOperationLog(userName,startTime,endTime,page,limit);
+        return SUCCESS;
+    }
+
 
 
 
@@ -81,6 +94,21 @@ public class OperationLogAction extends ActionSupport {
         this.limit = limit;
     }
 
+    public Timestamp getStartTime() {
+        return startTime;
+    }
+
+    public void setStartTime(Timestamp startTime) {
+        this.startTime = startTime;
+    }
+
+    public Timestamp getEndTime() {
+        return endTime;
+    }
+
+    public void setEndTime(Timestamp endTime) {
+        this.endTime = endTime;
+    }
 
     public String getUserName() {
         return userName;

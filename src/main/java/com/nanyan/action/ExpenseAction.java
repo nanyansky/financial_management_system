@@ -26,9 +26,14 @@ public class ExpenseAction extends ActionSupport {
     private int id;
     private String userName;
     private int expenseTypeId;
+
     private Timestamp expenseTime;
+    private Timestamp createTime;
+    private String expenseContent;
     private double expenseAmount;
 
+    private Timestamp startTime;
+    private Timestamp endTime;
     private int page;
     private int limit;
 
@@ -61,11 +66,20 @@ public class ExpenseAction extends ActionSupport {
         return SUCCESS;
     }
 
+
+    @Action(value = "searchExpense",
+            results = {@Result(type = "json",params = {"root","jsonObject"})},
+            interceptorRefs = {@InterceptorRef(value = "LoginInterceptorStack")})
+    public String searchExpense(){
+        jsonObject = expenseService.searchExpense(userName,expenseTypeId,startTime,endTime,page,limit);
+        return SUCCESS;
+    }
+
     @Action(value = "addExpense",
             results = {@Result(type = "json",params = {"root","jsonObject"})},
             interceptorRefs = {@InterceptorRef(value = "LoginInterceptorStack")})
     public String addExpense(){
-        jsonObject = expenseService.addExpense(userName,expenseTypeId,expenseAmount);
+        jsonObject = expenseService.addExpense(userName,expenseTypeId,expenseTime,expenseContent,expenseAmount);
         return SUCCESS;
     }
 
@@ -81,7 +95,7 @@ public class ExpenseAction extends ActionSupport {
             results = {@Result(type = "json",params = {"root","jsonObject"})},
             interceptorRefs = {@InterceptorRef(value = "LoginInterceptorStack")})
     public String editExpense(){
-        jsonObject = expenseService.editExpense(userName, id, expenseTypeId, expenseAmount);
+        jsonObject = expenseService.editExpense(userName, id, expenseTypeId,expenseTime,expenseContent, expenseAmount);
         return SUCCESS;
     }
 
@@ -119,6 +133,39 @@ public class ExpenseAction extends ActionSupport {
     public void setExpenseAmount(double expenseAmount) {
         this.expenseAmount = expenseAmount;
     }
+
+    public Timestamp getCreateTime() {
+        return createTime;
+    }
+
+    public void setCreateTime(Timestamp createTime) {
+        this.createTime = createTime;
+    }
+
+    public String getExpenseContent() {
+        return expenseContent;
+    }
+
+    public void setExpenseContent(String expenseContent) {
+        this.expenseContent = expenseContent;
+    }
+
+    public Timestamp getStartTime() {
+        return startTime;
+    }
+
+    public void setStartTime(Timestamp startTime) {
+        this.startTime = startTime;
+    }
+
+    public Timestamp getEndTime() {
+        return endTime;
+    }
+
+    public void setEndTime(Timestamp endTime) {
+        this.endTime = endTime;
+    }
+
     public int getPage() {
         return page;
     }

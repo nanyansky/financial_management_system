@@ -17,10 +17,14 @@ public class Income {
   private int userId;
   @Column(name = "user_name")
   private String userName;
+  @Column(name = "income_type_id")
+  private int incomeTypeId;
   @Column(name = "income_time")
-  private Timestamp incomeTime;
-  @Column(name = "income_source")
-  private String incomeSource;
+  private java.sql.Timestamp incomeTime;
+  @Column(name = "create_time")
+  private Timestamp createTime;
+  @Column(name = "income_content")
+  private String incomeContent;
   @Column(name = "income_amount")
   private double incomeAmount;
   @Column(name = "is_deleted")

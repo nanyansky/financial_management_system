@@ -28,11 +28,34 @@
                 <form class="layui-form layui-form-pane" action="">
                     <div class="layui-form-item">
                         <div class="layui-inline">
-                            <label class="layui-form-label">用户名</label>
-                            <div class="layui-input-inline">
+                            <label class="layui-form-label" style="width: 80px">用户名</label>
+                            <div class="layui-input-inline" style="width: 90px">
                                 <input type="text" name="userName" autocomplete="off" class="layui-input">
                             </div>
                         </div>
+
+                        <div class="layui-inline">
+                            <label class="layui-form-label" style="width: 120px">是否管理员</label>
+                            <div class="layui-input-inline" style="width: 100px">
+                                <select name="isAdmin" lay-verify="">
+                                    <option value="-1">请选择</option>
+                                    <option value="1">是</option>
+                                    <option value="0">否</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="layui-inline">
+                            <label class="layui-form-label" style="width: 120px">是否禁用</label>
+                            <div class="layui-input-inline" style="width: 100px">
+                                <select name="status" lay-verify="">
+                                    <option value="-1">请选择</option>
+                                    <option value="0">是</option>
+                                    <option value="1">否</option>
+                                </select>
+                            </div>
+                        </div>
+
                         <div class="layui-inline">
                             <button type="submit" class="layui-btn" lay-submit lay-filter="data-search-btn"><i class="layui-icon"></i> 搜 索</button>
                             <button type="reset" class="layui-btn layui-btn-warm"><i class="layui-icon layui-icon-refresh"></i>重 置</button>
@@ -67,6 +90,15 @@
                                placeholder="请输入用户名" class="layui-input">
                     </div>
                 </div>
+
+                <div class="layui-form-item">
+                    <label class="layui-form-label">电子邮箱</label>
+                    <div class="layui-input-block">
+                        <input type="email" name="email" lay-verify="required" autocomplete="off"
+                               placeholder="请输入电子邮箱" class="layui-input">
+                    </div>
+                </div>
+
                 <div class="layui-form-item">
                     <label class="layui-form-label">密码</label>
                     <div class="layui-input-block">
@@ -125,6 +157,7 @@
                 { templet: function (d) {return parseInt(d.LAY_TABLE_INDEX) + 1;}, title: '序号', width: 80, fixed: 'left' }//序号列
                 // ,{field: 'id', title: 'ID', width:80,align: 'center'}
                 ,{field: 'userName', title: '用户名', minWidth:120, align: 'center'}
+                ,{field: 'email', title: '电子邮箱', minWidth:120, align: 'center'}
                 ,{field: 'sex', title: '性别', minWidth:120, align: 'center'}
                 ,{field: 'registerTime',title: "加入时间",minWidth: 120, align: 'center'}
                 ,{field: 'phoneNumber',title: "电话号码",minWidth: 120, align: 'center'}
@@ -150,7 +183,7 @@
             console.log(data.field);
             //执行搜索重载
             tableIns.reload({
-                url: '/user/getUserListByUserName.action',
+                url: '/user/searchUser.action',
                 method: "post",
                 page: {
                     curr: 1

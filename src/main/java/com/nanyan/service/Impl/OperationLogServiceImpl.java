@@ -97,7 +97,6 @@ public class OperationLogServiceImpl implements OperationLogService {
     public JSONObject getLogListByUserName(String username, int page, int limit) {
         Map<String, Object> dataMap = new HashMap<String, Object>();
         try {
-            int logNumber = operationLogDao.getLogNumber();
             List<OperationLog> logList = operationLogDao.getLogListByUserName(username,page,limit);
 
             Map<String,Object> tmpMap = new HashMap<>();
@@ -107,7 +106,30 @@ public class OperationLogServiceImpl implements OperationLogService {
             }
 
             dataMap.put("code",0);
-            dataMap.put("count",logNumber);
+            dataMap.put("count",logList.size());
+            dataMap.put("data",tmpMap);
+            return new  JSONObject(dataMap);
+        } catch (Exception e) {
+            dataMap.put("code",0);
+            dataMap.put("message","服务器错误，请重试！");
+            return new JSONObject(dataMap);
+        }
+    }
+
+    @Override
+    public JSONObject searchOperationLog(String username, Timestamp startTime, Timestamp endTime, int page, int limit) {
+        Map<String, Object> dataMap = new HashMap<String, Object>();
+        try {
+            List<OperationLog> logList = operationLogDao.searchOperationLog(username,startTime,endTime,page,limit);
+
+            Map<String,Object> tmpMap = new HashMap<>();
+
+            for (int i = 0; i < logList.size(); i++) {
+                tmpMap.put(String.valueOf(i), JSON.toJSON(logList.get(i),serializeConfig));
+            }
+
+            dataMap.put("code",0);
+            dataMap.put("count",operationLogDao.searchOperationLogNumber(username, startTime, endTime));
             dataMap.put("data",tmpMap);
             return new  JSONObject(dataMap);
         } catch (Exception e) {

@@ -1,7 +1,6 @@
 package com.nanyan.dao;
 
-import com.nanyan.entity.Expense;
-import com.nanyan.entity.ExpenseType;
+import com.nanyan.entity.IncomeType;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.query.Query;
@@ -20,7 +19,7 @@ import java.util.List;
  */
 @Repository
 @Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
-public class ExpenseTypeDao {
+public class IncomeTypeDao {
 
     @Autowired
     SessionFactory sessionFactory;
@@ -32,9 +31,9 @@ public class ExpenseTypeDao {
      * @author nanyan
      * @date:  19:05
      */
-    public int getExpenseTypeNumber(){
+    public int getIncomeTypeNumber(){
         Session currentSession = sessionFactory.getCurrentSession();
-        Query query = currentSession.createQuery("select count(*) from ExpenseType where isDeleted != 1");
+        Query query = currentSession.createQuery("select count(*) from IncomeType where isDeleted != 1");
         Number number = (Number) query.uniqueResult();
         return number.intValue();
     }
@@ -46,9 +45,9 @@ public class ExpenseTypeDao {
      * @author nanyan
      * @date:  19:05
      */
-    public List<ExpenseType> getExpenseTypeList(){
+    public List<IncomeType> getIncomeTypeList(){
         Session currentSession = sessionFactory.getCurrentSession();
-        Query query = currentSession.createQuery("from ExpenseType where isDeleted != 1");
+        Query query = currentSession.createQuery("from IncomeType where isDeleted != 1");
         return query.list();
     }
 
@@ -56,13 +55,13 @@ public class ExpenseTypeDao {
      * @description: 获取分类列表(分页)
      * @param: currentPage
 perPageRows
-     * @return: java.util.List<com.nanyan.entity.ExpenseType>
+     * @return: java.util.List<com.nanyan.entity.IncomeType>
      * @author nanyan
      * @date:  14:07
      */
-    public List<ExpenseType> getExpenseTypeListByPage(int currentPage,int perPageRows){
+    public List<IncomeType> getIncomeTypeListByPage(int currentPage,int perPageRows){
         Session currentSession = sessionFactory.getCurrentSession();
-        Query query = currentSession.createQuery("from ExpenseType where isDeleted != 1");
+        Query query = currentSession.createQuery("from IncomeType where isDeleted != 1");
         query.setFirstResult(perPageRows*(currentPage-1)).setMaxResults(perPageRows);
         return query.list();
     }
@@ -72,14 +71,14 @@ perPageRows
      * @param: name
 currentPage
 perPageRows
-     * @return: java.util.List<com.nanyan.entity.ExpenseType>
+     * @return: java.util.List<com.nanyan.entity.IncomeType>
      * @author nanyan
      * @date:  19:06
      */
-    public List<ExpenseType> getExpenseTypeListByName(String name,int currentPage,int perPageRows) {
+    public List<IncomeType> getIncomeTypeListByName(String name,int currentPage,int perPageRows) {
         Session session = sessionFactory.getCurrentSession();
         String s = "%"+name+"%";
-        Query query = session.createQuery("from ExpenseType where name like :query and isDeleted != 1").setParameter("query",s);
+        Query query = session.createQuery("from IncomeType where name like :query and isDeleted != 1").setParameter("query",s);
         query.setFirstResult(perPageRows*(currentPage-1)).setMaxResults(perPageRows);
         return query.list();
     }
@@ -91,7 +90,7 @@ perPageRows
      * @author nanyan
      * @date:  19:07
      */
-    public void addExpenseType(ExpenseType expenseType){
+    public void addIncomeType(IncomeType expenseType){
         Session currentSession = sessionFactory.getCurrentSession();
         currentSession.save(expenseType);
     }
@@ -103,9 +102,9 @@ perPageRows
      * @author nanyan
      * @date:  19:07
      */
-    public void deleteExpenseByTypeById(int id){
+    public void deleteIncomeByTypeById(int id){
         Session currentSession = sessionFactory.getCurrentSession();
-        Query query = currentSession.createQuery("update ExpenseType set isDeleted = 1 where id =:id").setParameter("id", id);
+        Query query = currentSession.createQuery("update IncomeType set isDeleted = 1 where id =:id").setParameter("id", id);
         query.executeUpdate();
     }
 
@@ -117,9 +116,9 @@ expenseType
      * @author nanyan
      * @date:  19:11
      */
-    public void editExpenseType(int id, ExpenseType expenseType){
+    public void editIncomeType(int id, IncomeType expenseType){
         Session currentSession = sessionFactory.getCurrentSession();
-        Query query = currentSession.createQuery("update ExpenseType set name =:name, createTime =:createTime where id =:id");
+        Query query = currentSession.createQuery("update IncomeType set name =:name, createTime =:createTime where id =:id");
         query.setParameter("id",id);
         query.setParameter("name",expenseType.getName());
         query.setParameter("createTime",expenseType.getCreateTime());
@@ -134,9 +133,9 @@ expenseType
      * @author nanyan
      * @date:  11:21
      */
-    public String getExpenseTypeNameById(int id){
+    public String getIncomeTypeNameById(int id){
         Session currentSession = sessionFactory.getCurrentSession();
-        Query query = currentSession.createQuery("select name from ExpenseType  where id =:id").setParameter("id", id);
+        Query query = currentSession.createQuery("select name from IncomeType  where id =:id").setParameter("id", id);
         String expenseTypeName = (String) query.uniqueResult();
         System.out.println(expenseTypeName);
         return expenseTypeName;
@@ -145,14 +144,14 @@ expenseType
     /**
      * @description: 根据分类名称查找分类
      * @param: name
-     * @return: com.nanyan.entity.ExpenseType
+     * @return: com.nanyan.entity.IncomeType
      * @author nanyan
      * @date:  11:44
      */
-    public ExpenseType getExpenseTypeByName(String name){
+    public IncomeType getIncomeTypeByName(String name){
         Session currentSession = sessionFactory.getCurrentSession();
-        Query query = currentSession.createQuery("from ExpenseType where name =:name and isDeleted != 1").setParameter("name", name);
-        ExpenseType expenseType = (ExpenseType) query.uniqueResult();
+        Query query = currentSession.createQuery("from IncomeType where name =:name and isDeleted != 1").setParameter("name", name);
+        IncomeType expenseType = (IncomeType) query.uniqueResult();
         return expenseType;
     }
 

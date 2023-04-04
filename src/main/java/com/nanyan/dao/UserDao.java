@@ -11,7 +11,9 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.Timestamp;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Repository
 @Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
@@ -62,6 +64,84 @@ public class UserDao{
         Query query = session.createQuery("from User where userName like :query and isDeleted != 1").setParameter("query",s);
         query.setFirstResult(perPageRows*(currentPage-1)).setMaxResults(perPageRows);
         return query.list();
+    }
+
+    /** 
+     * @description: 根据条件动态搜索 
+     * @param: username
+isAdmin
+status
+currentPage
+perPageRows 
+     * @return: java.util.List<com.nanyan.entity.User> 
+     * @author nanyan
+     * @date:  16:34
+     */ 
+    public List<User> searchUser(String username,int isAdmin,int status,int currentPage,int perPageRows){
+
+        Session currentSession = sessionFactory.getCurrentSession();
+
+        Map<String, Object> hqlQueryMap = new HashMap<>();
+        hqlQueryMap.put("username",username);
+        hqlQueryMap.put("isAdmin",isAdmin);
+        hqlQueryMap.put("status",status);
+        hqlQueryMap.put("s","%"+username+"%");
+
+        StringBuilder hql = new StringBuilder();
+        hql.append("from User where isDeleted != 1 ");
+
+        if(hqlQueryMap.get("username") != ""){
+//            System.out.println("username: " + hqlQueryMap.get("username"));
+            hql.append(" and userName like :s");
+        }
+        if ((int)hqlQueryMap.get("isAdmin") != -1){
+//            System.out.println("isAdmin: " + hqlQueryMap.get("isAdmin"));
+            hql.append(" and isAdmin =:isAdmin");
+        }
+        if ((int)hqlQueryMap.get("status") != -1){
+//            System.out.println("status: " + hqlQueryMap.get("username"));
+            hql.append(" and status = :status");
+        }
+
+        Query query = currentSession.createQuery(hql.toString());
+        System.out.println(hql.toString());
+        query.setProperties(hqlQueryMap);
+        query.setFirstResult(perPageRows*(currentPage-1)).setMaxResults(perPageRows);
+        return query.list();
+    }
+
+
+    public int searchUserNumber(String username,int isAdmin,int status){
+
+        Session currentSession = sessionFactory.getCurrentSession();
+
+        Map<String, Object> hqlQueryMap = new HashMap<>();
+        hqlQueryMap.put("username",username);
+        hqlQueryMap.put("isAdmin",isAdmin);
+        hqlQueryMap.put("status",status);
+        hqlQueryMap.put("s","%"+username+"%");
+
+        StringBuilder hql = new StringBuilder();
+        hql.append("select count(*) from User where isDeleted != 1 ");
+
+        if(hqlQueryMap.get("username") != ""){
+//            System.out.println("username: " + hqlQueryMap.get("username"));
+            hql.append(" and username like :s");
+        }
+        if ((int)hqlQueryMap.get("isAdmin") != -1){
+//            System.out.println("isAdmin: " + hqlQueryMap.get("isAdmin"));
+            hql.append(" and isAdmin =:isAdmin");
+        }
+        if ((int)hqlQueryMap.get("status") != -1){
+//            System.out.println("status: " + hqlQueryMap.get("username"));
+            hql.append(" and status = :status");
+        }
+
+        Query query = currentSession.createQuery(hql.toString());
+        System.out.println(hql.toString());
+        query.setProperties(hqlQueryMap);
+        Number number = (Number) query.uniqueResult();
+        return number.intValue();
     }
 
     /**
@@ -122,12 +202,13 @@ public class UserDao{
         System.out.println("获取到的id："+id);
         Session session = sessionFactory.getCurrentSession();
 //        User originalUser = findByUserId(id);
-        String hql = "update User set userName=:username,password=:password,isAdmin=:isAdmin,isDeleted=:isDelete,sex=:sex,phoneNumber=:phoneNumber where id="+id;
+        String hql = "update User set userName=:username,password=:password,email=:email,isAdmin=:isAdmin,isDeleted=:isDelete,sex=:sex,phoneNumber=:phoneNumber where id="+id;
         Query query = session.createQuery(hql);
 //        query.setParameter("id",id);
         query.setParameter("sex",user.getSex());
         query.setParameter("username",user.getUserName());
         query.setParameter("password",user.getPassword());
+        query.setParameter("email",user.getEmail());
         query.setParameter("isAdmin",user.getIsAdmin());
         query.setParameter("isDelete",user.getIsDeleted());
         query.setParameter("phoneNumber",user.getPhoneNumber());
@@ -146,8 +227,9 @@ user
      */
     public void changeInfoByUsername(String tmpUsername,User user){
         Session currentSession = sessionFactory.getCurrentSession();
-        Query query = currentSession.createQuery("update User set userName = :username, phoneNumber = :phonuseNumber, sex =:sex where userName =:tmpUsername and isDeleted != 1");
+        Query query = currentSession.createQuery("update User set userName = :username,email=:email, phoneNumber = :phonuseNumber, sex =:sex where userName =:tmpUsername and isDeleted != 1");
         query.setParameter("username",user.getUserName());
+        query.setParameter("email",user.getEmail());
         query.setParameter("phonuseNumber",user.getPhoneNumber());
         query.setParameter("sex",user.getSex());
         query.setParameter("tmpUsername",tmpUsername);

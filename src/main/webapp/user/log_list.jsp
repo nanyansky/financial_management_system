@@ -14,7 +14,7 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <link rel="stylesheet" href="../statics/layui/lib/layui-v2.6.3/css/layui.css" media="all">
+  <link rel="stylesheet" href="../statics/layui/lib/layui-v2.7.6/css/layui.css" media="all">
   <link rel="stylesheet" href="../statics/layui/css/public.css" media="all">
 </head>
 <body>
@@ -33,6 +33,20 @@
                 <input type="text" name="userName" autocomplete="off" class="layui-input">
               </div>
             </div>
+
+            <div class="layui-inline">
+              <label class="layui-form-label" style="width: 140px">日志日期范围</label>
+              <div class="layui-inline" id="searchTime">
+                <div class="layui-input-inline" style="width: 160px">
+                  <input type="text" id="startTime" name="startTime" class="layui-input" placeholder="开始日期">
+                </div>
+                <div class="layui-form-mid">-</div>
+                <div class="layui-input-inline" style="width: 160px">
+                  <input type="text" id="endTime" name="endTime" class="layui-input" placeholder="结束日期">
+                </div>
+              </div>
+            </div>
+            
             <div class="layui-inline">
               <button type="submit" class="layui-btn" lay-submit lay-filter="data-search-btn"><i class="layui-icon"></i> 搜 索</button>
               <button type="reset" class="layui-btn layui-btn-warm"><i class="layui-icon layui-icon-refresh"></i>重 置</button>
@@ -47,14 +61,15 @@
 
   </div>
 </div>
-<script src="../statics/layui/lib/layui-v2.6.3/layui.js" charset="utf-8"></script>
+<script src="../statics/layui/lib/layui-v2.7.6/layui.js" charset="utf-8"></script>
 
 <script>
-  layui.use(['form', 'table', 'layer'], function () {
+  layui.use(['form', 'table', 'layer', 'laydate'], function () {
     var $ = layui.jquery,
             form = layui.form,
             table = layui.table,
-            layer = layui.layer
+            layer = layui.layer,
+            laydate = layui.laydate
 
     var tableIns = table.render({
       elem: '#currentTableId',
@@ -74,12 +89,20 @@
       skin: 'line'
     });
 
+    //执行一个laydate实例
+    laydate.render({
+      elem: '#searchTime'//指定元素
+      ,type: 'datetime'
+      // ,range: true
+      ,range: ['#startTime','#endTime']
+    });
+    
     // 监听搜索操作
     form.on('submit(data-search-btn)', function (data) {
       console.log(data.field);
       //执行搜索重载
       tableIns.reload({
-        url: '/log/getLogListByUserName.action',
+        url: '/log/searchOperationLog.action',
         method: "post",
         page: {
           curr: 1
