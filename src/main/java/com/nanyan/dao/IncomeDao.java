@@ -121,6 +121,7 @@ perPageRows
             hql.append(" and incomeTime between :startTime and :endTime");
         }
 
+        hql.append(" order by incomeTime desc");
         Query query = currentSession.createQuery(hql.toString());
         System.out.println(hql.toString());
         query.setProperties(hqlQueryMap);
@@ -160,7 +161,6 @@ perPageRows
             hql.append(" and incomeTime between :startTime and :endTime");
         }
 
-        hql.append(" order by incomeTime desc");
         Query query = currentSession.createQuery(hql.toString());
 //        System.out.println(hql.toString());
         query.setProperties(hqlQueryMap);

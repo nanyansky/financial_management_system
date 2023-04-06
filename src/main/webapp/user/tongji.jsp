@@ -116,24 +116,26 @@
     </div>
   </div>
 
-  <div class="layui-row layui-col-space15">
-    <div class="layui-col-xs12 layui-col-md9">
-      <div id="echarts-records" style="background-color:#ffffff;min-height:400px;padding: 10px"></div>
-    </div>
-    <div class="layui-col-xs12 layui-col-md3">
-      <div id="echarts-pies" style="background-color:#ffffff;min-height:400px;padding: 10px"></div>
-    </div>
-  </div>
+<%--  <div class="layui-row layui-col-space15">--%>
+<%--    <div class="layui-col-xs12 layui-col-md9">--%>
+<%--      <div id="echarts-records" style="background-color:#ffffff;min-height:400px;padding: 10px"></div>--%>
+<%--    </div>--%>
+<%--&lt;%&ndash;    <div class="layui-col-xs12 layui-col-md3">&ndash;%&gt;--%>
+<%--&lt;%&ndash;      <div id="echarts-pies" style="background-color:#ffffff;min-height:400px;padding: 10px"></div>&ndash;%&gt;--%>
+<%--&lt;%&ndash;    </div>&ndash;%&gt;--%>
+<%--  </div>--%>
+
+  <div id="echarts-records" style="background-color:#ffffff;min-height:400px;padding: 10px"></div>
 
 
-  <div class="layui-row layui-col-space15">
-    <div class="layui-col-xs12 layui-col-md6">
-      <div id="echarts-dataset" style="background-color:#ffffff;min-height:300px;padding: 10px"></div>
-    </div>
-    <div class="layui-col-xs12 layui-col-md6">
-      <div id="echarts-map" style="background-color:#ffffff;min-height:300px;padding: 10px"></div>
-    </div>
-  </div>
+<%--  <div class="layui-row layui-col-space15">--%>
+<%--    <div class="layui-col-xs12 layui-col-md6">--%>
+<%--      <div id="echarts-dataset" style="background-color:#ffffff;min-height:300px;padding: 10px"></div>--%>
+<%--    </div>--%>
+<%--    <div class="layui-col-xs12 layui-col-md6">--%>
+<%--      <div id="echarts-map" style="background-color:#ffffff;min-height:300px;padding: 10px"></div>--%>
+<%--    </div>--%>
+<%--  </div>--%>
 
 
 </div>
@@ -146,6 +148,54 @@
             layer = layui.layer,
             echarts = layui.echarts;
 
+
+
+    var time1=[];
+    var incomeCount=[];
+    var incomeMoney=[];
+    var expenseCount=[];
+    var expenseMoney=[];
+
+    //收入数据
+    $.ajax({
+      type: "post",
+      url: "/getIncomeData.action",
+      async: false,
+      datatype: "json",
+      success: function (data) {
+        $.each(data.data, function(i) {
+          time1.push(data.data[i].date)
+          incomeCount.push(data.data[i].count)
+          incomeMoney.push(data.data[i].money)
+        })
+        // console.log(data)
+        // console.log(time1)
+        // console.log(incomeCount)
+        // console.log(incomeMoney)
+      }
+    })
+
+    //支出数据
+    $.ajax({
+      type: "post",
+      url: "/getExpenseData.action",
+      async: false,
+      datatype: "json",
+      success: function (data) {
+        $.each(data.data, function(i) {
+          expenseCount.push(data.data[i].count)
+          expenseMoney.push(data.data[i].money)
+        })
+        // console.log(data)
+        // console.log(time1)
+        // console.log(incomeCount)
+        // console.log(incomeMoney)
+      }
+    })
+
+    console.log(incomeCount)
+    console.log(expenseCount)
+
     /**
      * 报表功能
      */
@@ -153,7 +203,7 @@
 
     var optionRecords = {
       title: {
-        text: '指标名称-报表图'
+        text: '收入支出报表'
       },
       tooltip: {
         trigger: 'axis',
@@ -165,7 +215,7 @@
         }
       },
       legend: {
-        data: ['邮件营销', '联盟广告', '视频广告', '直接访问', '搜索引擎']
+        data: ['收入账单总数', '支出账单总数', '收入金额', '支出金额']
       },
       toolbox: {
         feature: {
@@ -182,7 +232,7 @@
         {
           type: 'category',
           boundaryGap: false,
-          data: ['周一', '周二', '周三', '周四', '周五', '周六', '周日']
+          data: time1
         }
       ],
       yAxis: [
@@ -192,44 +242,28 @@
       ],
       series: [
         {
-          name: '邮件营销',
+          name: '收入账单总数',
           type: 'line',
-          stack: '总量',
           areaStyle: {},
-          data: [120, 132, 101, 134, 90, 230, 210]
+          data: incomeCount
         },
         {
-          name: '联盟广告',
+          name: '支出账单总数',
           type: 'line',
           areaStyle: {},
-          data: [220, 182, 191, 234, 290, 330, 310]
+          data: expenseCount
         },
         {
-          name: '视频广告',
+          name: '收入金额',
           type: 'line',
-          stack: '总量',
           areaStyle: {},
-          data: [150, 232, 201, 154, 190, 330, 410]
+          data: incomeMoney
         },
         {
-          name: '直接访问',
+          name: '支出金额',
           type: 'line',
-          stack: '总量',
           areaStyle: {},
-          data: [320, 332, 301, 334, 390, 330, 320]
-        },
-        {
-          name: '搜索引擎',
-          type: 'line',
-          stack: '总量',
-          label: {
-            normal: {
-              show: true,
-              position: 'top'
-            }
-          },
-          areaStyle: {},
-          data: [820, 932, 901, 934, 1290, 1330, 1320]
+          data: expenseMoney
         }
       ]
     };
