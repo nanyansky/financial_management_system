@@ -15,7 +15,7 @@ public interface IncomeService {
     public JSONObject getIncomeList();
     public JSONObject getIncomeListByPage(int page, int limit);
     public JSONObject getIncomeListByUserName(String userName,int page,int limit);
-    public JSONObject searchIncome(String userName,int incomeTypeId,Timestamp startTime, Timestamp endTime,int page, int limit);
+    public JSONObject searchIncome(String userName,String userNameAcc, int incomeTypeId,Timestamp startTime, Timestamp endTime,int page, int limit);
     public JSONObject addIncome(String userName, int incomeTypeId, Timestamp incomeTime, String incomeContent, double incomeAmount);
     public JSONObject deleteIncomeById(int id);
     public JSONObject editIncome(String userName,int id,int incomeTypeId, Timestamp incomeTime, String incomeContent,double incomeAmount,int isDeleted);

@@ -47,7 +47,7 @@ public class IncomeTypeDao {
      */
     public List<IncomeType> getIncomeTypeList(){
         Session currentSession = sessionFactory.getCurrentSession();
-        Query query = currentSession.createQuery("from IncomeType where isDeleted != 1");
+        Query query = currentSession.createQuery("from IncomeType where isDeleted != 1 order by createTime desc");
         return query.list();
     }
 
@@ -61,7 +61,7 @@ perPageRows
      */
     public List<IncomeType> getIncomeTypeListByPage(int currentPage,int perPageRows){
         Session currentSession = sessionFactory.getCurrentSession();
-        Query query = currentSession.createQuery("from IncomeType where isDeleted != 1");
+        Query query = currentSession.createQuery("from IncomeType where isDeleted != 1 order by createTime desc");
         query.setFirstResult(perPageRows*(currentPage-1)).setMaxResults(perPageRows);
         return query.list();
     }
@@ -78,7 +78,7 @@ perPageRows
     public List<IncomeType> getIncomeTypeListByName(String name,int currentPage,int perPageRows) {
         Session session = sessionFactory.getCurrentSession();
         String s = "%"+name+"%";
-        Query query = session.createQuery("from IncomeType where name like :query and isDeleted != 1").setParameter("query",s);
+        Query query = session.createQuery("from IncomeType where name like :query and isDeleted != 1 order by createTime desc").setParameter("query",s);
         query.setFirstResult(perPageRows*(currentPage-1)).setMaxResults(perPageRows);
         return query.list();
     }

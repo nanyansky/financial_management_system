@@ -48,6 +48,46 @@
       ]
     },
     {
+      "title": "收入管理",
+      "icon": "fa fa-wallet",
+      "href": "",
+      "target": "_self",
+      "child": [
+        {
+          "title": "收入列表",
+          "href": "/user/incomeTable.jsp",
+          "icon": "fa fa-list-alt",
+          "target": "_self"
+        },
+        {
+          "title": "我的收入",
+          "href": "/user/my-income.jsp",
+          "icon": "fa fa-wallet",
+          "target": "_self"
+        }
+      ]
+    },
+    {
+      "title": "支出管理",
+      "icon": "fas fa-hand-holding-usd",
+      "href": "",
+      "target": "_self",
+      "child": [
+        {
+          "title": "支出列表",
+          "href": "/user/expenseTable.jsp",
+          "icon": "fa fa-list-alt",
+          "target": "_self"
+        },
+        {
+          "title": "我的支出",
+          "href": "/user/my-expense.jsp",
+          "icon": "fas fa-hand-holding-usd",
+          "target": "_self"
+        }
+      ]
+    },
+    {
       "title": "统计",
       "href": "/user/tongji.jsp",
       "icon": "fa fa-pie-chart",

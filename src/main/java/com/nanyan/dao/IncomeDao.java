@@ -53,7 +53,7 @@ public class IncomeDao {
      */
     public List<Income> getIncomeList(){
         Session currentSession = sessionFactory.getCurrentSession();
-        Query query = currentSession.createQuery("from Income where isDeleted != 1");
+        Query query = currentSession.createQuery("from Income where isDeleted != 1 order by incomeTime desc");
         return query.list();
     }
 
@@ -67,7 +67,7 @@ perPageRows
      */
     public List<Income> getIncomeListByPage(int currentPage, int perPageRows){
         Session currentSession = sessionFactory.getCurrentSession();
-        Query query = currentSession.createQuery("from Income where isDeleted != 1");
+        Query query = currentSession.createQuery("from Income where isDeleted != 1 order by incomeTime desc");
         query.setFirstResult(perPageRows*(currentPage-1)).setMaxResults(perPageRows);
         return query.list();
     }
@@ -84,17 +84,18 @@ perPageRows
     public List<Income> getIncomeListByUserName(String username,int currentPage,int perPageRows){
         Session session = sessionFactory.getCurrentSession();
         String s = "%"+username+"%";
-        Query query = session.createQuery("from Income where userName like :query and isDeleted != 1").setParameter("query",s);
+        Query query = session.createQuery("from Income where userName like :query and isDeleted != 1 order by incomeTime desc").setParameter("query",s);
         query.setFirstResult(perPageRows*(currentPage-1)).setMaxResults(perPageRows);
         return query.list();
     }
 
-    public List<Income> searchIncome(String username, int incomeTypeId, Timestamp startTime, Timestamp endTime, int currentPage, int perPageRows){
+    public List<Income> searchIncome(String username,String userNameAcc, int incomeTypeId, Timestamp startTime, Timestamp endTime, int currentPage, int perPageRows){
 
         Session currentSession = sessionFactory.getCurrentSession();
 
         Map<String, Object> hqlQueryMap = new HashMap<>();
         hqlQueryMap.put("username",username);
+        hqlQueryMap.put("userNameAcc",userNameAcc);
         hqlQueryMap.put("incomeTypeId",incomeTypeId);
         hqlQueryMap.put("startTime",startTime);
         hqlQueryMap.put("endTime",endTime);
@@ -103,11 +104,15 @@ perPageRows
         StringBuilder hql = new StringBuilder();
         hql.append("from Income where isDeleted != 1 ");
 
-        if(hqlQueryMap.get("username") != ""){
+        if(hqlQueryMap.get("username") != "" && hqlQueryMap.get("username") != null){
 //            System.out.println("username: " + hqlQueryMap.get("username"));
             hql.append(" and userName like :s");
         }
-        if ((int)hqlQueryMap.get("incomeTypeId") != -1){
+        if(hqlQueryMap.get("userNameAcc") != "" && hqlQueryMap.get("userNameAcc") != null){
+//            System.out.println("username: " + hqlQueryMap.get("username"));
+            hql.append(" and userName = :userNameAcc");
+        }
+        if ((int)hqlQueryMap.get("incomeTypeId") != -1 && (int)hqlQueryMap.get("incomeTypeId") != 0){
 //            System.out.println("isAdmin: " + hqlQueryMap.get("isAdmin"));
             hql.append(" and incomeTypeId =:incomeTypeId");
         }
@@ -117,18 +122,19 @@ perPageRows
         }
 
         Query query = currentSession.createQuery(hql.toString());
-//        System.out.println(hql.toString());
+        System.out.println(hql.toString());
         query.setProperties(hqlQueryMap);
         query.setFirstResult(perPageRows*(currentPage-1)).setMaxResults(perPageRows);
         return query.list();
     }
 
-    public int searchIncomeNumber(String username, int incomeTypeId, Timestamp startTime, Timestamp endTime){
+    public int searchIncomeNumber(String username,String userNameAcc, int incomeTypeId, Timestamp startTime, Timestamp endTime){
 
         Session currentSession = sessionFactory.getCurrentSession();
 
         Map<String, Object> hqlQueryMap = new HashMap<>();
         hqlQueryMap.put("username",username);
+        hqlQueryMap.put("userNameAcc",userNameAcc);
         hqlQueryMap.put("incomeTypeId",incomeTypeId);
         hqlQueryMap.put("startTime",startTime);
         hqlQueryMap.put("endTime",endTime);
@@ -137,11 +143,15 @@ perPageRows
         StringBuilder hql = new StringBuilder();
         hql.append("select count(*) from Income where isDeleted != 1 ");
 
-        if(hqlQueryMap.get("username") != ""){
+        if(hqlQueryMap.get("username") != "" && hqlQueryMap.get("username") != null){
 //            System.out.println("username: " + hqlQueryMap.get("username"));
             hql.append(" and userName like :s");
         }
-        if ((int)hqlQueryMap.get("incomeTypeId") != -1){
+        if(hqlQueryMap.get("userNameAcc") != "" && hqlQueryMap.get("userNameAcc") != null){
+//            System.out.println("username: " + hqlQueryMap.get("username"));
+            hql.append(" and userName = :userNameAcc");
+        }
+        if ((int)hqlQueryMap.get("incomeTypeId") != -1 && (int)hqlQueryMap.get("incomeTypeId") != 0){
 //            System.out.println("isAdmin: " + hqlQueryMap.get("isAdmin"));
             hql.append(" and incomeTypeId =:incomeTypeId");
         }
@@ -150,6 +160,7 @@ perPageRows
             hql.append(" and incomeTime between :startTime and :endTime");
         }
 
+        hql.append(" order by incomeTime desc");
         Query query = currentSession.createQuery(hql.toString());
 //        System.out.println(hql.toString());
         query.setProperties(hqlQueryMap);

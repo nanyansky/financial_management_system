@@ -51,7 +51,7 @@ public class ExpenseDao {
      */
     public List<Expense> getExpenseList(){
         Session currentSession = sessionFactory.getCurrentSession();
-        Query query = currentSession.createQuery("from Expense where isDeleted != 1");
+        Query query = currentSession.createQuery("from Expense where isDeleted != 1 order by expenseTime desc");
         return query.list();
     }
 
@@ -64,7 +64,7 @@ public class ExpenseDao {
      */
     public List<Expense> getExpenseListByPage(int currentPage,int perPageRows){
         Session currentSession = sessionFactory.getCurrentSession();
-        Query query = currentSession.createQuery("from Expense where isDeleted != 1");
+        Query query = currentSession.createQuery("from Expense where isDeleted != 1 order by expenseTime desc");
         query.setFirstResult(perPageRows*(currentPage-1)).setMaxResults(perPageRows);
         return query.list();
     }
@@ -81,30 +81,38 @@ public class ExpenseDao {
     public List<Expense> getExpenseListByUserName(String username,int currentPage,int perPageRows){
         Session session = sessionFactory.getCurrentSession();
         String s = "%"+username+"%";
-        Query query = session.createQuery("from Expense where userName like :query and isDeleted != 1").setParameter("query",s);
+        Query query = session.createQuery("from Expense where userName like :query and isDeleted != 1 order by expenseTime desc").setParameter("query",s);
         query.setFirstResult(perPageRows*(currentPage-1)).setMaxResults(perPageRows);
         return query.list();
     }
 
-    public List<Expense> searchExpense(String username, int expenseTypeId, Timestamp startTime, Timestamp endTime, int currentPage, int perPageRows){
+    public List<Expense> searchExpense(String username,String userNameAcc, int expenseTypeId, Timestamp startTime, Timestamp endTime, int currentPage, int perPageRows){
+
 
         Session currentSession = sessionFactory.getCurrentSession();
 
         Map<String, Object> hqlQueryMap = new HashMap<>();
         hqlQueryMap.put("username",username);
+        hqlQueryMap.put("userNameAcc",userNameAcc);
         hqlQueryMap.put("expenseTypeId",expenseTypeId);
         hqlQueryMap.put("startTime",startTime);
         hqlQueryMap.put("endTime",endTime);
         hqlQueryMap.put("s","%"+username+"%");
 
+        System.out.println(hqlQueryMap);
+
         StringBuilder hql = new StringBuilder();
         hql.append("from Expense where isDeleted != 1 ");
 
-        if(hqlQueryMap.get("username") != ""){
+        if(hqlQueryMap.get("username") != "" && hqlQueryMap.get("username") != null){
 //            System.out.println("username: " + hqlQueryMap.get("username"));
             hql.append(" and userName like :s");
         }
-        if ((int)hqlQueryMap.get("expenseTypeId") != -1){
+        if(hqlQueryMap.get("userNameAcc") != "" && hqlQueryMap.get("userNameAcc") != null){
+//            System.out.println("username: " + hqlQueryMap.get("username"));
+            hql.append(" and userName =:userNameAcc");
+        }
+        if ((int)hqlQueryMap.get("expenseTypeId") != -1 && (int)hqlQueryMap.get("expenseTypeId") != 0){
 //            System.out.println("isAdmin: " + hqlQueryMap.get("isAdmin"));
             hql.append(" and expenseTypeId =:expenseTypeId");
         }
@@ -113,6 +121,7 @@ public class ExpenseDao {
             hql.append(" and expenseTime between :startTime and :endTime");
         }
 
+        hql.append(" order by expenseTime desc");
         Query query = currentSession.createQuery(hql.toString());
 //        System.out.println(hql.toString());
         query.setProperties(hqlQueryMap);
@@ -121,12 +130,13 @@ public class ExpenseDao {
     }
 
 
-    public int searchExpenseNumber(String username, int expenseTypeId, Timestamp startTime, Timestamp endTime){
+    public int searchExpenseNumber(String username,String userNameAcc, int expenseTypeId, Timestamp startTime, Timestamp endTime){
 
         Session currentSession = sessionFactory.getCurrentSession();
 
         Map<String, Object> hqlQueryMap = new HashMap<>();
         hqlQueryMap.put("username",username);
+        hqlQueryMap.put("userNameAcc",userNameAcc);
         hqlQueryMap.put("expenseTypeId",expenseTypeId);
         hqlQueryMap.put("startTime",startTime);
         hqlQueryMap.put("endTime",endTime);
@@ -135,11 +145,15 @@ public class ExpenseDao {
         StringBuilder hql = new StringBuilder();
         hql.append("select count(*) from Expense where isDeleted != 1 ");
 
-        if(hqlQueryMap.get("username") != ""){
+        if(hqlQueryMap.get("username") != "" && hqlQueryMap.get("username") != null){
 //            System.out.println("username: " + hqlQueryMap.get("username"));
             hql.append(" and userName like :s");
         }
-        if ((int)hqlQueryMap.get("expenseTypeId") != -1){
+        if(hqlQueryMap.get("userNameAcc") != "" && hqlQueryMap.get("userNameAcc") != null){
+//            System.out.println("username: " + hqlQueryMap.get("username"));
+            hql.append(" and userName =:userNameAcc");
+        }
+        if ((int)hqlQueryMap.get("expenseTypeId") != -1 && (int)hqlQueryMap.get("expenseTypeId") != 0){
 //            System.out.println("isAdmin: " + hqlQueryMap.get("isAdmin"));
             hql.append(" and expenseTypeId =:expenseTypeId");
         }

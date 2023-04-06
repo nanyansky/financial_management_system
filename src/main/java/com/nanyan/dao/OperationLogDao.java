@@ -46,14 +46,14 @@ public class OperationLogDao {
     //日志列表
     public List<OperationLog> getLogListByPage(int currentPage,int perPageRows){
         Session currentSession = sessionFactory.getCurrentSession();
-        Query query = currentSession.createQuery("from OperationLog");
+        Query query = currentSession.createQuery("from OperationLog order by operationTime desc");
         query.setFirstResult(perPageRows*(currentPage-1)).setMaxResults(perPageRows);
         return query.list();
     }
 
     public List<OperationLog> getLogList(){
         Session currentSession = sessionFactory.getCurrentSession();
-        Query query = currentSession.createQuery("from OperationLog");
+        Query query = currentSession.createQuery("from OperationLog order by operationTime desc");
         return query.list();
     }
 
@@ -61,7 +61,7 @@ public class OperationLogDao {
     public List<OperationLog> getLogListByUserName(String username,int currentPage,int perPageRows){
         Session currentSession = sessionFactory.getCurrentSession();
         String s = "%"+username+"%";
-        Query query = currentSession.createQuery("from OperationLog where userName like :username").setParameter("username", s);
+        Query query = currentSession.createQuery("from OperationLog where userName like :username order by operationTime desc").setParameter("username", s);
         query.setFirstResult(perPageRows*(currentPage-1)).setMaxResults(perPageRows);
         return query.list();
     }
@@ -81,7 +81,7 @@ public class OperationLogDao {
         StringBuilder hql = new StringBuilder();
         hql.append("from OperationLog where 1=1");
 
-        if(hqlQueryMap.get("username") != ""){
+        if(hqlQueryMap.get("username") != "" && hqlQueryMap.get("username") != null){
 //            System.out.println("username: " + hqlQueryMap.get("username"));
             hql.append(" and userName like :s");
         }
@@ -90,6 +90,7 @@ public class OperationLogDao {
             hql.append(" and operationTime between :startTime and :endTime");
         }
 
+        hql.append(" order by operationTime desc");
         Query query = currentSession.createQuery(hql.toString());
 //        System.out.println(hql.toString());
         query.setProperties(hqlQueryMap);
@@ -111,7 +112,7 @@ public class OperationLogDao {
         StringBuilder hql = new StringBuilder();
         hql.append("select count(*) from OperationLog where 1=1");
 
-        if(hqlQueryMap.get("username") != ""){
+        if(hqlQueryMap.get("username") != "" && hqlQueryMap.get("username") != null){
 //            System.out.println("username: " + hqlQueryMap.get("username"));
             hql.append(" and userName like :s");
         }

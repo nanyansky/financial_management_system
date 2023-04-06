@@ -70,8 +70,7 @@ public class UserAction extends ActionSupport {
      * @date:  15:50
      */
     @Action(value = "userRegister", results = {
-            @Result(type = "json",params = {"root","jsonObject"})
-    })
+            @Result(type = "json",params = {"root","jsonObject"})})
     public String userRegister(){
         jsonObject = userService.userRegister(userName, password, email,sex, phoneNumber, captcha);
         return SUCCESS;
@@ -86,8 +85,7 @@ public class UserAction extends ActionSupport {
      * @date:  21:23
      */
     @Action(value = "userLogin", results = {
-            @Result(type = "json",params = {"root","jsonObject"})
-    })
+            @Result(type = "json",params = {"root","jsonObject"})})
     public String userLogin(){
         jsonObject = userService.userLogin(userName,password,captcha);
         return SUCCESS;

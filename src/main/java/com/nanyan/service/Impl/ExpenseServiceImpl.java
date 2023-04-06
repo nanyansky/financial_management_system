@@ -120,10 +120,10 @@ public class ExpenseServiceImpl implements ExpenseService {
     }
 
     @Override
-    public JSONObject searchExpense(String username, int expenseTypeId, Timestamp startTime, Timestamp endTime, int page, int limit) {
+    public JSONObject searchExpense(String username,String userNameAcc, int expenseTypeId, Timestamp startTime, Timestamp endTime, int page, int limit) {
         Map<String, Object> dataMap = new HashMap<String, Object>();
         try {
-            List<Expense> list = expenseDao.searchExpense(username,expenseTypeId,startTime,endTime,page,limit);
+            List<Expense> list = expenseDao.searchExpense(username,userNameAcc,expenseTypeId,startTime,endTime,page,limit);
 
             Map<String,Object> tmpMap = new HashMap<>();
 
@@ -132,7 +132,7 @@ public class ExpenseServiceImpl implements ExpenseService {
             }
 
             dataMap.put("code",0);
-            dataMap.put("count",expenseDao.searchExpenseNumber(username, expenseTypeId, startTime, endTime));
+            dataMap.put("count",expenseDao.searchExpenseNumber(username,userNameAcc, expenseTypeId, startTime, endTime));
             dataMap.put("data",tmpMap);
             return new  JSONObject(dataMap);
         } catch (Exception e) {

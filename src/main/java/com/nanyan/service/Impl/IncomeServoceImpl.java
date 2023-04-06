@@ -122,10 +122,10 @@ public class IncomeServoceImpl implements IncomeService {
 
     @Override
     @OptLog(content = "搜索收入账单", operationType = OperationType.SELECT)
-    public JSONObject searchIncome(String userName, int incomeTypeId, Timestamp startTime, Timestamp endTime,int page, int limit) {
+    public JSONObject searchIncome(String userName,String userNameAcc, int incomeTypeId, Timestamp startTime, Timestamp endTime,int page, int limit) {
         Map<String, Object> dataMap = new HashMap<String, Object>();
         try {
-            List<Income> list = incomeDao.searchIncome(userName,incomeTypeId,startTime,endTime,page,limit);
+            List<Income> list = incomeDao.searchIncome(userName,userNameAcc,incomeTypeId,startTime,endTime,page,limit);
 
             Map<String,Object> tmpMap = new HashMap<>();
 
@@ -134,7 +134,7 @@ public class IncomeServoceImpl implements IncomeService {
             }
 
             dataMap.put("code",0);
-            dataMap.put("count",incomeDao.searchIncomeNumber(userName,incomeTypeId,startTime,endTime));
+            dataMap.put("count",incomeDao.searchIncomeNumber(userName,userNameAcc,incomeTypeId,startTime,endTime));
             dataMap.put("data",tmpMap);
             return new  JSONObject(dataMap);
         } catch (Exception e) {

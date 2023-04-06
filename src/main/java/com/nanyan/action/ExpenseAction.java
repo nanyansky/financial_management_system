@@ -8,7 +8,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
 
-import javax.persistence.Column;
 import java.sql.Timestamp;
 
 /**
@@ -25,6 +24,7 @@ import java.sql.Timestamp;
 public class ExpenseAction extends ActionSupport {
     private int id;
     private String userName;
+    private String userNameAcc;
     private int expenseTypeId;
 
     private Timestamp expenseTime;
@@ -71,7 +71,7 @@ public class ExpenseAction extends ActionSupport {
             results = {@Result(type = "json",params = {"root","jsonObject"})},
             interceptorRefs = {@InterceptorRef(value = "LoginInterceptorStack")})
     public String searchExpense(){
-        jsonObject = expenseService.searchExpense(userName,expenseTypeId,startTime,endTime,page,limit);
+        jsonObject = expenseService.searchExpense(userName,userNameAcc,expenseTypeId,startTime,endTime,page,limit);
         return SUCCESS;
     }
 
@@ -111,6 +111,13 @@ public class ExpenseAction extends ActionSupport {
     }
     public String getUserName() {
         return userName;
+    }
+
+    public String getUserNameAcc() {
+        return userNameAcc;
+    }
+    public void setUserNameAcc(String userNameAcc) {
+        this.userNameAcc = userNameAcc;
     }
     public void setUserName(String userName) {
         this.userName = userName;

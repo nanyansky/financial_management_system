@@ -150,6 +150,7 @@
             elem: '#currentTableId',
             url: '/expense/getExpenseListByPage.action',
             toolbar: '#toolbarDemo',
+            defaultToolbar: ['filter', 'exports'],
             cols: [[
                 { templet: function (d) {return parseInt(d.LAY_TABLE_INDEX) + 1;}, title: '序号', width: 80, fixed: 'left' }//序号列
                 // {field: 'id', title: 'ID', width:80,align: 'center'}

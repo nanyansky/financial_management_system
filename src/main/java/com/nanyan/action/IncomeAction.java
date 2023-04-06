@@ -25,6 +25,7 @@ import java.sql.Timestamp;
 public class IncomeAction extends ActionSupport {
     private int id;
     private String userName;
+    private String userNameAcc;
     private int incomeTypeId;
     private Timestamp incomeTime;
     private Timestamp createTime;
@@ -72,7 +73,7 @@ public class IncomeAction extends ActionSupport {
             results = {@Result(type = "json",params = {"root","jsonObject"})},
             interceptorRefs = {@InterceptorRef(value = "LoginInterceptorStack")})
     public String searchIncome(){
-        jsonObject = incomeService.searchIncome(userName,incomeTypeId,startTime,endTime,page,limit);
+        jsonObject = incomeService.searchIncome(userName,userNameAcc,incomeTypeId,startTime,endTime,page,limit);
         return SUCCESS;
     }
 
@@ -109,6 +110,13 @@ public class IncomeAction extends ActionSupport {
     }
     public String getUserName() {
         return userName;
+    }
+
+    public String getUserNameAcc() {
+        return userNameAcc;
+    }
+    public void setUserNameAcc(String userNameAcc) {
+        this.userNameAcc = userNameAcc;
     }
     public void setUserName(String userName) {
         this.userName = userName;

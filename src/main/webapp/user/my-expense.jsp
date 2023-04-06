@@ -1,8 +1,8 @@
 <%--
   Created by IntelliJ IDEA.
   User: nanyan
-  Date: 2023/4/2
-  Time: 16:20
+  Date: 2023/4/6
+  Time: 12:42
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
@@ -10,7 +10,7 @@
 <html>
 <head>
     <meta charset="utf-8">
-    <title>收入账单管理</title>
+    <title>我的支出账单</title>
     <meta name="renderer" content="webkit">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
@@ -28,10 +28,10 @@
                 <form class="layui-form layui-form-pane" action="">
                     <div class="layui-form-item">
 
-                        <div class="layui-inline">
-                            <label class="layui-form-label" style="width: 80px">用户名</label>
+                        <%-- 隐藏的div，方便查找只属于用户自己的账单 --%>
+                        <div class="layui-inline" style="display: none">
                             <div class="layui-input-inline" style="width: 90px">
-                                <input type="text" name="userName" autocomplete="off" class="layui-input">
+                                <input type="text" name="userNameAcc" value="${sessionScope.user.userName}" autocomplete="off" class="layui-input">
                             </div>
                         </div>
 
@@ -39,14 +39,14 @@
                             <label class="layui-form-label" style="width: 80px">分类</label>
                             <div class="layui-input-inline" style="width: 90px">
 <%--                                <input type="text" name="userName" autocomplete="off" class="layui-input">--%>
-                                <select name="incomeTypeId" lay-verify="" id="fenlei-2">
+                                <select name="expenseTypeId" lay-verify="" id="fenlei-2">
                                     <option value="-1">请选择一个分类</option>
                                 </select>
                             </div>
                         </div>
 
                         <div class="layui-inline">
-                            <label class="layui-form-label" style="width: 140px">收入日期范围</label>
+                            <label class="layui-form-label" style="width: 140px">支出日期范围</label>
                             <div class="layui-inline" id="searchTime">
                                 <div class="layui-input-inline" style="width: 160px">
                                     <input type="text" id="startTime" name="startTime" class="layui-input" placeholder="开始日期">
@@ -87,43 +87,37 @@
                 <div class="layui-form-item">
                     <label class="layui-form-label">用户名</label>
                     <div class="layui-input-block">
-                        <input type="hidden" name="id">
-                        <select name="userName" lay-verify="" id="userfl">
-                            <option value="">请选择一个用户</option>
-                        </select>
-<%--                        <input type="hidden" name="id">--%>
-<%--                        <input type="text" name="userName" lay-verify="required" autocomplete="off"--%>
-<%--                               placeholder="请输入用户名" class="layui-input">--%>
+                    <input type="text" name="userName" class="layui-input" value="${sessionScope.user.userName}" disabled="disabled">
                     </div>
                 </div>
 
                 <div class="layui-form-item">
-                    <label class="layui-form-label">收入分类</label>
+                    <label class="layui-form-label">支出分类</label>
                     <div class="layui-input-block">
-                        <select name="incomeTypeId" lay-verify="" id="fenlei-1">
+                        <select name="expenseTypeId" lay-verify="" id="fenlei-1">
                             <option value="">请选择一个分类</option>
                         </select>
                     </div>
                 </div>
 
                 <div class="layui-form-item">
-                    <label class="layui-form-label required">收入金额</label>
+                    <label class="layui-form-label required">支出金额</label>
                     <div class="layui-input-block">
-                        <input type="number" name="incomeAmount" lay-verify="required" lay-reqtext="金额为空" placeholder="请输入收入金额" value="" class="layui-input">
+                        <input type="number" name="expenseAmount" lay-verify="required" lay-reqtext="金额为空" placeholder="请输入支出金额" value="" class="layui-input">
                     </div>
                 </div>
 
                 <div class="layui-form-item">
-                    <label class="layui-form-label">收入时间</label>
+                    <label class="layui-form-label">支出时间</label>
                     <div class="layui-input-block">
-                        <input name="incomeTime" type="text" class="layui-input" id="incomeTime">
+                        <input name="expenseTime" type="text" class="layui-input" id="expenseTime">
                     </div>
                 </div>
 
                 <div class="layui-form-item">
-                    <label class="layui-form-label">收入说明</label>
+                    <label class="layui-form-label">支出说明</label>
                     <div class="layui-input-block">
-                        <textarea name="incomeContent" required lay-verify="required" placeholder="请输入支出说明" class="layui-textarea"></textarea>
+                        <textarea name="expenseContent" required lay-verify="required" placeholder="请输入支出说明" class="layui-textarea"></textarea>
                     </div>
                 </div>
 
@@ -153,19 +147,19 @@
 
         var tableIns = table.render({
             elem: '#currentTableId',
-            url: '/income/getIncomeListByPage.action',
+            url: '/expense/searchExpense.action?userNameAcc=${sessionScope.user.userName}',
             toolbar: '#toolbarDemo',
             defaultToolbar: ['filter', 'exports'],
             cols: [[
                 { templet: function (d) {return parseInt(d.LAY_TABLE_INDEX) + 1;}, title: '序号', width: 80, fixed: 'left' }//序号列
                 // {field: 'id', title: 'ID', width:80,align: 'center'}
                 ,{field: 'userName', title: '用户名', minWidth:120, align: 'center'}
-                ,{field: 'incomeTypeId',title: "收入分类",minWidth: 120, align: 'center',templet: function (d) {
+                ,{field: 'expenseTypeId',title: "支出分类",minWidth: 120, align: 'center',templet: function (d) {
                         let name = '';
                         $.ajax({
                             type: "GET",
-                            url: "/getIncomeTypeNameById.action",
-                            data: { id: d.incomeTypeId },
+                            url: "/getExpenseTypeNameById.action",
+                            data: { id: d.expenseTypeId },
                             dataType: "JSON",
                             async: false, //不能发送异步请求，否则 name无法赋值
                             success: function(result) {
@@ -175,10 +169,10 @@
                         });
                         return name;
                     }}
-                ,{field: 'incomeTime',title: "收入时间",minWidth: 120, align: 'center'}
+                ,{field: 'expenseTime',title: "支出时间",minWidth: 120, align: 'center'}
                 ,{field: 'createTime',title: "入账时间",minWidth: 120, align: 'center'}
-                ,{field: 'incomeAmount',title: "收入金额",minWidth: 120, align: 'center'}
-                ,{field: 'incomeContent',title: "收入备注",minWidth: 120, align: 'center'}
+                ,{field: 'expenseAmount',title: "支出金额",minWidth: 120, align: 'center'}
+                ,{field: 'expenseContent',title: "支出备注",minWidth: 120, align: 'center'}
                 ,{title: '操作', minWidth: 150, toolbar: '#currentTableBar', align: 'center'}
             ]],
             limits: [10, 15, 20, 25, 50, 100],
@@ -192,7 +186,7 @@
             console.log(data.field);
             //执行搜索重载
             tableIns.reload({
-                url: '/income/searchIncome.action',
+                url: '/expense/searchExpense.action',
                 method: "post",
                 page: {
                     curr: 1
@@ -234,14 +228,14 @@
         function openAddWindows() {
             mainIndex = layer.open({
                 type: 1,
-                title: "添加收入记录",
+                title: "添加支出记录",
                 area: ["800px","500px"],
                 content: $("#addOrUpdateWindow"),
                 success: function (){
                     //清空数据表单
                     $("#dataFrm")[0].reset();
                     //添加提交的请求
-                    url = "/income/addIncome.action"
+                    url = "/expense/addExpense.action"
                 }
             })
         }
@@ -251,14 +245,14 @@
         function openEditWindows(data) {
             mainIndex = layer.open({
                 type: 1,
-                title: "修改收入记录",
+                title: "修改支出记录",
                 area: ["800px","500px"],
                 content: $("#addOrUpdateWindow"),
                 success: function (){
                     //表单数据回写
                     form.val("dataFrm",data)
                     //添加修改的请求
-                    url = "/income/editIncome.action"
+                    url = "/expense/editExpense.action"
                 }
             })
         }
@@ -267,7 +261,7 @@
         function deleteById(data){
             layer.confirm("确定要删除该条记录吗？",{icon: 3,title: '提示'},function (index) {
                 //发送ajax请求删除
-                $.get("/income/deleteIncomeById.action",{"id":data.id},function (result){
+                $.get("/expense/deleteExpenseById.action",{"id":data.id},function (result){
                     if (result.code === 1){
                         layer.msg(result.message);
                         //表格刷新
@@ -297,7 +291,7 @@
 
         //执行一个laydate实例
         laydate.render({
-            elem: '#incomeTime'//指定元素
+            elem: '#expenseTime'//指定元素
             ,type: 'datetime'
         });
 
@@ -311,7 +305,7 @@
 
         $.ajax({
             type: "GET",
-            url: "/getIncomeTypeList.action",
+            url: "/getExpenseTypeList.action",
             dataType: "JSON",
             success: function(result) {
                 // console.log(result);

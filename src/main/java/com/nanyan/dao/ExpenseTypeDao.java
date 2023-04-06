@@ -48,7 +48,7 @@ public class ExpenseTypeDao {
      */
     public List<ExpenseType> getExpenseTypeList(){
         Session currentSession = sessionFactory.getCurrentSession();
-        Query query = currentSession.createQuery("from ExpenseType where isDeleted != 1");
+        Query query = currentSession.createQuery("from ExpenseType where isDeleted != 1 order by createTime desc");
         return query.list();
     }
 
@@ -62,7 +62,7 @@ perPageRows
      */
     public List<ExpenseType> getExpenseTypeListByPage(int currentPage,int perPageRows){
         Session currentSession = sessionFactory.getCurrentSession();
-        Query query = currentSession.createQuery("from ExpenseType where isDeleted != 1");
+        Query query = currentSession.createQuery("from ExpenseType where isDeleted !=  order by createTime desc");
         query.setFirstResult(perPageRows*(currentPage-1)).setMaxResults(perPageRows);
         return query.list();
     }
@@ -79,7 +79,7 @@ perPageRows
     public List<ExpenseType> getExpenseTypeListByName(String name,int currentPage,int perPageRows) {
         Session session = sessionFactory.getCurrentSession();
         String s = "%"+name+"%";
-        Query query = session.createQuery("from ExpenseType where name like :query and isDeleted != 1").setParameter("query",s);
+        Query query = session.createQuery("from ExpenseType where name like :query and isDeleted != 1 order by createTime desc").setParameter("query",s);
         query.setFirstResult(perPageRows*(currentPage-1)).setMaxResults(perPageRows);
         return query.list();
     }

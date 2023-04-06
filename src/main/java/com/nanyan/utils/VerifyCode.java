@@ -24,7 +24,7 @@ public class VerifyCode {
     private Random r = new Random();
     private String[] fontNames  = {"宋体", "华文楷体", "黑体", "华文新魏", "华文隶书", "微软雅黑", "楷体_GB2312"};
 
-    private String codes  = "23456789abcdefghjklmnpqrstuvwxyzABCDEFGHJKLMNPQRSTUVWXYZ";//去掉了1,0,i,o几个容易混淆的字符
+    private String codes  = "23456789abcdefghjkmnpqrstuvwxyzABCDEFGHJKLMNPQRSTUVWXYZ";//去掉了1,0,i,o几个容易混淆的字符
     private Color bgColor  = new Color(240, 240, 240);
     private String text ;
 
@@ -44,7 +44,7 @@ public class VerifyCode {
     }
 
     private void drawLine (BufferedImage image) {
-        int num  = 5;
+        int num  = 2;
         Graphics2D g2 = (Graphics2D)image.getGraphics();
         for(int i = 0; i < num; i++) {
             int x1 = r.nextInt(w);
