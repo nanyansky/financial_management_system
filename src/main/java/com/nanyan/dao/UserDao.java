@@ -253,4 +253,11 @@ newPwd
         query.executeUpdate();
     }
 
+    public List<User> getAllAdmin(){
+        Session currentSession = sessionFactory.getCurrentSession();
+        Query query = currentSession.createQuery("from User where isDeleted != 1 and isAdmin = 1");
+        return query.list();
+
+    }
+
 }

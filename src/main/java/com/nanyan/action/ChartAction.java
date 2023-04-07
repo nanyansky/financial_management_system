@@ -43,6 +43,22 @@ public class ChartAction extends ActionSupport {
         return SUCCESS;
     }
 
+    @Action(value = "getIncomeTypeData",
+            results = {@Result(type = "json",params = {"root","jsonObject"})},
+            interceptorRefs = {@InterceptorRef(value = "LoginInterceptorStack")})
+    public String getIncomeTypeData(){
+        jsonObject = chartService.getIncomeTypeData();
+        return SUCCESS;
+    }
+
+    @Action(value = "getExpenseTypeData",
+            results = {@Result(type = "json",params = {"root","jsonObject"})},
+            interceptorRefs = {@InterceptorRef(value = "LoginInterceptorStack")})
+    public String getExpenseTypeData(){
+        jsonObject = chartService.getExpenseTypeData();
+        return SUCCESS;
+    }
+
 
 
     public JSONObject getJsonObject() {

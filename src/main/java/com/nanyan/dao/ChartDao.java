@@ -1,7 +1,9 @@
 package com.nanyan.dao;
 
 import com.nanyan.entity.chart.ExpenseCountChart;
+import com.nanyan.entity.chart.ExpenseTypeChart;
 import com.nanyan.entity.chart.IncomeCountChart;
+import com.nanyan.entity.chart.IncomeTypeChart;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.query.Query;
@@ -66,6 +68,30 @@ public class ChartDao {
 
         Query query = currentSession.createNativeQuery(String.valueOf(hql)).addScalar("count", IntegerType.INSTANCE).addScalar("money", DoubleType.INSTANCE).addScalar("date", StringType.INSTANCE);
         query.setResultTransformer(Transformers.aliasToBean(ExpenseCountChart.class));
+        return query.list();
+    }
+
+    public List<IncomeTypeChart> getIncomeTypeData(){
+        Session currentSession = sessionFactory.getCurrentSession();
+        StringBuilder sql = new StringBuilder("select t.typeName, count(income_type_id) as typeCount,sum(income_amount) as typeMoney\n" +
+                "from income,(select name as typeName,id from income_type)t\n" +
+                "where income_type_id = t.id\n" +
+                "group by income_type_id");
+
+        Query query = currentSession.createNativeQuery(sql.toString()).addScalar("typeName",StringType.INSTANCE).addScalar("typeCount",IntegerType.INSTANCE).addScalar("typeMoney",DoubleType.INSTANCE);
+        query.setResultTransformer(Transformers.aliasToBean(IncomeTypeChart.class));
+        return query.list();
+    }
+
+    public List<ExpenseTypeChart> getExpenseTypeData(){
+        Session currentSession = sessionFactory.getCurrentSession();
+        StringBuilder sql = new StringBuilder("select t.typeName, count(expense_type_id) as typeCount,sum(expense_amount) as typeMoney\n" +
+                "from expense,(select name as typeName,id from expense_type)t\n" +
+                "where expense.expense_type_id = t.id\n" +
+                "group by expense_type_id");
+
+        Query query = currentSession.createNativeQuery(sql.toString()).addScalar("typeName",StringType.INSTANCE).addScalar("typeCount",IntegerType.INSTANCE).addScalar("typeMoney",DoubleType.INSTANCE);
+        query.setResultTransformer(Transformers.aliasToBean(ExpenseTypeChart.class));
         return query.list();
     }
 }

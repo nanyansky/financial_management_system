@@ -4,12 +4,15 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.nanyan.dao.ChartDao;
 import com.nanyan.entity.chart.ExpenseCountChart;
+import com.nanyan.entity.chart.ExpenseTypeChart;
 import com.nanyan.entity.chart.IncomeCountChart;
+import com.nanyan.entity.chart.IncomeTypeChart;
 import com.nanyan.service.ChartService;
 import com.nanyan.utils.GetSevenDate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.jws.Oneway;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -101,5 +104,71 @@ public class ChartServiceImpl implements ChartService {
 //        System.out.println(tmpMap);
         dataMap.put("data",tmpMap);
         return new JSONObject(dataMap);
+    }
+
+    @Override
+    public JSONObject getIncomeTypeData() {
+        List<IncomeTypeChart> incomeTypeData = chartDao.getIncomeTypeData();
+
+//        List<List<Map<String,Object>>> sumList = new ArrayList<>();
+        List<Map<String,Object>> countList = new ArrayList<>();
+        List<Map<String,Object>> moneyList = new ArrayList();
+
+        Map<String,Object> sumMap = new HashMap<>();
+
+        for (IncomeTypeChart in:incomeTypeData) {
+            Map<String,Object> map1 = new HashMap<>();
+            Map<String,Object> map2 = new HashMap<>();
+            map1.put("value",in.getTypeCount());
+            map1.put("name",in.getTypeName());
+
+            map2.put("value",in.getTypeMoney());
+            map2.put("name",in.getTypeName());
+
+            countList.add(map1);
+            moneyList.add(map2);
+        }
+//
+//        sumList.add(countList);
+//        sumList.add(moneyList);
+
+        sumMap.put("incomeCount",countList);
+        sumMap.put("incomeMoney",moneyList);
+
+//        System.out.println(sumMap);
+        return new JSONObject(new JSONObject(sumMap));
+    }
+
+    @Override
+    public JSONObject getExpenseTypeData() {
+        List<ExpenseTypeChart> expenseTypeData = chartDao.getExpenseTypeData();
+
+//        List<List<Map<String,Object>>> sumList = new ArrayList<>();
+        List<Map<String,Object>> countList = new ArrayList<>();
+        List<Map<String,Object>> moneyList = new ArrayList();
+
+        Map<String,Object> sumMap = new HashMap<>();
+
+        for (ExpenseTypeChart ex:expenseTypeData) {
+            Map<String,Object> map1 = new HashMap<>();
+            Map<String,Object> map2 = new HashMap<>();
+            map1.put("value",ex.getTypeCount());
+            map1.put("name",ex.getTypeName());
+
+            map2.put("value",ex.getTypeMoney());
+            map2.put("name",ex.getTypeName());
+
+            countList.add(map1);
+            moneyList.add(map2);
+        }
+//
+//        sumList.add(countList);
+//        sumList.add(moneyList);
+
+        sumMap.put("expenseCount",countList);
+        sumMap.put("expenseMoney",moneyList);
+
+//        System.out.println(sumMap);
+        return new JSONObject(new JSONObject(sumMap));
     }
 }
