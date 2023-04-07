@@ -128,14 +128,24 @@
   <div id="echarts-records" style="background-color:#ffffff;min-height:400px;padding: 10px"></div>
 
 
-<%--  <div class="layui-row layui-col-space15">--%>
-<%--    <div class="layui-col-xs12 layui-col-md6">--%>
-<%--      <div id="echarts-dataset" style="background-color:#ffffff;min-height:300px;padding: 10px"></div>--%>
-<%--    </div>--%>
-<%--    <div class="layui-col-xs12 layui-col-md6">--%>
-<%--      <div id="echarts-map" style="background-color:#ffffff;min-height:300px;padding: 10px"></div>--%>
-<%--    </div>--%>
-<%--  </div>--%>
+  <div class="layui-row">
+    <div class="layui-col-md6">
+      <div id="echarts-pies-1" style="background-color:#ffffff;min-height:400px;padding: 10px"></div>
+    </div>
+    <div class="layui-col-md6">
+      <div id="echarts-pies-2" style="background-color:#ffffff;min-height:400px;padding: 10px"></div>
+    </div>
+  </div>
+
+  <div class="layui-row">
+    <div class="layui-col-md6">
+      <div id="echarts-pies-3" style="background-color:#ffffff;min-height:400px;padding: 10px"></div>
+    </div>
+    <div class="layui-col-md6">
+      <div id="echarts-pies-4" style="background-color:#ffffff;min-height:400px;padding: 10px"></div>
+    </div>
+  </div>
+
 
 
 </div>
@@ -193,8 +203,51 @@
       }
     })
 
-    console.log(incomeCount)
-    console.log(expenseCount)
+
+    //收入类型数据
+    var incomeTypeName = [];
+    var incomeTypeCountData = [];
+    var incomeTypeMoneyData = [];
+    //支出类型数据
+    var expenseTypeName = [];
+    var expenseTypeCountData = [];
+    var expenseTypeMoneyData = [];
+
+    //收入
+    $.ajax({
+      type: "post",
+      url: "/getIncomeTypeData.action",
+      async: false,
+      datatype: "json",
+      success: function (data) {
+        $.each(data.incomeMoney, function(i) {
+          incomeTypeName.push(data.incomeMoney[i].name)
+        })
+        incomeTypeCountData = data.incomeCount
+        incomeTypeMoneyData = data.incomeMoney
+        console.log(incomeTypeName)
+      }
+    })
+
+    //支出
+    $.ajax({
+      type: "post",
+      url: "/getExpenseTypeData.action",
+      async: false,
+      datatype: "json",
+      success: function (data) {
+        $.each(data.expenseMoney, function(i) {
+          expenseTypeName.push(data.expenseMoney[i].name)
+        })
+        expenseTypeCountData = data.expenseCount
+        expenseTypeMoneyData = data.expenseMoney
+      }
+    })
+
+
+
+
+
 
     /**
      * 报表功能
@@ -273,10 +326,11 @@
     /**
      * 玫瑰图表
      */
-    var echartsPies = echarts.init(document.getElementById('echarts-pies'), 'walden');
+
+    var echartsPies = echarts.init(document.getElementById('echarts-pies-1'), 'walden');
     var optionPies = {
       title: {
-        text: '指标名称-玫瑰图',
+        text: '收入分类（帐单数）',
         left: 'center'
       },
       tooltip: {
@@ -286,7 +340,8 @@
       legend: {
         orient: 'vertical',
         left: 'left',
-        data: ['直接访问', '邮件营销', '联盟广告', '视频广告', '搜索引擎']
+        data: incomeTypeName
+        // data: ['直接访问', '邮件营销', '联盟广告', '视频广告', '搜索引擎']
       },
       series: [
         {
@@ -295,13 +350,14 @@
           radius: '55%',
           center: ['50%', '60%'],
           roseType: 'radius',
-          data: [
-            {value: 335, name: '直接访问'},
-            {value: 310, name: '邮件营销'},
-            {value: 234, name: '联盟广告'},
-            {value: 135, name: '视频广告'},
-            {value: 368, name: '搜索引擎'}
-          ],
+          data: incomeTypeCountData,
+          // data: [
+          //   {value: 335, name: '直接访问'},
+          //   {value: 310, name: '邮件营销'},
+          //   {value: 234, name: '联盟广告'},
+          //   {value: 135, name: '视频广告'},
+          //   {value: 368, name: '搜索引擎'}
+          // ],
           emphasis: {
             itemStyle: {
               shadowBlur: 10,
@@ -313,6 +369,122 @@
       ]
     };
     echartsPies.setOption(optionPies);
+
+    var echartsPies = echarts.init(document.getElementById('echarts-pies-2'), 'walden');
+    var optionPies = {
+      title: {
+        text: '收入分类（金额数）',
+        left: 'center'
+      },
+      tooltip: {
+        trigger: 'item',
+        formatter: '{a} <br/>{b} : {c} ({d}%)'
+      },
+      legend: {
+        orient: 'vertical',
+        left: 'left',
+        data: incomeTypeName
+        // data: ['直接访问', '邮件营销', '联盟广告', '视频广告', '搜索引擎']
+      },
+      series: [
+        {
+          name: '访问来源',
+          type: 'pie',
+          radius: '55%',
+          center: ['50%', '60%'],
+          roseType: 'radius',
+          data: incomeTypeMoneyData,
+          // data: [
+          //   {value: 335, name: '直接访问'},
+          //   {value: 310, name: '邮件营销'},
+          //   {value: 234, name: '联盟广告'},
+          //   {value: 135, name: '视频广告'},
+          //   {value: 368, name: '搜索引擎'}
+          // ],
+          emphasis: {
+            itemStyle: {
+              shadowBlur: 10,
+              shadowOffsetX: 0,
+              shadowColor: 'rgba(0, 0, 0, 0.5)'
+            }
+          }
+        }
+      ]
+    };
+    echartsPies.setOption(optionPies);
+
+    var echartsPies = echarts.init(document.getElementById('echarts-pies-3'), 'walden');
+    var optionPies = {
+      title: {
+        text: '支出分类（帐单数）',
+        left: 'center'
+      },
+      tooltip: {
+        trigger: 'item',
+        formatter: '{a} <br/>{b} : {c} ({d}%)'
+      },
+      legend: {
+        orient: 'vertical',
+        left: 'left',
+        data: expenseTypeName
+        // data: ['直接访问', '邮件营销', '联盟广告', '视频广告', '搜索引擎']
+      },
+      series: [
+        {
+          name: '访问来源',
+          type: 'pie',
+          radius: '55%',
+          center: ['50%', '60%'],
+          roseType: 'radius',
+          data: expenseTypeCountData,
+          emphasis: {
+            itemStyle: {
+              shadowBlur: 10,
+              shadowOffsetX: 0,
+              shadowColor: 'rgba(0, 0, 0, 0.5)'
+            }
+          }
+        }
+      ]
+    };
+    echartsPies.setOption(optionPies);
+
+    var echartsPies = echarts.init(document.getElementById('echarts-pies-4'), 'walden');
+    var optionPies = {
+      title: {
+        text: '支出分类（金额数）',
+        left: 'center'
+      },
+      tooltip: {
+        trigger: 'item',
+        formatter: '{a} <br/>{b} : {c} ({d}%)'
+      },
+      legend: {
+        orient: 'vertical',
+        left: 'left',
+        data: expenseTypeName
+        // data: ['直接访问', '邮件营销', '联盟广告', '视频广告', '搜索引擎']
+      },
+      series: [
+        {
+          name: '访问来源',
+          type: 'pie',
+          radius: '55%',
+          center: ['50%', '60%'],
+          roseType: 'radius',
+          data: expenseTypeMoneyData,
+          emphasis: {
+            itemStyle: {
+              shadowBlur: 10,
+              shadowOffsetX: 0,
+              shadowColor: 'rgba(0, 0, 0, 0.5)'
+            }
+          }
+        }
+      ]
+    };
+    echartsPies.setOption(optionPies);
+
 
 
     /**

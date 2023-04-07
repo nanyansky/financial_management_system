@@ -166,7 +166,9 @@
                 console.log(result);
 
                 if(result.code === 1){
-                    layer.msg(result.message);
+                    setTimeout(function (){
+                        layer.msg(result.message);
+                    },2000)
                     location.href = "/login.jsp";
                 }
                 else{

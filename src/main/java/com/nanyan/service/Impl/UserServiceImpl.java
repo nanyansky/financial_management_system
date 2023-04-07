@@ -10,6 +10,7 @@ import com.nanyan.dao.IncomeDao;
 import com.nanyan.dao.UserDao;
 import com.nanyan.entity.User;
 import com.nanyan.service.UserService;
+import com.nanyan.utils.MailUtil;
 import com.nanyan.utils.OperationType;
 import org.apache.struts2.ServletActionContext;
 import org.springframework.stereotype.Service;
@@ -17,6 +18,7 @@ import org.springframework.stereotype.Service;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpSession;
 import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -62,6 +64,14 @@ public class UserServiceImpl implements UserService {
                 newUser.setSex(sex);
                 newUser.setPhoneNumber(phoneNumber);
                 userDao.addUser(newUser);
+
+                List<User> allAdmin = userDao.getAllAdmin();
+                List<String> mailList = new ArrayList<>();
+                for (User user: allAdmin){
+                    mailList.add(user.getEmail());
+                }
+                //通知管理员审核账号
+                MailUtil.sendMail(mailList,userName);
 
                 dataMap.put("code",1);
                 dataMap.put("message","注册成功！请等待管理员审核！");
@@ -334,6 +344,7 @@ public class UserServiceImpl implements UserService {
         Map<String, Object> dataMap = new HashMap<String, Object>();
         try {
             userDao.changeUserStatus(id,status);
+
             dataMap.put("message","操作成功！");
             return new JSONObject(dataMap);
         } catch (Exception e) {
