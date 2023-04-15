@@ -29,7 +29,7 @@
         },
         {
           "title": "我的收入统计",
-          "href": "/user/my-income.jsp",
+          "href": "/user/my-income-stats.jsp",
           "icon": "fa fa-pie-chart",
           "target": "_self"
         }
@@ -55,7 +55,7 @@
         },
         {
           "title": "我的支出统计",
-          "href": "/user/my-expense.jsp",
+          "href": "/user/my-expense-stats.jsp",
           "icon": "fa fa-pie-chart",
           "target": "_self"
         }
@@ -63,7 +63,7 @@
     },
     {
       "title": "统计",
-      "href": "/user/tongji.jsp",
+      "href": "/user/stats.jsp",
       "icon": "fa fa-pie-chart",
       "target": "_self"
     },

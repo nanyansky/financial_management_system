@@ -15,6 +15,7 @@ import org.springframework.stereotype.Controller;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpSession;
+import java.io.IOException;
 
 /**
  * @author nanyan
@@ -36,7 +37,7 @@ public class InitMenusAction extends ActionSupport {
 
     @Action(value = "returnMenus", results = {
             @Result(type = "json",params = {"root","jsonObject"})})
-    public String returnMenus(){
+    public String returnMenus() throws IOException {
         User user = (User) session.getAttribute("user");
         jsonObject = initMenusService.returnMenus(user.getIsAdmin());
         return SUCCESS;

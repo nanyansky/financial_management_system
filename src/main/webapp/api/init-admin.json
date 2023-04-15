@@ -10,6 +10,44 @@
   },
   "menuInfo": [
     {
+      "title": "常规管理",
+      "icon": "fa fa-address-book",
+      "href": "",
+      "target": "_self",
+      "child": [
+        {
+          "title": "用户管理",
+          "href": "/admin/userTable.jsp",
+          "icon": "fa fa-user",
+          "target": "_self"
+        },
+        {
+          "title": "收入管理",
+          "href": "/admin/income.jsp",
+          "icon": "fa fa-wallet",
+          "target": "_self"
+        },
+        {
+          "title": "支出管理",
+          "href": "/admin/expense.jsp",
+          "icon": "fas fa-hand-holding-usd",
+          "target": "_self"
+        },
+        {
+          "title": "支出类别管理",
+          "href": "/admin/expense_type.jsp",
+          "icon": "fa fa-list-alt",
+          "target": "_self"
+        },
+        {
+          "title": "收入类别管理",
+          "href": "/admin/income_type.jsp",
+          "icon": "fa fa-list-alt",
+          "target": "_self"
+        }
+      ]
+    },
+    {
       "title": "收入管理",
       "icon": "fa fa-wallet",
       "href": "",
@@ -29,7 +67,7 @@
         },
         {
           "title": "我的收入统计",
-          "href": "/user/my-income.jsp",
+          "href": "/user/my-income-stats.jsp",
           "icon": "fa fa-pie-chart",
           "target": "_self"
         }
@@ -55,7 +93,7 @@
         },
         {
           "title": "我的支出统计",
-          "href": "/user/my-expense.jsp",
+          "href": "/user/my-expense-stats.jsp",
           "icon": "fa fa-pie-chart",
           "target": "_self"
         }
@@ -63,7 +101,7 @@
     },
     {
       "title": "统计",
-      "href": "/user/tongji.jsp",
+      "href": "/user/stats.jsp",
       "icon": "fa fa-pie-chart",
       "target": "_self"
     },

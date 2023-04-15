@@ -19,6 +19,7 @@ import com.nanyan.utils.GetSevenDate;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * @author nanyan
@@ -32,7 +33,7 @@ public class ChartDao {
     @Autowired
     SessionFactory sessionFactory;
 
-    public List<IncomeCountChart> getIncomeCount(){
+    public List<IncomeCountChart> getIncomeCount(String username){
         Session currentSession = sessionFactory.getCurrentSession();
         StringBuilder hql = new StringBuilder(
                 "select COUNT(*) AS count,sum(income_amount) as money, DATE_FORMAT( income_time, '%Y-%m-%d') as date\n" +
@@ -42,17 +43,23 @@ public class ChartDao {
         for (int i = 0; i < date.size()-1; i++) {
             hql.append("'" + date.get(i) + "',");
         }
-        hql.append("'" + date.get(date.size()-1) + "') \n" +
-                "group by  DATE_FORMAT( income_time, '%Y-%m-%d')\n" +
-                "order by  DATE_FORMAT( income_time, '%Y-%m-%d') asc");
+        hql.append("'" + date.get(date.size()-1) + "') \n");
+
+        if(!Objects.equals(username, "")&& username != null){
+            hql.append(" and income.user_name =:username ");
+        }
+        hql.append(" group by DATE_FORMAT( income_time, '%Y-%m-%d') order by  DATE_FORMAT( income_time, '%Y-%m-%d') asc");
 
         Query query = currentSession.createNativeQuery(String.valueOf(hql)).addScalar("count", IntegerType.INSTANCE).addScalar("money", DoubleType.INSTANCE).addScalar("date", StringType.INSTANCE);
         query.setResultTransformer(Transformers.aliasToBean(IncomeCountChart.class));
+        if(!Objects.equals(username, "")&& username != null){
+            query.setParameter("username",username);
+        }
         return query.list();
     }
 
 
-    public List<ExpenseCountChart> getExpenseCount(){
+    public List<ExpenseCountChart> getExpenseCount(String username){
         Session currentSession = sessionFactory.getCurrentSession();
         StringBuilder hql = new StringBuilder(
                 "select COUNT(*) AS count,sum(expense_amount) as money, DATE_FORMAT( expense_time, '%Y-%m-%d') as date\n" +
@@ -62,36 +69,57 @@ public class ChartDao {
         for (int i = 0; i < date.size()-1; i++) {
             hql.append("'" + date.get(i) + "',");
         }
-        hql.append("'" + date.get(date.size()-1) + "') \n" +
-                "group by  DATE_FORMAT( expense_time, '%Y-%m-%d')\n" +
-                "order by  DATE_FORMAT( expense_time, '%Y-%m-%d') asc");
+        hql.append("'" + date.get(date.size()-1) + "') \n");
+
+        if(!Objects.equals(username, "")&& username != null){
+            hql.append(" and expense.user_name =:username ");
+        }
+
+        hql.append(" group by DATE_FORMAT( expense_time, '%Y-%m-%d') order by  DATE_FORMAT( expense_time, '%Y-%m-%d') asc");
 
         Query query = currentSession.createNativeQuery(String.valueOf(hql)).addScalar("count", IntegerType.INSTANCE).addScalar("money", DoubleType.INSTANCE).addScalar("date", StringType.INSTANCE);
         query.setResultTransformer(Transformers.aliasToBean(ExpenseCountChart.class));
+        if(!Objects.equals(username, "")&& username != null){
+            query.setParameter("username",username);
+        }
         return query.list();
     }
 
-    public List<IncomeTypeChart> getIncomeTypeData(){
+    public List<IncomeTypeChart> getIncomeTypeData(String username){
         Session currentSession = sessionFactory.getCurrentSession();
-        StringBuilder sql = new StringBuilder("select t.typeName, count(income_type_id) as typeCount,sum(income_amount) as typeMoney\n" +
+        StringBuilder sql = new StringBuilder(
+                "select t.typeName, count(income_type_id) as typeCount,sum(income_amount) as typeMoney\n" +
                 "from income,(select name as typeName,id from income_type)t\n" +
-                "where income_type_id = t.id\n" +
-                "group by income_type_id");
+                "where income_type_id = t.id");
+        if(!Objects.equals(username, "")&& username != null){
+            sql.append(" and income.user_name =:username ");
+        }
+        sql.append(" group by income_type_id");
 
         Query query = currentSession.createNativeQuery(sql.toString()).addScalar("typeName",StringType.INSTANCE).addScalar("typeCount",IntegerType.INSTANCE).addScalar("typeMoney",DoubleType.INSTANCE);
         query.setResultTransformer(Transformers.aliasToBean(IncomeTypeChart.class));
+        if(!Objects.equals(username, "")&& username != null){
+            query.setParameter("username",username);
+        }
         return query.list();
     }
 
-    public List<ExpenseTypeChart> getExpenseTypeData(){
+    public List<ExpenseTypeChart> getExpenseTypeData(String username){
         Session currentSession = sessionFactory.getCurrentSession();
-        StringBuilder sql = new StringBuilder("select t.typeName, count(expense_type_id) as typeCount,sum(expense_amount) as typeMoney\n" +
+        StringBuilder sql = new StringBuilder(
+                "select t.typeName, count(expense_type_id) as typeCount,sum(expense_amount) as typeMoney\n" +
                 "from expense,(select name as typeName,id from expense_type)t\n" +
-                "where expense.expense_type_id = t.id\n" +
-                "group by expense_type_id");
+                "where expense.expense_type_id = t.id ");
+        if(!Objects.equals(username, "")&& username != null){
+            sql.append(" and expense.user_name =:username ");
+        }
+        sql.append(" group by expense_type_id");
 
         Query query = currentSession.createNativeQuery(sql.toString()).addScalar("typeName",StringType.INSTANCE).addScalar("typeCount",IntegerType.INSTANCE).addScalar("typeMoney",DoubleType.INSTANCE);
         query.setResultTransformer(Transformers.aliasToBean(ExpenseTypeChart.class));
+        if(!Objects.equals(username, "")&& username != null){
+            query.setParameter("username",username);
+        }
         return query.list();
     }
 }

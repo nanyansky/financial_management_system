@@ -116,26 +116,6 @@
     </div>
   </div>
 
-<%--  <div class="layui-row layui-col-space15">--%>
-<%--    <div class="layui-col-xs12 layui-col-md9">--%>
-<%--      <div id="echarts-records" style="background-color:#ffffff;min-height:400px;padding: 10px"></div>--%>
-<%--    </div>--%>
-<%--&lt;%&ndash;    <div class="layui-col-xs12 layui-col-md3">&ndash;%&gt;--%>
-<%--&lt;%&ndash;      <div id="echarts-pies" style="background-color:#ffffff;min-height:400px;padding: 10px"></div>&ndash;%&gt;--%>
-<%--&lt;%&ndash;    </div>&ndash;%&gt;--%>
-<%--  </div>--%>
-
-  <div id="echarts-records" style="background-color:#ffffff;min-height:400px;padding: 10px"></div>
-
-
-  <div class="layui-row">
-    <div class="layui-col-md6">
-      <div id="echarts-pies-1" style="background-color:#ffffff;min-height:400px;padding: 10px"></div>
-    </div>
-    <div class="layui-col-md6">
-      <div id="echarts-pies-2" style="background-color:#ffffff;min-height:400px;padding: 10px"></div>
-    </div>
-  </div>
 
   <div class="layui-row">
     <div class="layui-col-md6">
@@ -146,10 +126,10 @@
     </div>
   </div>
 
-
+  <div id="echarts-records" style="background-color:#ffffff;min-height:400px;padding: 10px"></div>
 
 </div>
-<!--</div>-->
+
 <script src="../statics/layui/lib/layui-v2.7.6/layui.js" charset="utf-8"></script>
 <script src="../statics/layui/js/lay-config.js?v=1.0.4" charset="utf-8"></script>
 <script>
@@ -161,38 +141,18 @@
 
 
     var time1=[];
-    var incomeCount=[];
-    var incomeMoney=[];
     var expenseCount=[];
     var expenseMoney=[];
 
-    //收入数据
+    //支出数据
     $.ajax({
-      type: "post",
-      url: "/getIncomeData.action",
+      type: "GET",
+      url: "/getExpenseData.action?userName=${sessionScope.user.userName}",
       async: false,
       datatype: "json",
       success: function (data) {
         $.each(data.data, function(i) {
           time1.push(data.data[i].date)
-          incomeCount.push(data.data[i].count)
-          incomeMoney.push(data.data[i].money)
-        })
-        // console.log(data)
-        // console.log(time1)
-        // console.log(incomeCount)
-        // console.log(incomeMoney)
-      }
-    })
-
-    //支出数据
-    $.ajax({
-      type: "post",
-      url: "/getExpenseData.action",
-      async: false,
-      datatype: "json",
-      success: function (data) {
-        $.each(data.data, function(i) {
           expenseCount.push(data.data[i].count)
           expenseMoney.push(data.data[i].money)
         })
@@ -204,35 +164,15 @@
     })
 
 
-    //收入类型数据
-    var incomeTypeName = [];
-    var incomeTypeCountData = [];
-    var incomeTypeMoneyData = [];
     //支出类型数据
     var expenseTypeName = [];
     var expenseTypeCountData = [];
     var expenseTypeMoneyData = [];
 
-    //收入
-    $.ajax({
-      type: "post",
-      url: "/getIncomeTypeData.action",
-      async: false,
-      datatype: "json",
-      success: function (data) {
-        $.each(data.incomeMoney, function(i) {
-          incomeTypeName.push(data.incomeMoney[i].name)
-        })
-        incomeTypeCountData = data.incomeCount
-        incomeTypeMoneyData = data.incomeMoney
-        console.log(incomeTypeName)
-      }
-    })
-
     //支出
     $.ajax({
-      type: "post",
-      url: "/getExpenseTypeData.action",
+      type: "GET",
+      url: "/getExpenseTypeData.action?userName=${sessionScope.user.userName}",
       async: false,
       datatype: "json",
       success: function (data) {
@@ -246,9 +186,6 @@
 
 
 
-
-
-
     /**
      * 报表功能
      */
@@ -256,7 +193,7 @@
 
     var optionRecords = {
       title: {
-        text: '收入支出报表'
+        text: '支出报表'
       },
       tooltip: {
         trigger: 'axis',
@@ -268,7 +205,7 @@
         }
       },
       legend: {
-        data: ['收入账单总数', '支出账单总数', '收入金额', '支出金额']
+        data: ['支出账单总数', '支出金额']
       },
       toolbox: {
         feature: {
@@ -295,22 +232,10 @@
       ],
       series: [
         {
-          name: '收入账单总数',
-          type: 'line',
-          areaStyle: {},
-          data: incomeCount
-        },
-        {
           name: '支出账单总数',
           type: 'line',
           areaStyle: {},
           data: expenseCount
-        },
-        {
-          name: '收入金额',
-          type: 'line',
-          areaStyle: {},
-          data: incomeMoney
         },
         {
           name: '支出金额',
@@ -326,92 +251,6 @@
     /**
      * 玫瑰图表
      */
-
-    var echartsPies = echarts.init(document.getElementById('echarts-pies-1'), 'walden');
-    var optionPies = {
-      title: {
-        text: '收入分类（帐单数）',
-        left: 'center'
-      },
-      tooltip: {
-        trigger: 'item',
-        formatter: '{a} <br/>{b} : {c} ({d}%)'
-      },
-      legend: {
-        orient: 'vertical',
-        left: 'left',
-        data: incomeTypeName
-        // data: ['直接访问', '邮件营销', '联盟广告', '视频广告', '搜索引擎']
-      },
-      series: [
-        {
-          name: '访问来源',
-          type: 'pie',
-          radius: '55%',
-          center: ['50%', '60%'],
-          roseType: 'radius',
-          data: incomeTypeCountData,
-          // data: [
-          //   {value: 335, name: '直接访问'},
-          //   {value: 310, name: '邮件营销'},
-          //   {value: 234, name: '联盟广告'},
-          //   {value: 135, name: '视频广告'},
-          //   {value: 368, name: '搜索引擎'}
-          // ],
-          emphasis: {
-            itemStyle: {
-              shadowBlur: 10,
-              shadowOffsetX: 0,
-              shadowColor: 'rgba(0, 0, 0, 0.5)'
-            }
-          }
-        }
-      ]
-    };
-    echartsPies.setOption(optionPies);
-
-    var echartsPies = echarts.init(document.getElementById('echarts-pies-2'), 'walden');
-    var optionPies = {
-      title: {
-        text: '收入分类（金额数）',
-        left: 'center'
-      },
-      tooltip: {
-        trigger: 'item',
-        formatter: '{a} <br/>{b} : {c} ({d}%)'
-      },
-      legend: {
-        orient: 'vertical',
-        left: 'left',
-        data: incomeTypeName
-        // data: ['直接访问', '邮件营销', '联盟广告', '视频广告', '搜索引擎']
-      },
-      series: [
-        {
-          name: '访问来源',
-          type: 'pie',
-          radius: '55%',
-          center: ['50%', '60%'],
-          roseType: 'radius',
-          data: incomeTypeMoneyData,
-          // data: [
-          //   {value: 335, name: '直接访问'},
-          //   {value: 310, name: '邮件营销'},
-          //   {value: 234, name: '联盟广告'},
-          //   {value: 135, name: '视频广告'},
-          //   {value: 368, name: '搜索引擎'}
-          // ],
-          emphasis: {
-            itemStyle: {
-              shadowBlur: 10,
-              shadowOffsetX: 0,
-              shadowColor: 'rgba(0, 0, 0, 0.5)'
-            }
-          }
-        }
-      ]
-    };
-    echartsPies.setOption(optionPies);
 
     var echartsPies = echarts.init(document.getElementById('echarts-pies-3'), 'walden');
     var optionPies = {
@@ -431,7 +270,7 @@
       },
       series: [
         {
-          name: '访问来源',
+          name: '支出分类',
           type: 'pie',
           radius: '55%',
           center: ['50%', '60%'],
@@ -467,7 +306,7 @@
       },
       series: [
         {
-          name: '访问来源',
+          name: '支出分类',
           type: 'pie',
           radius: '55%',
           center: ['50%', '60%'],
@@ -486,92 +325,10 @@
     echartsPies.setOption(optionPies);
 
 
-
-    /**
-     * 柱状图
-     */
-    var echartsDataset = echarts.init(document.getElementById('echarts-dataset'), 'walden');
-
-    var optionDataset = {
-      legend: {},
-      tooltip: {},
-      dataset: {
-        dimensions: ['product', '2015', '2016', '2017'],
-        source: [
-          {product: 'Matcha Latte', '2015': 43.3, '2016': 85.8, '2017': 93.7},
-          {product: 'Milk Tea', '2015': 83.1, '2016': 73.4, '2017': 55.1},
-          {product: 'Cheese Cocoa', '2015': 86.4, '2016': 65.2, '2017': 82.5},
-          {product: 'Walnut Brownie', '2015': 72.4, '2016': 53.9, '2017': 39.1}
-        ]
-      },
-      xAxis: {type: 'category'},
-      yAxis: {},
-      // Declare several bar series, each will be mapped
-      // to a column of dataset.source by default.
-      series: [
-        {type: 'bar'},
-        {type: 'bar'},
-        {type: 'bar'}
-      ]
-    };
-
-    echartsDataset.setOption(optionDataset);
-
-
-    /**
-     * 中国地图
-     */
-    var echartsMap = echarts.init(document.getElementById('echarts-map'), 'walden');
-
-
-    var optionMap = {
-      legend: {},
-      tooltip: {
-        trigger: 'axis',
-        showContent: false
-      },
-      dataset: {
-        source: [
-          ['product', '2012', '2013', '2014', '2015', '2016', '2017'],
-          ['Matcha Latte', 41.1, 30.4, 65.1, 53.3, 83.8, 98.7],
-          ['Milk Tea', 86.5, 92.1, 85.7, 83.1, 73.4, 55.1],
-          ['Cheese Cocoa', 24.1, 67.2, 79.5, 86.4, 65.2, 82.5],
-          ['Walnut Brownie', 55.2, 67.1, 69.2, 72.4, 53.9, 39.1]
-        ]
-      },
-      xAxis: {type: 'category'},
-      yAxis: {gridIndex: 0},
-      grid: {top: '55%'},
-      series: [
-        {type: 'line', smooth: true, seriesLayoutBy: 'row'},
-        {type: 'line', smooth: true, seriesLayoutBy: 'row'},
-        {type: 'line', smooth: true, seriesLayoutBy: 'row'},
-        {type: 'line', smooth: true, seriesLayoutBy: 'row'},
-        {
-          type: 'pie',
-          id: 'pie',
-          radius: '30%',
-          center: ['50%', '25%'],
-          label: {
-            formatter: '{b}: {@2012} ({d}%)'
-          },
-          encode: {
-            itemName: 'product',
-            value: '2012',
-            tooltip: '2012'
-          }
-        }
-      ]
-    };
-
-    echartsMap.setOption(optionMap);
-
-
     // echarts 窗口缩放自适应
     window.onresize = function () {
       echartsRecords.resize();
     }
-
   });
 </script>
 </body>

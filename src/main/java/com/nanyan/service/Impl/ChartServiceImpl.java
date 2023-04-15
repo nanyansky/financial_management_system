@@ -31,10 +31,10 @@ public class ChartServiceImpl implements ChartService {
     ChartDao chartDao;
 
     @Override
-    public JSONObject getIncomeCount() {
+    public JSONObject getIncomeCount(String username) {
         HashMap<String, Object> dataMap = new HashMap<>();
 
-        List<IncomeCountChart> incomeCount = chartDao.getIncomeCount();
+        List<IncomeCountChart> incomeCount = chartDao.getIncomeCount(username);
         List<String> date = GetSevenDate.getDate();
         List<IncomeCountChart> tmpList = new ArrayList<>();
         for (String s : date) {
@@ -69,10 +69,10 @@ public class ChartServiceImpl implements ChartService {
     }
 
     @Override
-    public JSONObject getExpenseCount() {
+    public JSONObject getExpenseCount(String username) {
         HashMap<String, Object> dataMap = new HashMap<>();
 
-        List<ExpenseCountChart> expenseCount = chartDao.getExpenseCount();
+        List<ExpenseCountChart> expenseCount = chartDao.getExpenseCount(username);
         List<String> date = GetSevenDate.getDate();
         List<ExpenseCountChart> tmpList = new ArrayList<>();
         for (String s : date) {
@@ -107,8 +107,8 @@ public class ChartServiceImpl implements ChartService {
     }
 
     @Override
-    public JSONObject getIncomeTypeData() {
-        List<IncomeTypeChart> incomeTypeData = chartDao.getIncomeTypeData();
+    public JSONObject getIncomeTypeData(String username) {
+        List<IncomeTypeChart> incomeTypeData = chartDao.getIncomeTypeData(username);
 
 //        List<List<Map<String,Object>>> sumList = new ArrayList<>();
         List<Map<String,Object>> countList = new ArrayList<>();
@@ -140,8 +140,8 @@ public class ChartServiceImpl implements ChartService {
     }
 
     @Override
-    public JSONObject getExpenseTypeData() {
-        List<ExpenseTypeChart> expenseTypeData = chartDao.getExpenseTypeData();
+    public JSONObject getExpenseTypeData(String username) {
+        List<ExpenseTypeChart> expenseTypeData = chartDao.getExpenseTypeData(username);
 
 //        List<List<Map<String,Object>>> sumList = new ArrayList<>();
         List<Map<String,Object>> countList = new ArrayList<>();
