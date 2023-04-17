@@ -106,12 +106,6 @@ public class UserServiceImpl implements UserService {
             session.setAttribute("incomeCount",incomeDao.getIncomeCount());
             String sessionVcode = (String) session.getAttribute("session_vcode");
 
-            //调试用，优化时删除
-//        dataMap.put("username",userName);
-//        dataMap.put("password",password);
-//        dataMap.put("Vcode",sessionVcode);
-
-
             if(!sessionVcode.equalsIgnoreCase(captcha.trim())){
                 dataMap.put("code",0);
                 dataMap.put("message","验证码错误！");

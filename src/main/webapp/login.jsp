@@ -128,9 +128,9 @@
 
         // 进行登录操作
         form.on('submit(login)', function (data) {
-            console.log(data);
-            data = data.field;
-            console.log(data);
+            // console.log(data);
+            // data = data.field;
+            // console.log(data);
 
             $.post("/user/userLogin.action",data,function (result){
                 console.log(result);
@@ -143,6 +143,7 @@
                     layer.msg(result.message);
                 }
             },"json");
+
             return false;
         });
     });

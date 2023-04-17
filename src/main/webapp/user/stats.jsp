@@ -41,93 +41,9 @@
 <!--<div class="layuimini-container">-->
 <div class="layuimini-main">
 
-  <div class="layui-row layui-col-space15">
-    <div class="layui-col-xs12 layui-col-md3">
-
-      <div class="layui-card top-panel">
-        <div class="layui-card-header">要展示的指标名称</div>
-        <div class="layui-card-body">
-          <div class="layui-row layui-col-space5">
-            <div class="layui-col-xs9 layui-col-md9 top-panel-number">
-              9,054,056
-            </div>
-            <div class="layui-col-xs3 layui-col-md3 top-panel-tips">
-              比昨天 <a style="color: #1aa094">▲0.12</a><br>
-              比七日 <a style="color: #bd3004">▼0.06</a>
-            </div>
-          </div>
-        </div>
-      </div>
-
-    </div>
-    <div class="layui-col-xs12 layui-col-md3">
-
-      <div class="layui-card top-panel">
-        <div class="layui-card-header">要展示的指标名称</div>
-        <div class="layui-card-body">
-          <div class="layui-row layui-col-space5">
-            <div class="layui-col-xs9 layui-col-md9 top-panel-number">
-              9,054,056
-            </div>
-            <div class="layui-col-xs3 layui-col-md3 top-panel-tips">
-              比昨天 <a style="color: #1aa094">▲0.12</a><br>
-              比七日 <a style="color: #bd3004">▼0.06</a>
-            </div>
-          </div>
-        </div>
-      </div>
-
-    </div>
-    <div class="layui-col-xs12 layui-col-md3">
-
-      <div class="layui-card top-panel">
-        <div class="layui-card-header">要展示的指标名称</div>
-        <div class="layui-card-body">
-          <div class="layui-row layui-col-space5">
-            <div class="layui-col-xs9 layui-col-md9 top-panel-number">
-              9,054,056
-            </div>
-            <div class="layui-col-xs3 layui-col-md3 top-panel-tips">
-              比昨天 <a style="color: #1aa094">▲0.12</a><br>
-              比七日 <a style="color: #bd3004">▼0.06</a>
-            </div>
-          </div>
-        </div>
-      </div>
-
-    </div>
-    <div class="layui-col-xs12 layui-col-md3">
-
-      <div class="layui-card top-panel">
-        <div class="layui-card-header">要展示的指标名称</div>
-        <div class="layui-card-body">
-          <div class="layui-row layui-col-space5">
-            <div class="layui-col-xs9 layui-col-md9 top-panel-number">
-              9,054,056
-            </div>
-            <div class="layui-col-xs3 layui-col-md3 top-panel-tips">
-              比昨天 <a style="color: #1aa094">▲0.12</a><br>
-              比七日 <a style="color: #bd3004">▼0.06</a>
-            </div>
-          </div>
-        </div>
-      </div>
-
-    </div>
-  </div>
-
-<%--  <div class="layui-row layui-col-space15">--%>
-<%--    <div class="layui-col-xs12 layui-col-md9">--%>
-<%--      <div id="echarts-records" style="background-color:#ffffff;min-height:400px;padding: 10px"></div>--%>
-<%--    </div>--%>
-<%--&lt;%&ndash;    <div class="layui-col-xs12 layui-col-md3">&ndash;%&gt;--%>
-<%--&lt;%&ndash;      <div id="echarts-pies" style="background-color:#ffffff;min-height:400px;padding: 10px"></div>&ndash;%&gt;--%>
-<%--&lt;%&ndash;    </div>&ndash;%&gt;--%>
-<%--  </div>--%>
-
+<%--  报表图--%>
   <div id="echarts-records" style="background-color:#ffffff;min-height:400px;padding: 10px"></div>
-
-
+<%--  饼状图--%>
   <div class="layui-row">
     <div class="layui-col-md6">
       <div id="echarts-pies-1" style="background-color:#ffffff;min-height:400px;padding: 10px"></div>
