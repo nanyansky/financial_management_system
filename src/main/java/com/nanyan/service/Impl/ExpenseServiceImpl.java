@@ -13,13 +13,16 @@ import com.nanyan.service.ExpenseService;
 import com.nanyan.utils.OperationType;
 import org.apache.struts2.ServletActionContext;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.Resource;
 import javax.servlet.http.HttpSession;
 import java.sql.Timestamp;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * @author nanyan
@@ -37,6 +40,9 @@ public class ExpenseServiceImpl implements ExpenseService {
         String dateFormat = "yyyy-MM-dd HH:mm:ss";
         serializeConfig.put(Timestamp.class, new SimpleDateFormatSerializer(dateFormat));
     }
+
+    @Resource
+    StringRedisTemplate stringRedisTemplate;
 
     @Autowired
     ExpenseDao expenseDao;
@@ -74,16 +80,50 @@ public class ExpenseServiceImpl implements ExpenseService {
     public JSONObject getExpenseListByPage(int page, int limit) {
         Map<String, Object> dataMap = new HashMap<String, Object>();
         try {
-            //获取Expense数量
-            int expenseNumber = expenseDao.getExpenseNumber();
-            //获取Expense列表
-            List<Expense> expenseList = expenseDao.getExpenseListByPage(page,limit);
+
+            String IdKey = "expenseCacheIdSet";
+            String EntityKey = "expenseCacheEntitySet";
+            String NumKey = "expenseNum";
+            int expenseNumber;
+            List<Expense> expenseList;
+            int start = (page-1)*limit + 1;
+            int end = page*limit;
+            //查找缓存
+            String expenseNum = stringRedisTemplate.opsForValue().get(NumKey);
+            Set<String> expenseIDSet = stringRedisTemplate.opsForZSet().rangeByScore(IdKey, start, end);
+
 
             Map<String,Object> tmpMap = new HashMap<>();
-
-            for (int i = 0; i < expenseList.size(); i++) {
-                tmpMap.put(String.valueOf(i), JSON.toJSON(expenseList.get(i),serializeConfig));
+            if(expenseNum != null){
+                int i = 0;
+                expenseNumber = Integer.parseInt(expenseNum);
+                for (String s : expenseIDSet) {
+                    String o = (String) stringRedisTemplate.opsForHash().get(EntityKey, s);
+                    tmpMap.put(String.valueOf(i++),JSONObject.parseObject(o));
+                }
             }
+            else {
+                expenseNumber = expenseDao.getExpenseNumber();
+                stringRedisTemplate.opsForValue().set(NumKey,String.valueOf(expenseNumber));
+
+                expenseList = expenseDao.getExpenseList();
+                int i =0;
+                for (Expense expenseTmp : expenseList) {
+                    tmpMap.put(String.valueOf(i++), JSON.toJSON(expenseTmp,serializeConfig));
+                    stringRedisTemplate.opsForZSet().add(IdKey, String.valueOf(expenseTmp.getId()), i);
+                    stringRedisTemplate.opsForHash().put(EntityKey,String.valueOf(expenseTmp.getId()),JSONObject.toJSONString(expenseTmp,serializeConfig));
+                }
+            }
+
+//            //获取Expense数量
+//            expenseNumber = expenseDao.getExpenseNumber();
+//            //获取Expense列表
+//            expenseList = expenseDao.getExpenseListByPage(page,limit);
+//
+//
+//            for (int i = 0; i < expenseList.size(); i++) {
+//                tmpMap.put(String.valueOf(i), JSON.toJSON(expenseList.get(i),serializeConfig));
+//            }
 
             dataMap.put("code",0);
             dataMap.put("count",expenseNumber);
@@ -158,6 +198,11 @@ public class ExpenseServiceImpl implements ExpenseService {
             expense.setExpenseAmount(expenseAmount);
             expense.setCreateTime(new Timestamp(System.currentTimeMillis()));
 
+            //删除缓存
+            stringRedisTemplate.delete("expenseCacheEntitySet");
+            stringRedisTemplate.delete("expenseCacheIdSet");
+            stringRedisTemplate.delete("expenseNum");
+
             expenseDao.addExpense(expense);
             //添加完成后刷新数量
             session.setAttribute("expenseNumber",expenseDao.getExpenseNumber());
@@ -180,6 +225,12 @@ public class ExpenseServiceImpl implements ExpenseService {
         Map<String, Object> dataMap = new HashMap<String, Object>();
         try {
             HttpSession session = ServletActionContext.getRequest().getSession();
+
+            //删除缓存
+            stringRedisTemplate.delete("expenseCacheEntitySet");
+            stringRedisTemplate.delete("expenseCacheIdSet");
+            stringRedisTemplate.delete("expenseNum");
+
             expenseDao.deleteExpenseById(id);
 
             //删除后刷新数量
@@ -211,6 +262,11 @@ public class ExpenseServiceImpl implements ExpenseService {
             expense.setExpenseTime(expenseTime);
             expense.setExpenseContent(expenseContent);
             expense.setExpenseAmount(expenseAmount);
+
+            //删除缓存
+            stringRedisTemplate.delete("expenseCacheEntitySet");
+            stringRedisTemplate.delete("expenseCacheIdSet");
+            stringRedisTemplate.delete("expenseNum");
 
             expenseDao.editExpense(id,expense);
 

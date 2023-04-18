@@ -202,6 +202,8 @@ public class IncomeTypeServiceImpl implements IncomeTypeService {
         String key = "incomeTypeId:"+id;
         //1.从缓存中取分类
         String name = stringRedisTemplate.opsForValue().get(key);
+
+
         //2.判断是否存在
         if (name != null) {
             //3.存在，直接返回

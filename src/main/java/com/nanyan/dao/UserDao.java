@@ -38,7 +38,7 @@ public class UserDao{
 
     public List<User> getUserList(){
         Session session = sessionFactory.getCurrentSession();
-        Query query = session.createQuery("from User where isDeleted != 1 and status = 1");
+        Query query = session.createQuery("from User where isDeleted != 1");
         return query.list();
     }
 

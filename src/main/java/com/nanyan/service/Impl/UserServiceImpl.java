@@ -12,16 +12,15 @@ import com.nanyan.entity.User;
 import com.nanyan.service.UserService;
 import com.nanyan.utils.MailUtil;
 import com.nanyan.utils.OperationType;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.struts2.ServletActionContext;
+import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpSession;
 import java.sql.Timestamp;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -34,6 +33,8 @@ public class UserServiceImpl implements UserService {
         serializeConfig.put(Timestamp.class, new SimpleDateFormatSerializer(dateFormat));
     }
 
+    @Resource
+    StringRedisTemplate stringRedisTemplate;
     @Resource
     UserDao userDao;
     @Resource
@@ -72,6 +73,11 @@ public class UserServiceImpl implements UserService {
                 }
                 //通知管理员审核账号
                 MailUtil.sendMail(mailList,userName);
+
+                //删除缓存
+                stringRedisTemplate.delete("userCacheEntitySet");
+                stringRedisTemplate.delete("userCacheIdSet");
+                stringRedisTemplate.delete("userNum");
 
                 dataMap.put("code",1);
                 dataMap.put("message","注册成功！请等待管理员审核！");
@@ -196,18 +202,59 @@ public class UserServiceImpl implements UserService {
     public JSONObject getUserListByPage(int page,int limit) {
         Map<String, Object> dataMap = new HashMap<String, Object>();
         try {
-            //获取User数量
-            int userNumber = userDao.getUserNumber();
-            //获取User列表
-            List<User> userList = userDao.getUserListByPage(page,limit);
+
+            String IdKey = "userCacheIdSet";
+            String EntityKey = "userCacheEntitySet";
+            String NumKey = "userNum";
+            int userNumber;
+            List<User> userList = new ArrayList<>();
+            int start = (page-1)*limit + 1;
+            int end = page*limit;
+            //查找缓存
+            String userNum = stringRedisTemplate.opsForValue().get(NumKey);
+            Set<String> userIDSet = stringRedisTemplate.opsForZSet().rangeByScore(IdKey, start, end);
+
+            System.out.println(userIDSet);
 
             Map<String,Object> tmpMap = new HashMap<>();
+            if(userNum != null){
+//                System.out.println("名字");
+                int i = 0;
+                userNumber = Integer.parseInt(userNum);
+                for (String s : userIDSet) {
+                    String o = (String) stringRedisTemplate.opsForHash().get(EntityKey, s);
+                    tmpMap.put(String.valueOf(i++),JSONObject.parseObject(o));
+//                    System.out.println(o);
+                }
+            }
+            else {
+                userNumber = userDao.getUserNumber();
+                stringRedisTemplate.opsForValue().set(NumKey,String.valueOf(userNumber));
 
-            for (int i = 0; i < userList.size(); i++) {
-                tmpMap.put(String.valueOf(i), JSON.toJSON(userList.get(i),serializeConfig));
+                userList = userDao.getUserList();
+                int i =0;
+                for (User userTmp : userList) {
+                    tmpMap.put(String.valueOf(i++), JSON.toJSON(userTmp,serializeConfig));
+                    stringRedisTemplate.opsForZSet().add(IdKey, String.valueOf(userTmp.getId()), i);
+                    stringRedisTemplate.opsForHash().put(EntityKey,String.valueOf(userTmp.getId()),JSONObject.toJSONString(userTmp,serializeConfig));
+                }
             }
 
-            System.out.println(dataMap);
+//
+//            //获取User数量
+//            userNumber = userDao.getUserNumber();
+//            //获取User列表
+//            userList = userDao.getUserListByPage(page,limit);
+//
+//
+//
+//            for (int i = 0; i < userList.size(); i++) {
+//                tmpMap.put(String.valueOf(i), JSON.toJSON(userList.get(i),serializeConfig));
+//            }
+
+//            System.out.println(dataMap);
+
+
             dataMap.put("code",0);
             dataMap.put("count",userNumber);
             dataMap.put("data",tmpMap);
@@ -242,6 +289,11 @@ public class UserServiceImpl implements UserService {
                 userDao.addUser(tmpUser);
                 //添加完成后刷新数量
                 session.setAttribute("userNumber",userDao.getUserNumber());
+
+                //删除缓存
+                stringRedisTemplate.delete("userCacheEntitySet");
+                stringRedisTemplate.delete("userCacheIdSet");
+                stringRedisTemplate.delete("userNum");
 
                 dataMap.put("code",1);
                 dataMap.put("message","添加成功！");
@@ -337,6 +389,12 @@ public class UserServiceImpl implements UserService {
     public JSONObject changeUserStatus(int id, int status) {
         Map<String, Object> dataMap = new HashMap<String, Object>();
         try {
+
+            //删除缓存
+            stringRedisTemplate.delete("userCacheEntitySet");
+            stringRedisTemplate.delete("userCacheIdSet");
+            stringRedisTemplate.delete("userNum");
+
             userDao.changeUserStatus(id,status);
 
             dataMap.put("message","操作成功！");
@@ -355,6 +413,12 @@ public class UserServiceImpl implements UserService {
         try {
             HttpSession session = ServletActionContext.getRequest().getSession();
             System.out.println("要删除的用户ID: "+id);
+
+            //删除缓存
+            stringRedisTemplate.delete("userCacheEntitySet");
+            stringRedisTemplate.delete("userCacheIdSet");
+            stringRedisTemplate.delete("userNum");
+
             userDao.deleteById(id);
 
             //删除后刷新数量
@@ -389,8 +453,14 @@ public class UserServiceImpl implements UserService {
                 tmpUser.setIsAdmin(isAdmin);
                 tmpUser.setSex(sex);
 
+                //删除缓存
+                stringRedisTemplate.delete("userCacheEntitySet");
+                stringRedisTemplate.delete("userCacheIdSet");
+                stringRedisTemplate.delete("userNum");
+
                 System.out.println(tmpUser);
                 userDao.editUser(id,tmpUser);
+
                 dataMap.put("code",1);
                 dataMap.put("message","修改成功！");
                 return new JSONObject(dataMap);
@@ -423,6 +493,12 @@ public class UserServiceImpl implements UserService {
             tmpUser.setUserName(userName);
             tmpUser.setPhoneNumber(phoneNumber);
             tmpUser.setSex(sex);
+
+            //删除缓存
+            stringRedisTemplate.delete("userCacheEntitySet");
+            stringRedisTemplate.delete("userCacheIdSet");
+            stringRedisTemplate.delete("userNum");
+
             userDao.changeInfoByUsername(curUsername,tmpUser);
 
             //刷新存在的User
@@ -453,6 +529,11 @@ public class UserServiceImpl implements UserService {
                 dataMap.put("message","原密码错误，请重试！");
                 return new JSONObject(dataMap);
             }
+
+            //删除缓存
+            stringRedisTemplate.delete("userCacheEntitySet");
+            stringRedisTemplate.delete("userCacheIdSet");
+            stringRedisTemplate.delete("userNum");
 
             userDao.changePwdByUsername(tmpUser.getUserName(), new_password);
             dataMap.put("code",1);
