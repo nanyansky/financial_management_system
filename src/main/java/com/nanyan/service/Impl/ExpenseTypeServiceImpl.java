@@ -12,9 +12,11 @@ import com.nanyan.service.ExpenseTypeService;
 import com.nanyan.utils.OperationType;
 import org.apache.struts2.ServletActionContext;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.Resource;
 import javax.servlet.http.HttpSession;
 import java.sql.Timestamp;
 import java.util.HashMap;
@@ -39,6 +41,9 @@ public class ExpenseTypeServiceImpl implements ExpenseTypeService {
 
     @Autowired
     ExpenseTypeDao expenseTypeDao;
+
+    @Resource
+    StringRedisTemplate stringRedisTemplate;
 
     @Override
     public JSONObject getExpenseTypeList() {
@@ -196,7 +201,22 @@ public class ExpenseTypeServiceImpl implements ExpenseTypeService {
     @Override
     public JSONObject getExpenseTypeNameById(int id) {
         Map<String, Object> dataMap = new HashMap<String, Object>();
+        //Redis中的key
+        String key = "expenseTypeId:"+id;
+        //1.从缓存中取分类
+        String name = stringRedisTemplate.opsForValue().get(key);
+        //2.判断是否存在
+        if (name != null) {
+            //3.存在，直接返回
+            dataMap.put("name",name);
+            return new JSONObject(dataMap);
+        }
+
+        //4.不存在，查询数据库，并写入缓存
         String expenseTypeNameById = expenseTypeDao.getExpenseTypeNameById(id);
+
+        stringRedisTemplate.opsForValue().set(key,expenseTypeNameById);
+
         dataMap.put("name",expenseTypeNameById);
         return new JSONObject(dataMap);
     }

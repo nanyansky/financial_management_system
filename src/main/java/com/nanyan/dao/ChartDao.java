@@ -38,7 +38,7 @@ public class ChartDao {
         StringBuilder hql = new StringBuilder(
                 "select COUNT(*) AS count,sum(income_amount) as money, DATE_FORMAT( income_time, '%Y-%m-%d') as date\n" +
                 "from income\n" +
-                "where DATE_FORMAT( income_time, '%Y-%m-%d') in (");
+                "where income.is_deleted != 1 and DATE_FORMAT( income_time, '%Y-%m-%d') in (");
         List<String> date = GetSevenDate.getDate();
         for (int i = 0; i < date.size()-1; i++) {
             hql.append("'" + date.get(i) + "',");
@@ -64,7 +64,7 @@ public class ChartDao {
         StringBuilder hql = new StringBuilder(
                 "select COUNT(*) AS count,sum(expense_amount) as money, DATE_FORMAT( expense_time, '%Y-%m-%d') as date\n" +
                 "from expense\n" +
-                "where DATE_FORMAT( expense_time, '%Y-%m-%d') in (");
+                "where expense.is_deleted != 1 and DATE_FORMAT( expense_time, '%Y-%m-%d') in (");
         List<String> date = GetSevenDate.getDate();
         for (int i = 0; i < date.size()-1; i++) {
             hql.append("'" + date.get(i) + "',");
@@ -89,8 +89,8 @@ public class ChartDao {
         Session currentSession = sessionFactory.getCurrentSession();
         StringBuilder sql = new StringBuilder(
                 "select t.typeName, count(income_type_id) as typeCount,sum(income_amount) as typeMoney\n" +
-                "from income,(select name as typeName,id from income_type)t\n" +
-                "where income_type_id = t.id");
+                "from income,(select name as typeName,id from income_type where is_deleted != 1)t\n" +
+                "where income.is_deleted != 1 and income_type_id = t.id");
         if(!Objects.equals(username, "")&& username != null){
             sql.append(" and income.user_name =:username ");
         }
@@ -108,8 +108,8 @@ public class ChartDao {
         Session currentSession = sessionFactory.getCurrentSession();
         StringBuilder sql = new StringBuilder(
                 "select t.typeName, count(expense_type_id) as typeCount,sum(expense_amount) as typeMoney\n" +
-                "from expense,(select name as typeName,id from expense_type)t\n" +
-                "where expense.expense_type_id = t.id ");
+                "from expense,(select name as typeName,id from expense_type where is_deleted != 1)t\n" +
+                "where expense.is_deleted != 1 and expense.expense_type_id = t.id ");
         if(!Objects.equals(username, "")&& username != null){
             sql.append(" and expense.user_name =:username ");
         }

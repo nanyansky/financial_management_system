@@ -1,14 +1,20 @@
 import com.alibaba.fastjson.JSONObject;
 import com.nanyan.dao.ChartDao;
+import com.nanyan.dao.UserDao;
+import com.nanyan.entity.User;
 import com.nanyan.service.ChartService;
+import com.nanyan.service.UserService;
 import com.nanyan.utils.MailUtil;
 import org.apache.commons.io.FileUtils;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+import javax.annotation.Resource;
 import javax.mail.MessagingException;
 import java.io.File;
 import java.io.IOException;
@@ -33,12 +39,22 @@ public class test {
 
     @Autowired
     ChartService chartService;
+    
+    @Autowired
+    private StringRedisTemplate stringRedisTemplate;
+
+    @Autowired
+    UserDao userDao;
 
     @Test
-    public void test() throws MessagingException, IOException {
-        String path = "src/main/webapp/statics/layui/api/init-user.json";
-        String s = FileUtils.readFileToString(new File(path), "utf-8");
-        System.out.println(JSONObject.parseObject(s));
-//        System.out.println(s);
+    public void test() {
+
+        User user = userDao.findByUserName("admin");
+
+        String key = "user:" + user.getUserName();
+
+        stringRedisTemplate.opsForValue().set(key,JSONObject.toJSONString(user));
+
+        System.out.println(stringRedisTemplate.opsForValue().get(key));
     }
 }

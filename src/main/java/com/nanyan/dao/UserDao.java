@@ -27,7 +27,6 @@ public class UserDao{
         Session session = sessionFactory.getCurrentSession();
         String hql = "from User where userName = :username and isDeleted != 1";
         User user = (User) session.createQuery(hql).setParameter("username", username).uniqueResult();
-        System.out.println("UserDao: "+user);
         return user;
     }
 

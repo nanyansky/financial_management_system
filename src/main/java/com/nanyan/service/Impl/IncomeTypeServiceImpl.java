@@ -10,8 +10,10 @@ import com.nanyan.entity.IncomeType;
 import com.nanyan.service.IncomeTypeService;
 import com.nanyan.utils.OperationType;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.Resource;
 import java.sql.Timestamp;
 import java.util.HashMap;
 import java.util.List;
@@ -35,6 +37,9 @@ public class IncomeTypeServiceImpl implements IncomeTypeService {
 
     @Autowired
     IncomeTypeDao incomeTypeDao;
+
+    @Resource
+    StringRedisTemplate stringRedisTemplate;
 
     @Override
     public JSONObject getIncomeTypeList() {
@@ -192,7 +197,22 @@ public class IncomeTypeServiceImpl implements IncomeTypeService {
     @Override
     public JSONObject getIncomeTypeNameById(int id) {
         Map<String, Object> dataMap = new HashMap<String, Object>();
+
+        //Redis中的key
+        String key = "incomeTypeId:"+id;
+        //1.从缓存中取分类
+        String name = stringRedisTemplate.opsForValue().get(key);
+        //2.判断是否存在
+        if (name != null) {
+            //3.存在，直接返回
+            dataMap.put("name",name);
+            return new JSONObject(dataMap);
+        }
+
+        //4.不存在，查找数据库，并加入缓存
         String incomeTypeNameById = incomeTypeDao.getIncomeTypeNameById(id);
+
+        stringRedisTemplate.opsForValue().set(key,incomeTypeNameById);
         dataMap.put("name",incomeTypeNameById);
         return new JSONObject(dataMap);
     }
