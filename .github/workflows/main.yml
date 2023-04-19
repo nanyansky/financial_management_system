@@ -41,18 +41,18 @@ jobs:
         uses: garygrossgarten/github-action-scp@release
         with:
           local: target/financial_management_system-1.0-SNAPSHOT.war
-          remote: /home/www/financial_management_system/financial_management_system-1.0-SNAPSHOT.war
+          remote: /www/server/tomcat/webapps/financial_management_system-1.0-SNAPSHOT.war
           host: ${{ secrets.HOST }}
           username: ${{ secrets.SSH_USER }}
           password: ${{ secrets.SSH_PASSWORD }}
 
-      - name: 在服务器上执行 java -jar
+      - name: 在服务器上执行 war 包
         if: always()
         uses: fifsky/ssh-action@master
         with:
           command: | # fuser杀占用8080端口的进程；命令中的 & 表示在后台运行进程
             sudo fuser -k 8080/tcp            
-            cd /home/www/financial_management_system && java -jar financial_management_system-1.0-SNAPSHOT.war &
+            cd /www/server/tomcat/bin && ./startup.sh
           host: ${{ secrets.HOST }}
           user: ${{ secrets.SSH_USER }}
           pass: ${{ secrets.SSH_PASSWORD }}

@@ -197,8 +197,6 @@
 
         var options = {
             iniUrl: "/returnMenus.action",    // 初始化接口
-            // iniUrl: "statics/layui/api/init-admin.json",    // 初始化接口
-            // clearUrl: "statics/layui/api/clear.json", // 缓存清理接口
             urlHashLocation: true,      // 是否打开hash定位
             bgColorDefault: false,      // 主题默认配置
             multiModule: false,          // 是否开启多模块
