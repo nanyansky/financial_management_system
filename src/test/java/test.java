@@ -54,6 +54,7 @@ public class test {
     @Autowired
     private StringRedisTemplate stringRedisTemplate;
 
+
     @Autowired
     UserDao userDao;
 
