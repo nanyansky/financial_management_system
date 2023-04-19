@@ -64,7 +64,7 @@ jobs:
       - name: 关闭tomcat
         uses: garygrossgarten/github-action-ssh@release
         with:
-          command: cd /www/server/tomcat/bin && ./shutdown.sh && sleep 3
+          command: systemctl stop tomcat
           host: ${{ secrets.HOST }}
           username: root
           privateKey: ${{ secrets.SSH_PRIVATE_KEY}}
@@ -77,7 +77,7 @@ jobs:
       - name: 开启tomcat
         uses: garygrossgarten/github-action-ssh@release
         with:
-          command: cd /www/server/tomcat/bin && ./startup.sh
+          command: systemctl start tomcat
           host: ${{ secrets.HOST }}
           username: root
           privateKey: ${{ secrets.SSH_PRIVATE_KEY}}
