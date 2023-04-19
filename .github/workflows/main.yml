@@ -58,7 +58,6 @@ jobs:
           privateKey: ${{ secrets.SSH_PRIVATE_KEY}}
           password: ${{ secrets.SSH_PASSWORD }}
         env:
-          JRE_HOME: /www/server/jvm/openlogic-openjdk-8u362
           CI: true
 
       #关闭tomcat
@@ -71,8 +70,8 @@ jobs:
           privateKey: ${{ secrets.SSH_PRIVATE_KEY}}
           password: ${{ secrets.SSH_PASSWORD }}
         env:
-          JRE_HOME: /www/server/jvm/openlogic-openjdk-8u362
           CI: true
+
 
       #开启tomcat
       - name: 开启tomcat
@@ -84,7 +83,6 @@ jobs:
           privateKey: ${{ secrets.SSH_PRIVATE_KEY}}
           password: ${{ secrets.SSH_PASSWORD }}
         env:
-          JRE_HOME: /www/server/jvm/openlogic-openjdk-8u362
           CI: true
 
 
