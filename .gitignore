@@ -1,6 +1,4 @@
 # Project exclude paths
 /target
-*.properties
-/src/main/resources/*.properties
 src/main/resources/redis.properties
 src/main/resources/database.properties
