@@ -46,6 +46,7 @@ public class ChartDao {
         }
         hql.append("'" + date.get(date.size()-1) + "') \n");
 
+
         if(!Objects.equals(username, "")&& username != null){
             hql.append(" and income.user_name =:username ");
         }
