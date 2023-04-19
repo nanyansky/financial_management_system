@@ -49,18 +49,18 @@ jobs:
 
 
       #重启tomcat服务器、拷贝配置文件
-      - name: ls -a via ssh
-        uses: fifsky/ssh-action@master
+      - name: 重启tomcat服务器、拷贝配置文件
+        uses: garygrossgarten/github-action-ssh@release
         with:
           command: |
             cp -r /www/server/tomcat/webapps/config/* ./financial_management_system-1.0-SNAPSHOT/WEB-INF/classes/
             cd /www/server/tomcat/bin && ./shutdown.sh
             cd /www/server/tomcat/bin && ./startup.sh
           host: ${{ secrets.HOST }}
-          user: root
-#          pass: ${{ secrets.SSH_PASSWORD}}
-          key: ${{ secrets.SSH_PRIVATE_KEY }}
-          args: "-tt"
+          username: root
+          privateKey: ${{ secrets.PRIVATE_KEY}}
+          password: ${{ secrets.PASSWORD }}
+
 
 #      - name: 在服务器上执行 war 包
 #        if: always()
