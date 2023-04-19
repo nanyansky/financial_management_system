@@ -33,6 +33,7 @@ public class ChartDao {
     @Autowired
     SessionFactory sessionFactory;
 
+
     public List<IncomeCountChart> getIncomeCount(String username){
         Session currentSession = sessionFactory.getCurrentSession();
         StringBuilder hql = new StringBuilder(
@@ -44,6 +45,7 @@ public class ChartDao {
             hql.append("'" + date.get(i) + "',");
         }
         hql.append("'" + date.get(date.size()-1) + "') \n");
+
 
         if(!Objects.equals(username, "")&& username != null){
             hql.append(" and income.user_name =:username ");
