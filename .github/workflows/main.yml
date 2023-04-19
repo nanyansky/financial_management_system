@@ -58,8 +58,8 @@ jobs:
             cd /www/server/tomcat/bin && ./startup.sh
           host: ${{ secrets.HOST }}
           username: root
-          privateKey: ${{ secrets.PRIVATE_KEY}}
-          password: ${{ secrets.PASSWORD }}
+          privateKey: ${{ secrets.SSH.PRIVATE_KEY}}
+          password: ${{ secrets.SSH.PASSWORD }}
 
 
 #      - name: 在服务器上执行 war 包
