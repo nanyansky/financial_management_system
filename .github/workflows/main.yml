@@ -60,6 +60,9 @@ jobs:
           username: root
           privateKey: ${{ secrets.SSH_PRIVATE_KEY}}
           password: ${{ secrets.SSH_PASSWORD }}
+        env:
+          JAVA_HOME: /www/server/jvm/openlogic-openjdk-8u362
+          CI: true
 
 
 #      - name: 在服务器上执行 war 包
