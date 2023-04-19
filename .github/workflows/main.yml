@@ -37,6 +37,7 @@ jobs:
       - name: Generate the package
         run: mvn -B package --file pom.xml -Dmaven.test.skip=true
 
+
       - name: 将 JAR 包部署到服务器
         uses: garygrossgarten/github-action-scp@release
         with:
@@ -46,6 +47,18 @@ jobs:
           username: ${{ secrets.SSH_USER }}
           password: ${{ secrets.SSH_PASSWORD }}
 
+
+      #重启tomcat服务器、拷贝配置文件
+      - name: ls -a via ssh
+        uses: fifsky/ssh-action@master
+        with:
+          command: |
+            cp -r /www/server/tomcat/webapps/config/* ./financial_management_system-1.0-SNAPSHOT/WEB-INF/classes/
+            cd /www/server/tomcat/bin && ./shutdown.sh
+            cd /www/server/tomcat/bin && ./startup.sh
+          host: ${{ secrets.HOST }}
+          user: root
+          pass: ${{ secrets.SSH_PASSWORD}}
 #      - name: 在服务器上执行 war 包
 #        if: always()
 #        uses: fifsky/ssh-action@master
