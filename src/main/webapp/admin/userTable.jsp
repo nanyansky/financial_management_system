@@ -153,6 +153,7 @@
             elem: '#currentTableId',
             url: '/user/getUserListByPage.action',
             toolbar: '#toolbarDemo',
+            // page: {theme: '#c00'},
             cols: [[
                 { templet: function (d) {return parseInt(d.LAY_TABLE_INDEX) + 1;}, title: '序号', width: 80, fixed: 'left' }//序号列
                 // ,{field: 'id', title: 'ID', width:80,align: 'center'}
@@ -175,7 +176,7 @@
             limits: [10, 15, 20, 25, 50, 100],
             limit: 15,
             page: true,
-            skin: 'line'
+            skin: 'line',
         });
 
         // 监听搜索操作

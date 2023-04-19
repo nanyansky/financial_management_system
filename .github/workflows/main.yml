@@ -40,20 +40,19 @@ jobs:
       - name: 将 JAR 包部署到服务器
         uses: garygrossgarten/github-action-scp@release
         with:
-          local: target/OurBlog-0.0.1-SNAPSHOT.jar
-          remote: /home/www/ financial_management_system/ financial_management_system-1.0-SNAPSHOT.jar
+          local: target/OurBlog-0.0.1-SNAPSHOT.war
+          remote: /home/www/financial_management_system/financial_management_system-1.0-SNAPSHOT.war
           host: ${{ secrets.HOST }}
           username: ${{ secrets.SSH_USER }}
           password: ${{ secrets.SSH_PASSWORD }}
 
-      # 执行，粗腰在Tomcat中运行war包
       - name: 在服务器上执行 java -jar
         if: always()
         uses: fifsky/ssh-action@master
         with:
           command: | # fuser杀占用8080端口的进程；命令中的 & 表示在后台运行进程
             sudo fuser -k 8080/tcp            
-            cd /home/www/ financial_management_system && java -jar  financial_management_system-1.0-SNAPSHOT.jar &
+            cd /home/www/financial_management_system && java -jar financial_management_system-1.0-SNAPSHOT.war &
           host: ${{ secrets.HOST }}
           user: ${{ secrets.SSH_USER }}
           pass: ${{ secrets.SSH_PASSWORD }}
