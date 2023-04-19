@@ -2,6 +2,7 @@ package com.nanyan.service.Impl;
 
 import com.alibaba.fastjson.JSONObject;
 import com.nanyan.service.InitMenusService;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.FileUtils;
 import org.aspectj.util.FileUtil;
 import org.springframework.core.io.ClassPathResource;
