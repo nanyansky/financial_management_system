@@ -53,9 +53,9 @@ jobs:
         uses: garygrossgarten/github-action-ssh@release
         with:
           command: |
-            sleep 5 && cp -r /www/server/tomcat/webapps/config/* /www/server/tomcat/webapps/financial_management_system-1.0-SNAPSHOT/WEB-INF/classes/ && sleep 5
-            cd /www/server/tomcat/bin && ./shutdown.sh && sleep 3
-            cd /www/server/tomcat/bin && ./startup.sh && sleep 3
+            sleep 5 && cp -r /www/server/tomcat/webapps/config/* /www/server/tomcat/webapps/financial_management_system-1.0-SNAPSHOT/WEB-INF/classes/
+#            cd /www/server/tomcat/bin && ./shutdown.sh && sleep 3
+#            cd /www/server/tomcat/bin && ./startup.sh && sleep 3
           host: ${{ secrets.HOST }}
           username: root
           privateKey: ${{ secrets.SSH_PRIVATE_KEY}}
