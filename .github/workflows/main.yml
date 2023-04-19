@@ -53,6 +53,7 @@ jobs:
         uses: garygrossgarten/github-action-ssh@release
         with:
           command: |
+            sleep 5
             cp -r /www/server/tomcat/webapps/config/* ./financial_management_system-1.0-SNAPSHOT/WEB-INF/classes/
             cd /www/server/tomcat/bin && ./shutdown.sh
             cd /www/server/tomcat/bin && ./startup.sh
