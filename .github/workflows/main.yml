@@ -58,7 +58,10 @@ jobs:
             cd /www/server/tomcat/bin && ./startup.sh
           host: ${{ secrets.HOST }}
           user: root
-          pass: ${{ secrets.SSH_PASSWORD}}
+#          pass: ${{ secrets.SSH_PASSWORD}}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          args: "-tt"
+
 #      - name: 在服务器上执行 war 包
 #        if: always()
 #        uses: fifsky/ssh-action@master
