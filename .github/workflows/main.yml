@@ -46,15 +46,15 @@ jobs:
           username: ${{ secrets.SSH_USER }}
           password: ${{ secrets.SSH_PASSWORD }}
 
-      - name: 在服务器上执行 war 包
-        if: always()
-        uses: fifsky/ssh-action@master
-        with:
-          command: | # fuser杀占用8080端口的进程；命令中的 & 表示在后台运行进程
-            sudo fuser -k 8080/tcp            
-            cd /www/server/tomcat/bin && ./startup.sh
-          host: ${{ secrets.HOST }}
-          user: ${{ secrets.SSH_USER }}
-          pass: ${{ secrets.SSH_PASSWORD }}
-          args: "-tt"
+#      - name: 在服务器上执行 war 包
+#        if: always()
+#        uses: fifsky/ssh-action@master
+#        with:
+#          command: | # fuser杀占用8080端口的进程；命令中的 & 表示在后台运行进程
+#            fuser -k 8080/tcp
+#            cd /www/server/tomcat/bin && ./startup.sh
+#          host: ${{ secrets.HOST }}
+#          user: ${{ secrets.SSH_USER }}
+#          pass: ${{ secrets.SSH_PASSWORD }}
+#          args: "-tt"
 
