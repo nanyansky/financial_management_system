@@ -33,6 +33,7 @@ public class ChartDao {
     @Autowired
     SessionFactory sessionFactory;
 
+
     public List<IncomeCountChart> getIncomeCount(String username){
         Session currentSession = sessionFactory.getCurrentSession();
         StringBuilder hql = new StringBuilder(
