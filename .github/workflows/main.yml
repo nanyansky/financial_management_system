@@ -52,7 +52,7 @@ jobs:
       - name: 拷贝配置文件
         uses: garygrossgarten/github-action-ssh@release
         with:
-          command: sleep 5 && cp -r /www/server/tomcat/webapps/config/* /www/server/tomcat/webapps/financial_management_system-1.0-SNAPSHOT/WEB-INF/classes/
+          command: sleep 8 && cp -r /www/server/tomcat/webapps/config/* /www/server/tomcat/webapps/financial_management_system-1.0-SNAPSHOT/WEB-INF/classes/
           host: ${{ secrets.HOST }}
           username: root
           privateKey: ${{ secrets.SSH_PRIVATE_KEY}}
@@ -60,41 +60,15 @@ jobs:
         env:
           CI: true
 
-      #关闭tomcat
-      - name: 关闭tomcat
+      #重启tomcat
+      - name: 重启tomcat
         uses: garygrossgarten/github-action-ssh@release
         with:
-          command: systemctl stop tomcat
+          command: systemctl restart tomcat
           host: ${{ secrets.HOST }}
           username: root
           privateKey: ${{ secrets.SSH_PRIVATE_KEY}}
           password: ${{ secrets.SSH_PASSWORD }}
         env:
           CI: true
-
-
-      #开启tomcat
-      - name: 开启tomcat
-        uses: garygrossgarten/github-action-ssh@release
-        with:
-          command: systemctl start tomcat
-          host: ${{ secrets.HOST }}
-          username: root
-          privateKey: ${{ secrets.SSH_PRIVATE_KEY}}
-          password: ${{ secrets.SSH_PASSWORD }}
-        env:
-          CI: true
-
-
-#      - name: 在服务器上执行 war 包
-#        if: always()
-#        uses: fifsky/ssh-action@master
-#        with:
-#          command: | # fuser杀占用8080端口的进程；命令中的 & 表示在后台运行进程
-#            fuser -k 8080/tcp
-#            cd /www/server/tomcat/bin && ./startup.sh
-#          host: ${{ secrets.HOST }}
-#          user: ${{ secrets.SSH_USER }}
-#          pass: ${{ secrets.SSH_PASSWORD }}
-#          args: "-tt"
 
