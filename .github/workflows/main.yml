@@ -52,17 +52,39 @@ jobs:
       - name: 拷贝配置文件
         uses: garygrossgarten/github-action-ssh@release
         with:
-          command: |
-            sleep 5 && cp -r /www/server/tomcat/webapps/config/* /www/server/tomcat/webapps/financial_management_system-1.0-SNAPSHOT/WEB-INF/classes/ && cd /www/server/tomcat/bin && ./shutdown.sh && sleep 3 && cd /www/server/tomcat/bin && ./startup.sh
-#            cd /www/server/tomcat/bin && ./shutdown.sh && sleep 3
-#            cd /www/server/tomcat/bin && ./startup.sh && sleep 3
+          command: sleep 5 && cp -r /www/server/tomcat/webapps/config/* /www/server/tomcat/webapps/financial_management_system-1.0-SNAPSHOT/WEB-INF/classes/
           host: ${{ secrets.HOST }}
           username: root
           privateKey: ${{ secrets.SSH_PRIVATE_KEY}}
           password: ${{ secrets.SSH_PASSWORD }}
         env:
-          JAVA_HOME: /www/server/jvm/openlogic-openjdk-8u362
-          JRE_HOME: /www/server/jvm/openlogic-openjdk-8u362/jre
+          JRE_HOME: /www/server/jvm/openlogic-openjdk-8u362
+          CI: true
+
+      #关闭tomcat
+      - name: 关闭tomcat
+        uses: garygrossgarten/github-action-ssh@release
+        with:
+          command: cd /www/server/tomcat/bin && ./shutdown.sh && sleep 3
+          host: ${{ secrets.HOST }}
+          username: root
+          privateKey: ${{ secrets.SSH_PRIVATE_KEY}}
+          password: ${{ secrets.SSH_PASSWORD }}
+        env:
+          JRE_HOME: /www/server/jvm/openlogic-openjdk-8u362
+          CI: true
+
+      #开启tomcat
+      - name: 开启tomcat
+        uses: garygrossgarten/github-action-ssh@release
+        with:
+          command: cd /www/server/tomcat/bin && ./startup.sh
+          host: ${{ secrets.HOST }}
+          username: root
+          privateKey: ${{ secrets.SSH_PRIVATE_KEY}}
+          password: ${{ secrets.SSH_PASSWORD }}
+        env:
+          JRE_HOME: /www/server/jvm/openlogic-openjdk-8u362
           CI: true
 
 
