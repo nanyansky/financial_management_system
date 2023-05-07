@@ -52,7 +52,7 @@ public class ExpenseServiceImpl implements ExpenseService {
 
     @Override
     public JSONObject getExpenseList() {
-        Map<String, Object> dataMap = new HashMap<String, Object>();
+        Map<String, Object> dataMap = new HashMap<>();
         try {
             //获取Expense数量
             int expenseNumber = expenseDao.getExpenseNumber();
@@ -71,7 +71,7 @@ public class ExpenseServiceImpl implements ExpenseService {
             return new  JSONObject(dataMap);
         } catch (Exception e) {
             dataMap.put("code",0);
-            dataMap.put("message","服务器错误，请重试！");
+            dataMap.put("message","服务器错误，请`重试！");
             return new JSONObject(dataMap);
         }
     }
@@ -139,7 +139,7 @@ public class ExpenseServiceImpl implements ExpenseService {
 
     @Override
     public JSONObject getExpenseListByUserName(String userName, int page, int limit) {
-        Map<String, Object> dataMap = new HashMap<String, Object>();
+        Map<String, Object> dataMap = new HashMap<>();
         try {
             List<Expense> list = expenseDao.getExpenseListByUserName(userName,page,limit);
 
@@ -162,7 +162,7 @@ public class ExpenseServiceImpl implements ExpenseService {
 
     @Override
     public JSONObject searchExpense(String username,String userNameAcc, int expenseTypeId, Timestamp startTime, Timestamp endTime, int page, int limit) {
-        Map<String, Object> dataMap = new HashMap<String, Object>();
+        Map<String, Object> dataMap = new HashMap<>();
         try {
             List<Expense> list = expenseDao.searchExpense(username,userNameAcc,expenseTypeId,startTime,endTime,page,limit);
 
@@ -186,7 +186,7 @@ public class ExpenseServiceImpl implements ExpenseService {
     @Override
     @OptLog(content = "添加支出记录", operationType = OperationType.INSERT)
     public JSONObject addExpense(String userName, int expenseTypeId,Timestamp expenseTime,String expenseContent, double expenseAmount) {
-        Map<String, Object> dataMap = new HashMap<String, Object>();
+        Map<String, Object> dataMap = new HashMap<>();
         try {
             HttpSession session = ServletActionContext.getRequest().getSession();
             Expense expense = new Expense();

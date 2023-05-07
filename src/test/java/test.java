@@ -61,27 +61,5 @@ public class test {
     @Test
     public void test() {
 
-        List<User> list = new ArrayList<>();
-        List<User> userList = userDao.getUserList();
-
-        String IdKey = "userCacheIdSet";
-        String EntityKey = "userCacheEntitySet";
-        for (User userTmp : userList) {
-            stringRedisTemplate.opsForZSet().add(IdKey, String.valueOf(userTmp.getId()), userTmp.getId());
-            stringRedisTemplate.opsForHash().put(EntityKey,String.valueOf(userTmp.getId()),JSONObject.toJSONString(userTmp,serializeConfig));
-        }
-
-        Set<String> userIDSet = stringRedisTemplate.opsForZSet().reverseRange(IdKey, 0, 5);
-
-//        System.out.println(stringRedisTemplate.opsForZSet().size(IdKey));
-        System.out.println(userIDSet);
-        System.out.println(stringRedisTemplate.opsForHash().keys(EntityKey));
-
-        for (String s : userIDSet) {
-            Object o = stringRedisTemplate.opsForHash().get(EntityKey, s);
-            System.out.println(o);
-        }
-
-//        User user = userDao.findByUserName("admin");
     }
 }

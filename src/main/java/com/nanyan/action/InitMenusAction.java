@@ -31,15 +31,13 @@ public class InitMenusAction extends ActionSupport {
 
     private JSONObject jsonObject;
 
-    HttpSession session = ServletActionContext.getRequest().getSession();
     @Resource
     InitMenusService initMenusService;
 
     @Action(value = "returnMenus", results = {
             @Result(type = "json",params = {"root","jsonObject"})})
     public String returnMenus() throws IOException {
-        User user = (User) session.getAttribute("user");
-        jsonObject = initMenusService.returnMenus(user.getIsAdmin());
+        jsonObject = initMenusService.menu();
         return SUCCESS;
     }
 

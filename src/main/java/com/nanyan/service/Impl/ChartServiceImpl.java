@@ -124,7 +124,6 @@ public class ChartServiceImpl implements ChartService {
 
             map2.put("value",in.getTypeMoney());
             map2.put("name",in.getTypeName());
-
             countList.add(map1);
             moneyList.add(map2);
         }
