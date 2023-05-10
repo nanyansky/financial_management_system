@@ -17,8 +17,8 @@
     <link rel="stylesheet" href="statics/layui/lib/layui-v2.6.3/css/layui.css" media="all">
     <link rel="stylesheet" href="statics/layui/css/layuimini.css?v=2.0.4.2" media="all">
     <link rel="stylesheet" href="statics/layui/css/themes/default.css" media="all">
-    <link rel="stylesheet" href="statics/layui/lib/font-awesome-4.7.0/css/font-awesome.min.css" media="all">
-    <link rel="stylesheet" href="https://cdn.staticfile.org/font-awesome/6.4.0/css/fontawesome.css">
+<!--     <link rel="stylesheet" href="statics/layui/lib/font-awesome-4.7.0/css/font-awesome.min.css" media="all"> -->
+<!-- 
     
     <!--[if lt IE 9]>
     <script src="https://cdn.staticfile.org/html5shiv/r29/html5.min.js"></script>
