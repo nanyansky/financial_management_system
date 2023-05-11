@@ -1,0 +1,99 @@
+
+t
+java:S22930"YReplace the type specification in this constructor call with the diamond operator ("<>").(ÿæ¸”ûÿÿÿÿ
+t
+java:S2293h"YReplace the type specification in this constructor call with the diamond operator ("<>").(ÿæ¸”ûÿÿÿÿ
+u
+java:S2293¤"YReplace the type specification in this constructor call with the diamond operator ("<>").(ÿæ¸”ûÿÿÿÿ
+u
+java:S2293®"YReplace the type specification in this constructor call with the diamond operator ("<>").(ÿæ¸”ûÿÿÿÿ
+u
+java:S2293Ë"YReplace the type specification in this constructor call with the diamond operator ("<>").(ÿæ¸”ûÿÿÿÿ
+u
+java:S2293‘"YReplace the type specification in this constructor call with the diamond operator ("<>").(ÿæ¸”ûÿÿÿÿ
+u
+java:S2293½"YReplace the type specification in this constructor call with the diamond operator ("<>").(ÿæ¸”ûÿÿÿÿ
+u
+java:S2293Î"YReplace the type specification in this constructor call with the diamond operator ("<>").(ÿæ¸”ûÿÿÿÿ
+u
+java:S2293ê"YReplace the type specification in this constructor call with the diamond operator ("<>").(ÿæ¸”ûÿÿÿÿ
+u
+java:S2293†"YReplace the type specification in this constructor call with the diamond operator ("<>").(ÿæ¸”ûÿÿÿÿ
+u
+java:S2293œ"YReplace the type specification in this constructor call with the diamond operator ("<>").(ÿæ¸”ûÿÿÿÿ
+u
+java:S2293¸"YReplace the type specification in this constructor call with the diamond operator ("<>").(ÿæ¸”ûÿÿÿÿ
+u
+java:S2293ã"YReplace the type specification in this constructor call with the diamond operator ("<>").(ÿæ¸”ûÿÿÿÿ
+u
+java:S2293‰"YReplace the type specification in this constructor call with the diamond operator ("<>").(ÿæ¸”ûÿÿÿÿ
+^
+java:S1192P"HDefine a constant instead of duplicating this literal "userNum" 8 times.(í›ªî
+n
+java:S1192N"SDefine a constant instead of duplicating this literal "userCacheEntitySet" 8 times.(Óøêıÿÿÿÿ
+v
+java:S1192_"`Define a constant instead of duplicating this literal "æœåŠ¡å™¨é”™è¯¯ï¼Œè¯·é‡è¯•ï¼" 13 times.(äáÚÕ
+a
+java:S1192l"KDefine a constant instead of duplicating this literal "userNumber" 3 times.(öüÑè
+d
+java:S1192O"ODefine a constant instead of duplicating this literal "userCacheIdSet" 8 times.(ï»ø(
+]
+java:S1192½"FDefine a constant instead of duplicating this literal "count" 4 times.(¢ñ¯Š
+d
+java:S11926"IDefine a constant instead of duplicating this literal "message" 33 times.(™–ñıÿÿÿÿ
+g	java:S117Î"QRename this local variable to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(œ°«¤
+l	java:S117Ï"QRename this local variable to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(œÒÆÿÿÿÿÿ
+f	java:S117Ğ"QRename this local variable to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(É×ñ+
+l	java:S117ˆ"QRename this local variable to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(çöìÛùÿÿÿÿ
+l	java:S117ˆ"QRename this local variable to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(çöìÛùÿÿÿÿ
+x
+java:S14887"bImmediately return this expression instead of assigning it to the temporary variable "jsonObject".(½æØÑ
+x
+java:S1488T"bImmediately return this expression instead of assigning it to the temporary variable "jsonObject".(½æØÑ
+x
+java:S1488Z"bImmediately return this expression instead of assigning it to the temporary variable "jsonObject".(½æØÑ
+x
+java:S1488`"bImmediately return this expression instead of assigning it to the temporary variable "jsonObject".(½æØÑ
+x
+java:S1488v"bImmediately return this expression instead of assigning it to the temporary variable "jsonObject".(½æØÑ
+x
+java:S1488"bImmediately return this expression instead of assigning it to the temporary variable "jsonObject".(½æØÑ
+y
+java:S1488†"bImmediately return this expression instead of assigning it to the temporary variable "jsonObject".(½æØÑ
+y
+java:S1488œ"bImmediately return this expression instead of assigning it to the temporary variable "jsonObject".(½æØÑ
+o	java:S120"ZRename this package name to match the regular expression '^[a-z_]+(\.[a-z_][a-z0-9_]*)*$'.(ÿª“â
+V
+java:S2441‹":Make "User" serializable or don't store it in the session.(ßÈã¶ÿÿÿÿÿ
+T	java:S106"9Replace this use of System.out or System.err by a logger.(©¬èùÿÿÿÿ
+T	java:S106–"9Replace this use of System.out or System.err by a logger.(©¬èùÿÿÿÿ
+T	java:S106»"9Replace this use of System.out or System.err by a logger.(»Ïš¡ûÿÿÿÿ
+W	java:S125¿"<This block of commented-out lines of code should be removed.(æü”øÿÿÿÿ
+X
+java:S1854Ò"<Remove this useless assignment to local variable "userList".(Ú«§ºÿÿÿÿÿ
+T	java:S106Ù"9Replace this use of System.out or System.err by a logger.(áòòÌúÿÿÿÿ
+R	java:S125İ"<This block of commented-out lines of code should be removed.(¬èº¾
+\
+java:S3252â"EUse static access with "com.alibaba.fastjson.JSON" for "parseObject".(“§æû
+Q	java:S125ã"<This block of commented-out lines of code should be removed.(ËÛ«Y
+]
+java:S3252ï"FUse static access with "com.alibaba.fastjson.JSON" for "toJSONString".(àØ¹
+W	java:S125õ"<This block of commented-out lines of code should be removed.(ü‘Òÿÿÿÿÿ
+W	java:S125ÿ"<This block of commented-out lines of code should be removed.(æü”øÿÿÿÿ
+W	java:S125…"<This block of commented-out lines of code should be removed.(æü”øÿÿÿÿ
+O	java:S106•"9Replace this use of System.out or System.err by a logger.(ê·¦Ç
+T	java:S106 "9Replace this use of System.out or System.err by a logger.(ı´·çÿÿÿÿÿ
+W	java:S125Ò"<This block of commented-out lines of code should be removed.(Ë“êÑûÿÿÿÿ
+R	java:S125×"<This block of commented-out lines of code should be removed.(Õ‡Çø
+W	java:S125İ"<This block of commented-out lines of code should be removed.(æü”øÿÿÿÿ
+W	java:S125î"<This block of commented-out lines of code should be removed.(Ë“êÑûÿÿÿÿ
+R	java:S125ó"<This block of commented-out lines of code should be removed.(Õ‡Çø
+O	java:S106÷"9Replace this use of System.out or System.err by a logger.(ßÕÁâ
+W	java:S125ú"<This block of commented-out lines of code should be removed.(æü”øÿÿÿÿ
+O	java:S106Ÿ"9Replace this use of System.out or System.err by a logger.(ÄœËã
+W	java:S125»"<This block of commented-out lines of code should be removed.(Æ°âªúÿÿÿÿ
+O	java:S106Í"9Replace this use of System.out or System.err by a logger.(œ¥ÀÇ
+V
+java:S2441ú":Make "User" serializable or don't store it in the session.(Ì¯ Êüÿÿÿÿ
+L
+java:S1128"6Remove this unused import 'lombok.extern.slf4j.Slf4j'.(ûúÄ®

@@ -1,3 +1,5 @@
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.alibaba.fastjson.serializer.SerializeConfig;
 import com.alibaba.fastjson.serializer.SimpleDateFormatSerializer;
@@ -7,6 +9,7 @@ import com.nanyan.entity.User;
 import com.nanyan.service.ChartService;
 import com.nanyan.service.UserService;
 import com.nanyan.utils.MailUtil;
+import com.nanyan.utils.StockDate;
 import org.apache.commons.io.FileUtils;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -18,10 +21,12 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import javax.annotation.Resource;
 import javax.mail.MessagingException;
+import java.io.DataOutput;
 import java.io.File;
 import java.io.IOException;
 import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Set;
 
@@ -60,6 +65,15 @@ public class test {
 
     @Test
     public void test() {
+        HashMap<String, Object> dataMap = new HashMap<>();
+        dataMap.put("sort","turnover");
+        dataMap.put("node","a");
+        dataMap.put("pageSize",15);
+        dataMap.put("pageIndex",1);
+        dataMap.put("asc",0);
+        JSONObject jsonObject = StockDate.stockRank(dataMap);
+
+        System.out.println(jsonObject);
 
     }
 }

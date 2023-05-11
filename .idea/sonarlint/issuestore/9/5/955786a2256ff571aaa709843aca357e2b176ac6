@@ -1,0 +1,20 @@
+
+L
+java:S3740s"/Provide the parametrized type for this generic.(¹ÒÎù8„éª´ÿ0
+M
+java:S3740“"/Provide the parametrized type for this generic.(¹ÒÎù8…éª´ÿ0
+c
+java:S1192z"FDefine a constant instead of duplicating this literal "value" 4 times.(Ñ¼¢¶8‡éª´ÿ0
+v	java:S120"ZRename this package name to match the regular expression '^[a-z_]+(\.[a-z_][a-z0-9_]*)*$'.(ÿª“â8‹éª´ÿ0
+O
+java:S1135"2Complete the task associated to this TODO comment.(›ËÓ8íª´ÿ0
+X	java:S125B"<This block of commented-out lines of code should be removed.(´ˆ˜ã8 íª´ÿ0
+X	java:S125h"<This block of commented-out lines of code should be removed.(´ˆ˜ã8°íª´ÿ0
+]	java:S125q"<This block of commented-out lines of code should be removed.(Ü¦‹‰ûÿÿÿÿ8²íª´ÿ0
+Y	java:S125ƒ"<This block of commented-out lines of code should be removed.(™ñ‡ş8¹íª´ÿ0
+Y	java:S125‰"<This block of commented-out lines of code should be removed.(Ï¨¢Ö8ºíª´ÿ0
+^	java:S125‘"<This block of commented-out lines of code should be removed.(Ü¦‹‰ûÿÿÿÿ8¾íª´ÿ0
+Y	java:S125¤"<This block of commented-out lines of code should be removed.(™ñ‡ş8Æíª´ÿ0
+Y	java:S125ª"<This block of commented-out lines of code should be removed.(Ï¨¢Ö8Çíª´ÿ0
+J
+java:S1128"-Remove this unused import 'javax.jws.Oneway'.(‹ºµğ8Œ®­´ÿ0

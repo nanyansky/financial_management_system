@@ -1,0 +1,34 @@
+
+t
+java:S2293R"YReplace the type specification in this constructor call with the diamond operator ("<>").(ÿæ¸”ûÿÿÿÿ
+u
+java:S2293â"YReplace the type specification in this constructor call with the diamond operator ("<>").(ÿæ¸”ûÿÿÿÿ
+u
+java:S2293ÿ"YReplace the type specification in this constructor call with the diamond operator ("<>").(ÿæ¸”ûÿÿÿÿ
+c
+java:S1192Ó"MDefine a constant instead of duplicating this literal "expenseCount" 3 times.(ù½íC
+l
+java:S1192V"VDefine a constant instead of duplicating this literal "expenseCacheEntitySet" 4 times.(µ³±‹
+\
+java:S1192E"FDefine a constant instead of duplicating this literal "count" 4 times.(Ãúä
+_
+java:S1192J"IDefine a constant instead of duplicating this literal "message" 10 times.(ªâ‘½
+a
+java:S1192W"KDefine a constant instead of duplicating this literal "expenseNum" 4 times.(òŠ¨Ñ
+h
+java:S1192U"RDefine a constant instead of duplicating this literal "expenseCacheIdSet" 4 times.(Ïš˜
+v
+java:S1192‡"_Define a constant instead of duplicating this literal "æœåŠ¡å™¨é”™è¯¯ï¼Œè¯·é‡è¯•ï¼" 6 times.(äáÚÕ
+f	java:S117U"QRename this local variable to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(Ïš˜
+f	java:S117V"QRename this local variable to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(µ³±‹
+f	java:S117W"QRename this local variable to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(òŠ¨Ñ
+o	java:S120"ZRename this package name to match the regular expression '^[a-z_]+(\.[a-z_][a-z0-9_]*)*$'.(ÿª“â
+H
+java:S1135"2Complete the task associated to this TODO comment.(›ËÓ
+[
+java:S3252g"EUse static access with "com.alibaba.fastjson.JSON" for "parseObject".(“§æû
+\
+java:S3252s"FUse static access with "com.alibaba.fastjson.JSON" for "toJSONString".(‘Êå
+V	java:S125x"<This block of commented-out lines of code should be removed.(ã¿ş‹ùÿÿÿÿ
+N
+java:S1128"3Remove this unused import 'com.nanyan.entity.User'.(ÁôÔëÿÿÿÿÿ

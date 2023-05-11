@@ -56,9 +56,6 @@ public class InitMenusServiceImpl implements InitMenusService {
         logo.put("title","家庭理财系统");
         logo.put("href","/index.jsp");
         logo.put("image","statics/layui/images/logo.png");//静态资源文件路径,可使用默认的logo.png
-        // map.put("homeInfo", "{title: '首页',href: '/index.jsp'}}");
-        // map.put("logoInfo", "{title: '家庭理财系统',image: 'statics/layui/images/logo.png'}");
-        //
         map.put("homeInfo",home);
         map.put("logoInfo", logo);
         return new JSONObject(map);

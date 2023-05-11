@@ -1,0 +1,11 @@
+
+v	java:S120"ZRename this package name to match the regular expression '^[a-z_]+(\.[a-z_][a-z0-9_]*)*$'.(êø¾µ8ë’ ¹ÿ0
+p	java:S116!"TRename this field "create_at" to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(‘šËŒ8ì’ ¹ÿ0
+p	java:S116#"TRename this field "update_at" to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(ñ¸Í÷8ì’ ¹ÿ0
+o	java:S116$"TRename this field "delete_at" to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(ê§ûI8ì’ ¹ÿ0
+v
+java:S1128"TRemove this unnecessary import: same package classes are always implicitly imported.(ÌÏâÉúÿÿÿÿ8ï’ ¹ÿ0
+n
+java:S1128"LRemove this unused import 'jdk.nashorn.internal.objects.annotations.Setter'.(µŠÚşÿÿÿÿ8ğ’ ¹ÿ0
+G
+java:S1128"*Remove this unused import 'lombok.Getter'.(ùÒµÙ8ğ’ ¹ÿ0

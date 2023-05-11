@@ -76,7 +76,6 @@ public class IncomeServiceImpl implements IncomeService {
         Map<String, Object> dataMap = new HashMap<String, Object>();
         try {
 
-
             String IdKey = "incomeCacheIdSet";
             String EntityKey = "incomeCacheEntitySet";
             String NumKey = "incomeNum";
