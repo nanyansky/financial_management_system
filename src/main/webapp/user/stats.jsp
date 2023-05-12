@@ -261,7 +261,7 @@
       },
       series: [
         {
-          name: '访问来源',
+          name: '收入分类',
           type: 'pie',
           radius: '55%',
           center: ['50%', '60%'],
@@ -304,7 +304,7 @@
       },
       series: [
         {
-          name: '访问来源',
+          name: '收入分类',
           type: 'pie',
           radius: '55%',
           center: ['50%', '60%'],
@@ -347,7 +347,7 @@
       },
       series: [
         {
-          name: '访问来源',
+          name: '支出分类',
           type: 'pie',
           radius: '55%',
           center: ['50%', '60%'],
@@ -383,7 +383,7 @@
       },
       series: [
         {
-          name: '访问来源',
+          name: '支出分类',
           type: 'pie',
           radius: '55%',
           center: ['50%', '60%'],

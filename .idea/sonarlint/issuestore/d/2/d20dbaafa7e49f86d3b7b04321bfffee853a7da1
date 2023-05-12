@@ -1,0 +1,28 @@
+
+ujavascript:S3776"TRefactor this function to reduce its Cognitive Complexity from 84 to the 15 allowed.(ØõûÆıÿÿÿÿ
+Jjavascript:S3504")Unexpected var, use let or const instead.(ÃÒ„úùÿÿÿÿ
+Djavascript:S3504")Unexpected var, use let or const instead.(òÂæ"
+Jjavascript:S3504")Unexpected var, use let or const instead.(ŸÍ‚ºüÿÿÿÿ
+Jjavascript:S3504V")Unexpected var, use let or const instead.(£’Îìüÿÿÿÿ
+Kjavascript:S3504†")Unexpected var, use let or const instead.(ÕÿªŸûÿÿÿÿ
+Kjavascript:S3504‡")Unexpected var, use let or const instead.(‰ò«üÿÿÿÿ
+Kjavascript:S3504‹")Unexpected var, use let or const instead.(ÙĞûáşÿÿÿÿ
+Kjavascript:S3504 ")Unexpected var, use let or const instead.(›àÒÕùÿÿÿÿ
+Kjavascript:S3504¡")Unexpected var, use let or const instead.(î¡ß…úÿÿÿÿ
+Kjavascript:S3504¥")Unexpected var, use let or const instead.(ÙĞûáşÿÿÿÿ
+Fjavascript:S3504ä")Unexpected var, use let or const instead.(‚ğ¼
+Kjavascript:S3504å")Unexpected var, use let or const instead.(”öëûÿÿÿÿ
+;javascript:S1874å"'platform' is deprecated.(”öëûÿÿÿÿ
+Fjavascript:S3504æ")Unexpected var, use let or const instead.(ÕÛ˜±
+Kjavascript:S3504è")Unexpected var, use let or const instead.(áô÷°úÿÿÿÿ
+Fjavascript:S3504é")Unexpected var, use let or const instead.(Éøí
+Kjavascript:S3504ê")Unexpected var, use let or const instead.(ŒÂ€¿ùÿÿÿÿ
+^javascript:S1126ë"<Replace this if-then-else flow by a single return statement.(ÂÈÊûúÿÿÿÿ
+Fjavascript:S3504û")Unexpected var, use let or const instead.(¤ÔÓú
+Fjavascript:S3504ÿ")Unexpected var, use let or const instead.(¡î¦Ì
+Fjavascript:S3504¡")Unexpected var, use let or const instead.(”§
+Wjavascript:S1481¡":Remove the declaration of the unused 'classInfo' variable.(”§
+Tjavascript:S1854¡"7Remove this useless assignment to variable "classInfo".(”§
+Fjavascript:S3504«")Unexpected var, use let or const instead.(øğü
+Ejavascript:S3504·")Unexpected var, use let or const instead.(¾ºE
+Fjavascript:S3504Æ")Unexpected var, use let or const instead.(İÂ“¢

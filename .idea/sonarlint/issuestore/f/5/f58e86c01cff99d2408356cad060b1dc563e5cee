@@ -1,0 +1,43 @@
+
+t
+java:S22933"YReplace the type specification in this constructor call with the diamond operator ("<>").(ÿæ¸”ûÿÿÿÿ
+t
+java:S2293L"YReplace the type specification in this constructor call with the diamond operator ("<>").(ÿæ¸”ûÿÿÿÿ
+u
+java:S2293ˆ"YReplace the type specification in this constructor call with the diamond operator ("<>").(ÿæ¸”ûÿÿÿÿ
+u
+java:S2293 "YReplace the type specification in this constructor call with the diamond operator ("<>").(ÿæ¸”ûÿÿÿÿ
+u
+java:S2293¸"YReplace the type specification in this constructor call with the diamond operator ("<>").(ÿæ¸”ûÿÿÿÿ
+u
+java:S2293İ"YReplace the type specification in this constructor call with the diamond operator ("<>").(ÿæ¸”ûÿÿÿÿ
+u
+java:S2293ú"YReplace the type specification in this constructor call with the diamond operator ("<>").(ÿæ¸”ûÿÿÿÿ
+l
+java:S1192O"QDefine a constant instead of duplicating this literal "incomeCacheIdSet" 4 times.(·´ö”úÿÿÿÿ
+\
+java:S1192A"FDefine a constant instead of duplicating this literal "count" 4 times.(õæŞœ
+`
+java:S1192Q"JDefine a constant instead of duplicating this literal "incomeNum" 4 times.(Ä¢•
+h
+java:S1192Î"LDefine a constant instead of duplicating this literal "incomeCount" 3 times.(İåœ…ùÿÿÿÿ
+u
+java:S1192F"_Define a constant instead of duplicating this literal "æœåŠ¡å™¨é”™è¯¯ï¼Œè¯·é‡è¯•ï¼" 7 times.(äáÚÕ
+_
+java:S1192F"IDefine a constant instead of duplicating this literal "message" 10 times.(äáÚÕ
+p
+java:S1192P"UDefine a constant instead of duplicating this literal "incomeCacheEntitySet" 4 times.(¦§ÊÊùÿÿÿÿ
+k	java:S117O"QRename this local variable to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(·´ö”úÿÿÿÿ
+k	java:S117P"QRename this local variable to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(¦§ÊÊùÿÿÿÿ
+f	java:S117Q"QRename this local variable to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(Ä¢•
+o	java:S120"ZRename this package name to match the regular expression '^[a-z_]+(\.[a-z_][a-z0-9_]*)*$'.(ÿª“â
+H
+java:S1135"2Complete the task associated to this TODO comment.(›ËÓ
+P	java:S125Z"<This block of commented-out lines of code should be removed.(á…‰:
+[
+java:S3252b"EUse static access with "com.alibaba.fastjson.JSON" for "parseObject".(“§æû
+\
+java:S3252n"FUse static access with "com.alibaba.fastjson.JSON" for "toJSONString".(®’Ÿ°
+Q	java:S125s"<This block of commented-out lines of code should be removed.(¾ÅĞÌ
+N
+java:S1128"3Remove this unused import 'com.nanyan.entity.User'.(ÁôÔëÿÿÿÿÿ

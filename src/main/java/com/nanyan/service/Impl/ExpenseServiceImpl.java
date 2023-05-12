@@ -184,7 +184,6 @@ public class ExpenseServiceImpl implements ExpenseService {
     }
 
     @Override
-    @OptLog(content = "添加支出记录", operationType = OperationType.INSERT)
     public JSONObject addExpense(String userName, int expenseTypeId,Timestamp expenseTime,String expenseContent, double expenseAmount) {
         Map<String, Object> dataMap = new HashMap<>();
         try {

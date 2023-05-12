@@ -45,7 +45,7 @@ public class UserServiceImpl implements UserService {
     @Override
     @OptLog(content = "用户注册",operationType = OperationType.REGISTER)
     public JSONObject userRegister(String userName,String password,String email,String sex,String phoneNumber,String captcha) {
-        Map<String, Object> dataMap = new HashMap<String, Object>();
+        Map<String, Object> dataMap = new HashMap<>();
         try {
             HttpSession session = ServletActionContext.getRequest().getSession();
             String sessionVcode = (String) session.getAttribute("session_vcode");

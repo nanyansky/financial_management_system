@@ -1,0 +1,43 @@
+
+J
+java:S3740*"/Provide the parametrized type for this generic.(›¦“ëùÿÿÿÿ
+J
+java:S37408"/Provide the parametrized type for this generic.(¾Üì‹úÿÿÿÿ
+J
+java:S3740F"/Provide the parametrized type for this generic.(¾Üì‹úÿÿÿÿ
+J
+java:S3740W"/Provide the parametrized type for this generic.(æ‡·úûÿÿÿÿ
+J
+java:S3740}"/Provide the parametrized type for this generic.(Å»Àûùÿÿÿÿ
+K
+java:S3740¤"/Provide the parametrized type for this generic.(Å»Àûùÿÿÿÿ
+K
+java:S3740Â"/Provide the parametrized type for this generic.(ùÖá±şÿÿÿÿ
+F
+java:S3740Ğ"/Provide the parametrized type for this generic.(çäş‰
+F
+java:S3740æ"/Provide the parametrized type for this generic.(‰ñ˜ú
+c
+java:S1192c"MDefine a constant instead of duplicating this literal "incomeTypeId" 7 times.(¸«í¼
+g
+java:S1192b"LDefine a constant instead of duplicating this literal "userNameAcc" 6 times.(ÇøÙùÿÿÿÿ
+e
+java:S1192d"JDefine a constant instead of duplicating this literal "startTime" 6 times.(ã‡ø•øÿÿÿÿ
+_
+java:S1192a"IDefine a constant instead of duplicating this literal "username" 7 times.(ã¾Ò£
+H
+java:S1135"2Complete the task associated to this TODO comment.(›ËÓ
+P	java:S125l"<This block of commented-out lines of code should be removed.(œà¹p
+P	java:S125p"<This block of commented-out lines of code should be removed.(œà¹p
+V	java:S125t"<This block of commented-out lines of code should be removed.(Á°Ş¬ÿÿÿÿÿ
+S	java:S106x"9Replace this use of System.out or System.err by a logger.(È™•ÿùÿÿÿÿ
+S	java:S106~"9Replace this use of System.out or System.err by a logger.(Ÿ¹Æçşÿÿÿÿ
+Q	java:S125”"<This block of commented-out lines of code should be removed.(œà¹p
+Q	java:S125˜"<This block of commented-out lines of code should be removed.(œà¹p
+W	java:S125œ"<This block of commented-out lines of code should be removed.(Á°Ş¬ÿÿÿÿÿ
+T	java:S106 "9Replace this use of System.out or System.err by a logger.(È™•ÿùÿÿÿÿ
+W	java:S125¥"<This block of commented-out lines of code should be removed.(ËÕß²ûÿÿÿÿ
+N
+java:S1128"3Remove this unused import 'com.nanyan.entity.User'.(ÁôÔëÿÿÿÿÿ
+L
+java:S1128"6Remove this unused import 'lombok.extern.slf4j.Slf4j'.(ûúÄ®

@@ -1,0 +1,7 @@
+
+g	java:S112"FDefine and throw a dedicated exception instead of using a generic one.(¯®ƒ–ûÿÿÿÿ8ºˆû£€1
+\
+java:S1118":Add a private constructor to hide the implicit public one.(†‘Úîùÿÿÿÿ8Íˆû£€1
+a
+java:S3252$"DUse static access with "com.alibaba.fastjson.JSON" for "parseArray".(Ëæž½8Ôˆû£€1
+X	java:S1255"<This block of commented-out lines of code should be removed.(§ò…‡8Ÿâ³®€1

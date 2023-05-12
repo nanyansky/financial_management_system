@@ -1,0 +1,17 @@
+
+v	java:S120"ZRename this package name to match the regular expression '^[a-z_]+(\.[a-z_][a-z0-9_]*)*$'.(ÿª“â8€£ã¶ÿ0
+O
+java:S1135"2Complete the task associated to this TODO comment.(›ËÓ8ş˜·ÿ0
+S
+java:S1128	"6Remove this unused import 'lombok.extern.slf4j.Slf4j'.(ûúÄ®8ñ«ˆá€1
+Y
+java:S1128
+"<Remove this unused import 'org.apache.commons.io.FileUtils'.(À¿Ù´8ñ«ˆá€1
+X
+java:S1128"6Remove this unused import 'org.aspectj.util.FileUtil'.(Äêˆİøÿÿÿÿ8ñ«ˆá€1
+l
+java:S1128"JRemove this unused import 'org.springframework.core.io.ClassPathResource'.(İ¹º§ıÿÿÿÿ8ò«ˆá€1
+F
+java:S1128")Remove this unused import 'java.io.File'.(†Ğ¥Å8ò«ˆá€1
+R
+java:S1128"0Remove this unused import 'java.io.IOException'.(ªº»Úıÿÿÿÿ8ò«ˆá€1

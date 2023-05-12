@@ -37,7 +37,7 @@
 
                         <div class="layui-inline">
                             <label class="layui-form-label" style="width: 80px">分类</label>
-                            <div class="layui-input-inline" style="width: 90px">
+                            <div class="layui-input-inline" style="width: 120px">
 <%--                                <input type="text" name="userName" autocomplete="off" class="layui-input">--%>
                                 <select name="incomeTypeId" lay-verify="" id="fenlei-2">
                                     <option value="-1">请选择一个分类</option>

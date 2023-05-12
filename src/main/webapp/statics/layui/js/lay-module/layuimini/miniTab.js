@@ -404,7 +404,6 @@ layui.define(["element", "layer", "jquery"], function (exports) {
             options.menuList = options.menuList || [];
             if (!options.urlHashLocation) return false;
             var tabId = location.hash.replace(/^#\//, '');
-            console.log("tabId: "+location.hash)
             if (tabId === null || tabId === undefined || tabId ==='') return false;
 
             // 判断是否为首页

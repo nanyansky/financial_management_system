@@ -95,6 +95,53 @@
             <a class="layui-btn layui-btn-xs data-count-delete" lay-event="buy">购买</a>
         </script>
 
+
+        <%--购买股票表单--%>
+        <div style="display: none;padding: 5px" id="buyStock">
+            <form class="layui-form" style="width:90%;" id="dataFrm" lay-filter="dataFrm">
+
+                <div class="layui-form-item">
+                    <label class="layui-form-label">股票代码</label>
+                    <div class="layui-input-block">
+                        <input type="text" name="code" class="layui-input" value="" disabled="disabled">
+                    </div>
+                </div>
+
+                <div class="layui-form-item">
+                    <label class="layui-form-label">股票名</label>
+                    <div class="layui-input-block">
+                        <input type="text" name="name" class="layui-input" value="" disabled="disabled">
+                    </div>
+                </div>
+
+                <div class="layui-form-item">
+                    <label class="layui-form-label">股票价格（元/股）</label>
+                    <div class="layui-input-block">
+                        <input type="text" name="price" class="layui-input" value="" disabled="disabled">
+                    </div>
+                </div>
+
+                <div class="layui-form-item">
+                    <label class="layui-form-label">股票数量（手）</label>
+                    <div class="layui-input-block">
+                        <input type="number" name="stockNum" class="layui-input" value="" placeholder="1手=100股">
+                    </div>
+                </div>
+
+
+                <div class="layui-form-item layui-row layui-col-xs12">
+                    <div class="layui-input-block" style="text-align: center;">
+                        <button type="button" class="layui-btn" lay-submit lay-filter="doSubmit"><span
+                                class="layui-icon layui-icon-add-1"></span>购买
+                        </button>
+                        <button type="button" class="layui-btn layui-btn-warm" lay-on="b1"  lay-filter="doCancel" "><span
+                                class="layui-icon layui-icon-refresh-1 layui-icon-close"></span>取消
+                        </button>
+                    </div>
+                </div>
+            </form>
+        </div>
+
     </div>
 
 
@@ -104,13 +151,14 @@
 <script type="text/javascript" src="../../statics/layui/js/lay-module/layuimini/miniTab.js"></script>
 
 <script>
-    layui.use(['form', 'table', 'layer','laydate','miniTab'], function () {
+    layui.use(['form', 'table', 'layer','laydate','miniTab','util'], function () {
         var $ = layui.jquery,
             form = layui.form,
             table = layui.table,
             layer = layui.layer,
             laydate = layui.laydate,
-            miniTab = layui.miniTab
+            miniTab = layui.miniTab,
+            util = layui.util
 
         miniTab.listen();
 
@@ -173,9 +221,11 @@
                     });
                     break;
                 case "buy":
-                    deleteById(obj.data);
+                    openBuyWindows(obj.data);
+                    // buy(obj.data);
             }
         })
+
 
         $.ajax({
             type: "GET",
@@ -190,6 +240,49 @@
                     $('#fenlei-1').append(new Option(value.name,value.industryCode));
                 });
                 layui.form.render("select");
+            }
+        })
+
+        var url; //提交地址
+        var mainIndex; //打开窗口的索引
+
+        /**
+         * 打开购买窗口
+         */
+        function openBuyWindows(data) {
+            mainIndex = layer.open({
+                type: 1,
+                title: "购买股票",
+                area: ["800px","500px"],
+                content: $("#buyStock"),
+                success: function (){
+                    //表单数据回写
+                    form.val("dataFrm",data)
+                    //添加修改的请求
+                    url = "/stock/buyStock.action"
+                }
+            })
+        }
+
+        //监听表单提交事件
+        form.on("submit(doSubmit)",function (data) {
+            $.post(url,data.field,function (result) {
+                if(result.code === 1){
+                    //关闭窗口
+                    layer.close(mainIndex);
+                }
+                //提示信息
+                layer.msg(result.message);
+            },"json");
+
+            return false;
+        })
+        //监听表单取消事件
+        util.on("lay-on", {
+            b1: function () {
+                //关闭窗口
+                layer.close(mainIndex);
+                return false;
             }
         })
 

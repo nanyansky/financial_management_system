@@ -76,7 +76,7 @@
                 <div class="layui-row layui-col-space15">
                     <div class="layui-col-md3">
                         <%--卡片--%>
-                        <div id="cardView" style="height: 100%;"></div>
+                        <div id="cardView" style=""></div>
                     </div>
                     <div class="layui-tab layui-tab-brief layui-col-md9" lay-filter="dataTable">
                         <ul class="layui-tab-title" align="center">
@@ -86,11 +86,11 @@
 
                         <div class="layui-tab-content ">
                             <div class="layui-tab-item  layui-show">
-                                <div id="main" style=" height: 30rem; width: 100%"></div>
+                                <div id="main" style=" height: 22rem; width: 100%"></div>
                             </div>
 
                             <div class="layui-tab-item ">
-                                <div id="test" style=" height: 30rem; width: 100%"></div>
+                                <div id="test" style=" height: 22rem; width: 100%"></div>
                             </div>
                         </div>
 
@@ -107,7 +107,10 @@
 <%--卡片动态渲染--%>
 <script id="cardTmp" type="text/html">
     <div class="layui-card">
-        <div class="layui-card-header">公司名称：{{=d.name}}(股票代码：{{=d.code}})</div>
+        <div class="layui-card-header" style="height: 80px">
+            <h2 style="color: #d40d0d">{{=d.name}}</h2>
+            <h2 style="color: #d40d0d">(股票代码：{{=d.code}})</h2>
+        </div>
         <div class="layui-card-header">价格：{{=d.price}}</div>
         <div class="layui-card-header">涨幅：{{=d.priceChange}} -> {{=d.changePercent }} %</div>
         <div class="layui-card-header">今开：{{=d.open}}</div>

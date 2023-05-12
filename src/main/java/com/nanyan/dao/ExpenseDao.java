@@ -1,7 +1,9 @@
 package com.nanyan.dao;
 
+import com.nanyan.annotation.OptLog;
 import com.nanyan.entity.Expense;
 import com.nanyan.entity.Income;
+import com.nanyan.utils.OperationType;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.query.Query;
@@ -201,6 +203,7 @@ public class ExpenseDao {
      * @author nanyan
      * @date:  13:24
      */
+    @OptLog(content = "编辑支出记录", operationType = OperationType.UPDATE)
     public void editExpense(int id, Expense expense){
         Session currentSession = sessionFactory.getCurrentSession();
         Query query = currentSession.createQuery("update Expense set userName =:username,userId =:userId, expenseTypeId =:expenseTypeId,expenseTime=:expenseTime,expenseContent=:expenseContent, expenseAmount =:expenseAmount, isDeleted =:isDeleted where id =:id");

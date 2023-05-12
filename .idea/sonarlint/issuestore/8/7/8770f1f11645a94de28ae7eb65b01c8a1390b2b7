@@ -1,0 +1,25 @@
+
+g	java:S117Ú"QRename this local variable to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(¯ÜÊÉ
+l	java:S117â"QRename this local variable to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(òİşÿÿÿÿ
+l	java:S1168"WRename this field "old_password" to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(ƒî‰ı
+l	java:S1169"WRename this field "new_password" to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(Áó­¾
+?
+java:S1948.")Make "session" transient or serializable.(úÂà
+H
+java:S1948?"-Make "userService" transient or serializable.(¶òÁÈùÿÿÿÿ
+N
+java:S1135ñ"2Complete the task associated to this TODO comment.(ÕÌ®şÿÿÿÿ
+i	java:S100Ö"NRename this method name to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(ÔÎ Ïıÿÿÿÿ
+d	java:S100Ú"NRename this method name to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(¯ÜÊÉ
+d	java:S100Ş"NRename this method name to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(³”ï
+i	java:S100â"NRename this method name to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(òİşÿÿÿÿ
+K
+java:S1128"6Remove this unused import 'com.alibaba.fastjson.JSON'.(Ö¢å$
+V
+java:S1128";Remove this unused import 'com.alibaba.fastjson.JSONArray'.(ÿÀâ³ùÿÿÿÿ
+g
+java:S1128"LRemove this unused import 'com.alibaba.fastjson.serializer.SerializeConfig'.(ìÛº©ıÿÿÿÿ
+m
+java:S1128"WRemove this unused import 'com.alibaba.fastjson.serializer.SimpleDateFormatSerializer'.(ÛØÄİ
+D
+java:S1128"/Remove this unused import 'java.sql.Timestamp'.(èò½+

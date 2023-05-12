@@ -14,14 +14,20 @@ public class UserStock {
   @Id
   @Column(name = "stock_id")
   @GeneratedValue(strategy = GenerationType.IDENTITY)
-  private long stockId;
+  private int stockId;
+  @Column(name = "stock_code")
   private String stockCode;
+  @Column(name = "stock_name")
   private String stockName;
-  private String stockType;
+  @Column(name = "stock_price")
   private double stockPrice;
-  private long stockNum;
+  @Column(name = "stock_num")
+  private int stockNum;
+  @Column(name = "stock_time")
   private Timestamp stockTime;
+  @Column(name = "stock_user")
   private String stockUser;
-  private long stockUserId;
+  @Column(name = "stock_user_id")
+  private int stockUserId;
 
 }

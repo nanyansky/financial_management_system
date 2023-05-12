@@ -20,6 +20,12 @@ public class StockAction {
     private int page;
     private int limit;
     private int asc;
+
+    private String code;
+    private String name;
+    private String price;
+    private int stockNum;
+
     private String industryCode;
     private JSONObject jsonObject;
 
@@ -38,7 +44,7 @@ public class StockAction {
             results = {@Result(type = "json",params = {"root","jsonObject"})},
             interceptorRefs = {@InterceptorRef(value = "LoginInterceptorStack")})
     public String buyStock(){
-        jsonObject = stockService.getStockList(sort, node, limit, page, asc,industryCode);
+        jsonObject = stockService.buyStock(code,name,price,stockNum);
         return SUCCESS;
     }
 
@@ -99,6 +105,38 @@ public class StockAction {
 
     public void setAsc(int asc) {
         this.asc = asc;
+    }
+
+    public String getCode() {
+        return code;
+    }
+
+    public void setCode(String code) {
+        this.code = code;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getPrice() {
+        return price;
+    }
+
+    public void setPrice(String price) {
+        this.price = price;
+    }
+
+    public int getStockNum() {
+        return stockNum;
+    }
+
+    public void setStockNum(int stockNum) {
+        this.stockNum = stockNum;
     }
 
     public String getIndustryCode() {
