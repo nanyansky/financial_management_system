@@ -21,53 +21,7 @@
 <div class="layuimini-container">
     <div class="layuimini-main">
 
-        <%--搜索条件区域--%>
-        <fieldset class="table-search-fieldset">
-            <legend>搜索信息</legend>
-            <div style="margin: 10px 10px 10px 10px">
-                <form class="layui-form layui-form-pane" action="">
-                    <div class="layui-form-item">
-
-                        <div class="layui-inline">
-                            <label class="layui-form-label" style="width: 80px">用户名</label>
-                            <div class="layui-input-inline" style="width: 90px">
-                                <input type="text" name="userName" autocomplete="off" class="layui-input">
-                            </div>
-                        </div>
-
-                        <div class="layui-inline">
-                            <label class="layui-form-label" style="width: 80px">分类</label>
-                            <div class="layui-input-inline" style="width: 120px">
-<%--                                <input type="text" name="userName" autocomplete="off" class="layui-input">--%>
-                                <select name="incomeTypeId" lay-verify="" id="fenlei-2">
-                                    <option value="-1">请选择一个分类</option>
-                                </select>
-                            </div>
-                        </div>
-
-                        <div class="layui-inline">
-                            <label class="layui-form-label" style="width: 140px">收入日期范围</label>
-                            <div class="layui-inline" id="searchTime">
-                                <div class="layui-input-inline" style="width: 160px">
-                                    <input type="text" id="startTime" name="startTime" class="layui-input" placeholder="开始日期">
-                                </div>
-                                <div class="layui-form-mid">-</div>
-                                <div class="layui-input-inline" style="width: 160px">
-                                    <input type="text" id="endTime" name="endTime" class="layui-input" placeholder="结束日期">
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="layui-inline">
-                            <button type="submit" class="layui-btn" lay-submit lay-filter="data-search-btn"><i class="layui-icon"></i> 搜 索</button>
-                            <button type="reset" class="layui-btn layui-btn-warm"><i class="layui-icon layui-icon-refresh"></i>重 置</button>
-                        </div>
-                    </div>
-                </form>
-            </div>
-        </fieldset>
-
-        <%--        表格区域--%>
+        <%--表格区域--%>
         <table class="layui-hide" id="currentTableId" lay-filter="currentTableFilter"></table>
 
         <script type="text/html" id="currentTableBar">
@@ -80,6 +34,7 @@
             <form class="layui-form" style="width:90%;" id="dataFrm" lay-filter="dataFrm">
 
                 <div class="layui-form-item">
+                    <input type="hidden" name="stockId">
                     <label class="layui-form-label">股票代码</label>
                     <div class="layui-input-block">
                         <input type="text" name="stockCode" class="layui-input" value="" disabled="disabled">
@@ -94,9 +49,16 @@
                 </div>
 
                 <div class="layui-form-item">
-                    <label class="layui-form-label">股票价格（元/股）</label>
+                    <label class="layui-form-label">购买时价格（元/股）</label>
                     <div class="layui-input-block">
                         <input type="text" name="stockPrice" class="layui-input" value="" disabled="disabled">
+                    </div>
+                </div>
+
+                <div class="layui-form-item">
+                    <label class="layui-form-label">当前价格（元/股）</label>
+                    <div class="layui-input-block">
+                        <input type="text" name="curStockPrice" class="layui-input" value="" disabled="disabled">
                     </div>
                 </div>
 
@@ -110,7 +72,7 @@
                 <div class="layui-form-item">
                     <label class="layui-form-label">卖出数量（手）</label>
                     <div class="layui-input-block">
-                        <input type="number" name="sellStockNum" class="layui-input" value="" placeholder="1手=100股" lay-verify="numberVerify">
+                        <input type="number" name="sellStockNum" class="layui-input" value="" placeholder="1手=100股" lay-verify="numberVerify" required>
                     </div>
                 </div>
 
@@ -177,21 +139,6 @@
             skin: 'line'
         });
 
-        // 监听搜索操作
-        form.on('submit(data-search-btn)', function (data) {
-            console.log(data.field);
-            //执行搜索重载
-            tableIns.reload({
-                url: '/income/searchIncome.action',
-                method: "post",
-                page: {
-                    curr: 1
-                }
-                , where: data.field,
-            }, 'json');
-            return false;
-        });
-
         //监听行工具栏事件
         table.on('tool(currentTableFilter)', function (obj) {
             console.log(obj)
@@ -213,31 +160,53 @@
         })
 
 
+        var url;
         /**
          * 打开出售窗口
          */
         function openSellWindows(data) {
+            console.log(data)
+            var curStockPrice;
+            //获取当前价格
+            $.ajax({
+                type: "GET",
+                url: "https://api.doctorxiong.club/v1/stock",
+                async: false,
+                data:{code: data.stockCode},
+                datatype: "json",
+                success: function (res) {
+                    curStockPrice = res.data[0].price;
+                }
+            })
+
+
+            //打开窗口
             mainIndex = layer.open({
                 type: 1,
                 title: "出售股票",
-                area: ["800px","500px"],
+                area: ["800px","520px"],
                 content: $("#sellStock"),
                 success: function (){
                     //表单数据回写
                     form.val("dataFrm",data)
+
+                    form.val("dataFrm", {
+                        "curStockPrice": curStockPrice,
+                    })
                     //添加修改的请求
-                    url = "/stock/buyStock.action"
+                    url = "/stock/sellStock.action"
                 }
             })
         }
 
         //监听表单提交事件
         form.on("submit(doSubmit)",function (data) {
-            // url
-            $.post("url",data.field,function (result) {
+            $.post(url,data.field,function (result) {
                 if(result.code === 1){
                     //关闭窗口
                     layer.close(mainIndex);
+                    //表格刷新
+                    tableIns.reload();
                 }
                 //提示信息
                 layer.msg(result.message);
@@ -253,30 +222,6 @@
                 return false;
             }
         })
-
-        //执行一个laydate实例
-        laydate.render({
-            elem: '#searchTime'//指定元素
-            ,type: 'datetime'
-            // ,range: true
-            ,range: ['#startTime','#endTime']
-        });
-
-        $.ajax({
-            type: "GET",
-            url: "/getIncomeTypeList.action",
-            dataType: "JSON",
-            success: function(result) {
-                // console.log(result);
-                // name = result.name;
-                $.each(result.data,function (index,value) {
-                    // console.log(value.name);
-                    $('#fenlei-2').append(new Option(value.name,value.id));
-                });
-                layui.form.render("select");
-            }
-        })
-
     });
 </script>
 

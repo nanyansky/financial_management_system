@@ -7,6 +7,7 @@ import com.nanyan.dao.ChartDao;
 import com.nanyan.dao.UserDao;
 import com.nanyan.entity.User;
 import com.nanyan.service.ChartService;
+import com.nanyan.service.StockService;
 import com.nanyan.service.UserService;
 import com.nanyan.utils.MailUtil;
 import com.nanyan.utils.StockDate;
@@ -61,19 +62,14 @@ public class test {
 
 
     @Autowired
+    StockService stockService;
+
+    @Autowired
     UserDao userDao;
 
     @Test
     public void test() {
-        HashMap<String, Object> dataMap = new HashMap<>();
-        dataMap.put("sort","turnover");
-        dataMap.put("node","a");
-        dataMap.put("pageSize",15);
-        dataMap.put("pageIndex",1);
-        dataMap.put("asc",0);
-        JSONObject jsonObject = StockDate.stockRank(dataMap);
-
-        System.out.println(jsonObject);
-
+        JSONObject stockIndustry = stockService.getStockIndustry();
+        System.out.println(stockIndustry);
     }
 }

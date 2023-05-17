@@ -39,11 +39,11 @@ public class StockDao {
         return fromUserStock.list();
     }
 
-
-    public void buyStock(UserStock userStock){
+    public void stockTrade(UserStock userStock){
         Session currentSession = sessionFactory.getCurrentSession();
-        currentSession.save(userStock);
+        currentSession.saveOrUpdate(userStock);
     }
+
 
     public int getUserStockNumber(){
 

@@ -229,14 +229,10 @@
 
         $.ajax({
             type: "GET",
-            url: "https://api.doctorxiong.club/v1/stock/industry/rank",
+            url: "/stock/getStockIndustry.action",
             dataType: "JSON",
             success: function(result) {
-                // console.log(result);
-                // name = result.name;
                 $.each(result.data,function (index,value) {
-                    // console.log(value.name);
-                    // console.log(value.industryCode);
                     $('#fenlei-1').append(new Option(value.name,value.industryCode));
                 });
                 layui.form.render("select");

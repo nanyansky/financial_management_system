@@ -2,6 +2,7 @@ package com.nanyan.action;
 
 import com.alibaba.fastjson.JSONObject;
 import com.nanyan.service.StockService;
+import com.nanyan.service.StockTradeService;
 import org.apache.struts2.convention.annotation.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
@@ -24,7 +25,17 @@ public class StockAction {
     private String code;
     private String name;
     private String price;
+
+
+    private int stockId;
+    private String stockCode;
+    private String stockName;
+    private String stockPrice;
+    private String curStockPrice;
     private int stockNum;
+    private int sellStockNum;
+    private int tradeType;
+
 
     private String industryCode;
     private JSONObject jsonObject;
@@ -32,6 +43,10 @@ public class StockAction {
 
     @Autowired
     StockService stockService;
+
+    @Autowired
+    StockTradeService stockTradeService;
+
     @Action(value = "getStockList",
             results = {@Result(type = "json",params = {"root","jsonObject"})},
             interceptorRefs = {@InterceptorRef(value = "LoginInterceptorStack")})
@@ -45,6 +60,14 @@ public class StockAction {
             interceptorRefs = {@InterceptorRef(value = "LoginInterceptorStack")})
     public String buyStock(){
         jsonObject = stockService.buyStock(code,name,price,stockNum);
+        return SUCCESS;
+    }
+
+    @Action(value = "sellStock",
+            results = {@Result(type = "json",params = {"root","jsonObject"})},
+            interceptorRefs = {@InterceptorRef(value = "LoginInterceptorStack")})
+    public String sellStock(){
+        jsonObject = stockService.sellStock(stockId,stockCode,stockName,stockPrice,curStockPrice,stockNum,sellStockNum);
         return SUCCESS;
     }
 
@@ -65,6 +88,31 @@ public class StockAction {
         jsonObject = stockService.getUserStockListByPage(page,limit);
         return SUCCESS;
     }
+
+    @Action(value = "getStockIndustry",
+            results = {@Result(type = "json",params = {"root","jsonObject"})},
+            interceptorRefs = {@InterceptorRef(value = "LoginInterceptorStack")})
+    public String getStockIndustry(){
+        jsonObject = stockService.getStockIndustry();
+        return SUCCESS;
+    }
+
+    @Action(value = "getTradeListByPage",
+            results = {@Result(type = "json",params = {"root","jsonObject"})},
+            interceptorRefs = {@InterceptorRef(value = "LoginInterceptorStack")})
+    public String getTradeListByPage(){
+        jsonObject = stockTradeService.getTradeListByPage(page,limit);
+        return SUCCESS;
+    }
+
+    @Action(value = "searchTradList",
+            results = {@Result(type = "json",params = {"root","jsonObject"})},
+            interceptorRefs = {@InterceptorRef(value = "LoginInterceptorStack")})
+    public String searchTradList(){
+        jsonObject = stockTradeService.searchTradList(page,limit,tradeType);
+        return SUCCESS;
+    }
+
 
 
     public String getSort() {
@@ -131,13 +179,70 @@ public class StockAction {
         this.price = price;
     }
 
+    public String getStockCode() {
+        return stockCode;
+    }
+
+    public void setStockCode(String stockCode) {
+        this.stockCode = stockCode;
+    }
+
+    public String getStockName() {
+        return stockName;
+    }
+
+    public void setStockName(String stockName) {
+        this.stockName = stockName;
+    }
+
+    public String getStockPrice() {
+        return stockPrice;
+    }
+
+    public void setStockPrice(String stockPrice) {
+        this.stockPrice = stockPrice;
+    }
+
+    public String getCurStockPrice() {
+        return curStockPrice;
+    }
+
+    public void setCurStockPrice(String curStockPrice) {
+        this.curStockPrice = curStockPrice;
+    }
+
+    public int getSellStockNum() {
+        return sellStockNum;
+    }
+
+    public void setSellStockNum(int sellStockNum) {
+        this.sellStockNum = sellStockNum;
+    }
+
+    public int getTradeType() {
+        return tradeType;
+    }
+
+    public void setTradeType(int tradeType) {
+        this.tradeType = tradeType;
+    }
+
     public int getStockNum() {
         return stockNum;
+    }
+
+    public int getStockId() {
+        return stockId;
+    }
+
+    public void setStockId(int stockId) {
+        this.stockId = stockId;
     }
 
     public void setStockNum(int stockNum) {
         this.stockNum = stockNum;
     }
+
 
     public String getIndustryCode() {
         return industryCode;

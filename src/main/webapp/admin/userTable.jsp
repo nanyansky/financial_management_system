@@ -261,6 +261,7 @@
          * 打开修改窗口
          */
         function openEditWindows(data) {
+            console.log(data);
             mainIndex = layer.open({
                 type: 1,
                 title: "修改用户",
