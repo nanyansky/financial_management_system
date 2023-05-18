@@ -8,6 +8,8 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%--导入格式化金额标签--%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -29,6 +31,28 @@
     .label {display:inline;padding:.2em .6em .3em;font-size:75%;font-weight:700;line-height:1;color:#fff;text-align:center;white-space:nowrap;vertical-align:baseline;border-radius:.25em;margin-top: .3em;}
     .layui-red {color:red}
     .main_btn > p {height:40px;}
+    .layui-card {border:1px solid #f2f2f2;border-radius:5px;}
+    .icon {margin-right:10px;color:#1aa094;}
+    .icon-cray {color:#ffb800!important;}
+    .icon-blue {color:#1e9fff!important;}
+    .icon-tip {color:#ff5722!important;}
+    .layuimini-qiuck-module {text-align:center;margin-top: 10px}
+    .layuimini-qiuck-module a i {display:inline-block;width:100%;height:60px;line-height:60px;text-align:center;border-radius:2px;font-size:30px;background-color:#F8F8F8;color:#333;transition:all .3s;-webkit-transition:all .3s;}
+    .layuimini-qiuck-module a cite {position:relative;top:2px;display:block;color:#666;text-overflow:ellipsis;overflow:hidden;white-space:nowrap;font-size:14px;}
+    .welcome-module {width:100%;height:210px;}
+    .panel {background-color:#fff;border:1px solid transparent;border-radius:3px;-webkit-box-shadow:0 1px 1px rgba(0,0,0,.05);box-shadow:0 1px 1px rgba(0,0,0,.05)}
+    .panel-body {padding:10px}
+    .panel-title {margin-top:0;margin-bottom:0;font-size:12px;color:inherit}
+    .label {display:inline;padding:.2em .6em .3em;font-size:75%;font-weight:700;line-height:1;color:#fff;text-align:center;white-space:nowrap;vertical-align:baseline;border-radius:.25em;margin-top: .3em;}
+    .layui-red {color:red}
+    .main_btn > p {height:40px;}
+    .layui-bg-number {background-color:#F8F8F8;}
+    .layuimini-notice:hover {background:#f6f6f6;}
+    .layuimini-notice {padding:7px 16px;clear:both;font-size:12px !important;cursor:pointer;position:relative;transition:background 0.2s ease-in-out;}
+    .layuimini-notice-title,.layuimini-notice-label {
+        padding-right: 70px !important;text-overflow:ellipsis!important;overflow:hidden!important;white-space:nowrap!important;}
+    .layuimini-notice-title {line-height:28px;font-size:14px;}
+    .layuimini-notice-extra {position:absolute;top:50%;margin-top:-8px;right:16px;display:inline-block;height:16px;color:#999;}
 </style>
 <body>
 <link href="https://cdn.bootcdn.net/ajax/libs/font-awesome/6.3.0/css/all.min.css" rel="stylesheet">
@@ -94,7 +118,7 @@
                                 <h5>剩余总额</h5>
                             </div>
                             <div class="panel-content">
-                                <h2 class="no-margins"><i class="fa fa-pie-chart"> </i><fmt:formatNumber type="number" value="${sessionScope.incomeCount - sessionScope.expenseCount}" maxFractionDigits="2" pattern="0.00"/> 元</h2>
+                                <h2 class="no-margins"><i class="fa fa-pie-chart"> </i> <fmt:formatNumber type="number" value=" ${sessionScope.incomeCount - sessionScope.expenseCount}" maxFractionDigits="2" pattern="0.00"/> 元</h2>
                             </div>
                         </div>
                     </div>
@@ -103,77 +127,31 @@
         </div>
     </div>
 
-<%--    <div class="layui-box">--%>
-<%--        <div class="layui-row layui-col-space10">--%>
-<%--            <div class="layui-col-md12">--%>
-<%--                <blockquote class="layui-elem-quote main_btn">--%>
-<%--&lt;%&ndash;                    <p>测试</p>&ndash;%&gt;--%>
-<%--                    <p>本模板基于layui2.5.4以及font-awesome-4.7.0进行实现。layui开发文档地址：<a class="layui-btn layui-btn-xs layui-btn-danger" target="_blank" href="http://www.layui.com/doc">layui文档</a></p>--%>
-<%--                    <p>技术交流QQ群（561838086）：<a target="_blank" href="https://jq.qq.com/?_wv=1027&k=5JRGVfe"><img border="0" src="//pub.idqqimg.com/wpa/images/group.png" alt="layuimini" title="layuimini"></a>（加群请备注来源：如gitee、github、官网等）</p>--%>
-<%--                    <p>喜欢此后台模板的可以给我的GitHub和Gitee加个Star支持一下</p>--%>
-<%--                    <p>GitHub地址：--%>
-<%--                        <iframe src="https://ghbtns.com/github-btn.html?user=zhongshaofa&repo=layuimini&type=star&count=true" frameborder="0" scrolling="0" width="100px" height="20px"></iframe>--%>
-<%--                        <iframe src="https://ghbtns.com/github-btn.html?user=zhongshaofa&repo=layuimini&type=fork&count=true" frameborder="0" scrolling="0" width="100px" height="20px"></iframe>--%>
-<%--                    </p>--%>
-<%--                    <p>Gitee地址：<a href="https://gitee.com/zhongshaofa/layuimini" target="_blank"><img src="https://gitee.com/zhongshaofa/layuimini/badge/star.svg?theme=dark" alt="star"></a> <a href="https://gitee.com/zhongshaofa/layuimini" target="_blank"><img src="https://gitee.com/zhongshaofa/layuimini/badge/fork.svg?theme=dark" alt="fork"></a></p>--%>
-<%--                </blockquote>--%>
-<%--            </div>--%>
-<%--        </div>--%>
-<%--    </div>--%>
-
     <div class="layui-box">
         <div class="layui-row layui-col-space10">
 
-            <div class="layui-col-md6">
+            <div class="layui-col-md8">
                 <h2 align="center">用户列表</h2>
                 <table id="user" lay-filter="user"></table>
             </div>
 
-            <div class="layui-col-md6">
-                <h2 align="center">用户日志</h2>
-                <ul class="layui-timeline">
-                    <li class="layui-timeline-item">
-                        <i class="layui-icon layui-timeline-axis">&#xe63f;</i>
-                        <div class="layui-timeline-content layui-text">
-                            <h3 class="layui-timeline-title">8月18日</h3>
-                            <p>
-                                layui 2.0 的一切准备工作似乎都已到位。发布之弦，一触即发。
-                                <br>不枉近百个日日夜夜与之为伴。因小而大，因弱而强。
-                                <br>无论它能走多远，抑或如何支撑？至少我曾倾注全心，无怨无悔 <i class="layui-icon"></i>
-                            </p>
-                        </div>
-                    </li>
-                    <li class="layui-timeline-item">
-                        <i class="layui-icon layui-timeline-axis">&#xe63f;</i>
-                        <div class="layui-timeline-content layui-text">
-                            <h3 class="layui-timeline-title">8月16日</h3>
-                            <p>杜甫的思想核心是儒家的仁政思想，他有“<em>致君尧舜上，再使风俗淳</em>”的宏伟抱负。个人最爱的名篇有：</p>
-                            <ul>
-                                <li>《登高》</li>
-                                <li>《茅屋为秋风所破歌》</li>
-                            </ul>
-                        </div>
-                    </li>
-                    <li class="layui-timeline-item">
-                        <i class="layui-icon layui-timeline-axis">&#xe63f;</i>
-                        <div class="layui-timeline-content layui-text">
-                            <h3 class="layui-timeline-title">8月15日</h3>
-                            <p>
-                                中国人民抗日战争胜利72周年
-                                <br>常常在想，尽管对这个国家有这样那样的抱怨，但我们的确生在了最好的时代
-                                <br>铭记、感恩
-                                <br>所有为中华民族浴血奋战的英雄将士
-                                <br>永垂不朽
-                            </p>
-                        </div>
-                    </li>
-                    <li class="layui-timeline-item">
-                        <i class="layui-icon layui-timeline-axis">&#xe63f;</i>
-                        <div class="layui-timeline-content layui-text">
-                            <div class="layui-timeline-title">过去</div>
-                        </div>
-                    </li>
-                </ul>
+            <div class="layui-col-md4">
+                <h2 align="center">用户动态</h2>
+                <div class="layui-card">
+                    <div class="layui-card-header"><i class="fa fa-bullhorn icon icon-tip"></i>用户动态</div>
+                    <div class="layui-card-body layui-text">
+
+                        <c:forEach items="${sessionScope.top10OperationLog}" var="log">
+
+                            <div class="layuimini-notice">
+                                <div class="layuimini-notice-title">${log.userName} ${log.operationContent}</div>
+                                <div class="layuimini-notice-extra">${log.operationTime}</div>
+                            </div>
+
+                        </c:forEach>
+
+                    </div>
+                </div>
             </div>
         </div>
     </div>
@@ -183,7 +161,8 @@
 <script>
 
     layui.use('table', function(){
-        var table = layui.table;
+        var table = layui.table,
+            $ = layui.jquery
 
         //第一个实例
         table.render({
@@ -202,6 +181,17 @@
                     }}
             ]]
         });
+
+        $.ajax({
+            url: "/log/getTop10OperationLog.action",
+            type: "post",
+            async: false,
+            dataType: "json",
+            success: function (data) {
+                console.log("日志请求成功！")
+            }
+        });
+
     });
 
 

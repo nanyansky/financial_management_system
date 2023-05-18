@@ -7,13 +7,17 @@ import com.alibaba.fastjson.serializer.SimpleDateFormatSerializer;
 import com.nanyan.annotation.OptLog;
 import com.nanyan.dao.ExpenseDao;
 import com.nanyan.dao.IncomeDao;
+import com.nanyan.dao.OperationLogDao;
 import com.nanyan.dao.UserDao;
+import com.nanyan.entity.OperationLog;
 import com.nanyan.entity.User;
+import com.nanyan.service.OperationLogService;
 import com.nanyan.service.UserService;
 import com.nanyan.utils.MailUtil;
 import com.nanyan.utils.OperationType;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.struts2.ServletActionContext;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
 
@@ -41,6 +45,9 @@ public class UserServiceImpl implements UserService {
     IncomeDao incomeDao;
     @Resource
     ExpenseDao expenseDao;
+
+    @Resource
+    OperationLogDao operationLogDao;
 
     @Override
     @OptLog(content = "用户注册",operationType = OperationType.REGISTER)
@@ -136,7 +143,12 @@ public class UserServiceImpl implements UserService {
             }
             //登录成功
             if(tmpUser.getPassword().equals(password)){
+
+
                 session.setAttribute("user",tmpUser);
+                List<OperationLog> top10OperationLog = operationLogDao.getTop10OperationLog();
+                session.setAttribute("top10OperationLog",top10OperationLog);
+
                 dataMap.put("code",1);
                 dataMap.put("message","登录成功！");
                 JSONObject jsonObject = new JSONObject(dataMap);

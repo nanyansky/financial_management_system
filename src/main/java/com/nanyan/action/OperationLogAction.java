@@ -74,6 +74,15 @@ public class OperationLogAction extends ActionSupport {
         return SUCCESS;
     }
 
+    @Action(value = "getTop10OperationLog",
+            results = {@Result(type = "json",params = {"root","jsonObject"})},
+            interceptorRefs = {@InterceptorRef(value = "LoginInterceptorStack")}
+    )
+    public String getTop10OperationLog(){
+        jsonObject = operationLogService.getTop10OperationLog();
+        return SUCCESS;
+    }
+
 
 
 

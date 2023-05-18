@@ -46,7 +46,7 @@ public class StockTradeServiceImpl implements StockTradeService {
         stockTradeDao.save(stockTrade);
         HashMap<String, Object> dataMap = new HashMap<>();
         dataMap.put("code",1);
-        dataMap.put("msg","添加成功。");
+        dataMap.put("message","添加成功。");
 
         return new JSONObject(dataMap);
     }
@@ -78,7 +78,7 @@ public class StockTradeServiceImpl implements StockTradeService {
     }
 
     @Override
-    public JSONObject searchTradList(int page, int limit,int tradeType) {
+    public JSONObject searchTradeList(int page, int limit,int tradeType) {
         Map<String, Object> dataMap = new HashMap<>();
         try {
             //获取StockTrade数量

@@ -105,11 +105,11 @@ public class StockAction {
         return SUCCESS;
     }
 
-    @Action(value = "searchTradList",
+    @Action(value = "searchTradeList",
             results = {@Result(type = "json",params = {"root","jsonObject"})},
             interceptorRefs = {@InterceptorRef(value = "LoginInterceptorStack")})
-    public String searchTradList(){
-        jsonObject = stockTradeService.searchTradList(page,limit,tradeType);
+    public String searchTradeList(){
+        jsonObject = stockTradeService.searchTradeList(page,limit,tradeType);
         return SUCCESS;
     }
 

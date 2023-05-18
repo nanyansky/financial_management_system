@@ -4,8 +4,10 @@ import com.alibaba.fastjson.JSONObject;
 import com.alibaba.fastjson.serializer.SerializeConfig;
 import com.alibaba.fastjson.serializer.SimpleDateFormatSerializer;
 import com.nanyan.dao.ChartDao;
+import com.nanyan.dao.UserAssetsDao;
 import com.nanyan.dao.UserDao;
 import com.nanyan.entity.User;
+import com.nanyan.entity.UserAssets;
 import com.nanyan.service.ChartService;
 import com.nanyan.service.StockService;
 import com.nanyan.service.UserService;
@@ -26,10 +28,7 @@ import java.io.DataOutput;
 import java.io.File;
 import java.io.IOException;
 import java.sql.Timestamp;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 /**
  * @author nanyan
@@ -66,10 +65,11 @@ public class test {
 
     @Autowired
     UserDao userDao;
+    @Autowired
+    UserAssetsDao userAssetsDao;
 
     @Test
     public void test() {
-        JSONObject stockIndustry = stockService.getStockIndustry();
-        System.out.println(stockIndustry);
+
     }
 }

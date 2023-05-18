@@ -72,7 +72,7 @@
                 <div class="layui-form-item">
                     <label class="layui-form-label">卖出数量（手）</label>
                     <div class="layui-input-block">
-                        <input type="number" name="sellStockNum" class="layui-input" value="" placeholder="1手=100股" lay-verify="numberVerify" required>
+                        <input type="number" name="sellStockNum" class="layui-input" value="" placeholder="1手=100股" lay-verify="required" required>
                     </div>
                 </div>
 

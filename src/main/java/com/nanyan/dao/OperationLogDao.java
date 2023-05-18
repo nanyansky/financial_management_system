@@ -129,4 +129,12 @@ public class OperationLogDao {
     }
 
 
+    //查找前10条操作日志
+    public List<OperationLog> getTop10OperationLog(){
+        Session currentSession = sessionFactory.getCurrentSession();
+        Query query = currentSession.createQuery("from OperationLog where operationType = 'INSERT' or operationType = 'UPDATE' order by operationTime desc");
+        query.setFirstResult(0).setMaxResults(9);
+        return query.list();
+    }
+
 }

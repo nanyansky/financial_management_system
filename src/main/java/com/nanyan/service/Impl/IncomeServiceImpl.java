@@ -73,7 +73,7 @@ public class IncomeServiceImpl implements IncomeService {
     }
 
     public JSONObject getIncomeListByPage(int page, int limit) {
-        Map<String, Object> dataMap = new HashMap<String, Object>();
+        Map<String, Object> dataMap = new HashMap<>();
         try {
 
             String IdKey = "incomeCacheIdSet";

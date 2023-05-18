@@ -7,10 +7,12 @@ import com.alibaba.fastjson.serializer.SimpleDateFormatSerializer;
 import com.nanyan.dao.OperationLogDao;
 import com.nanyan.entity.OperationLog;
 import com.nanyan.service.OperationLogService;
+import org.apache.struts2.ServletActionContext;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpSession;
 import java.sql.Timestamp;
 import java.util.HashMap;
 import java.util.List;
@@ -137,5 +139,14 @@ public class OperationLogServiceImpl implements OperationLogService {
             dataMap.put("message","服务器错误，请重试！");
             return new JSONObject(dataMap);
         }
+    }
+
+    @Override
+    public JSONObject getTop10OperationLog() {
+        List<OperationLog> top10OperationLog = operationLogDao.getTop10OperationLog();
+
+        HttpSession session = ServletActionContext.getRequest().getSession();
+        session.setAttribute("top10OperationLog",top10OperationLog);
+        return null;
     }
 }

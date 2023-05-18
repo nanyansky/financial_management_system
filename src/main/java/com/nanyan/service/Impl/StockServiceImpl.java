@@ -122,8 +122,7 @@ public class StockServiceImpl implements StockService {
      * @param stockNum
      * @return
      */
-    @OptLog(content = "用户购买",operationType = OperationType.UPDATE)
-
+    @OptLog(content = "用户购买股票",operationType = OperationType.UPDATE)
     @Override
     public JSONObject buyStock(String code,String name,String price,int stockNum) {
         HttpSession session = ServletActionContext.getRequest().getSession();

@@ -13,4 +13,6 @@ public interface OperationLogService {
 
     public JSONObject getLogListByUserName(String username,int page,int limit);
     public JSONObject searchOperationLog(String username, Timestamp startTime, Timestamp endTime, int page, int limit);
+
+    public JSONObject getTop10OperationLog();
 }
