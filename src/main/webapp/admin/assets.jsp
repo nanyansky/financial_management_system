@@ -94,6 +94,7 @@
 </div>
 <script src="../statics/layui/lib/layui-v2.7.6/layui.js" charset="utf-8"></script>
 
+
 <script>
   layui.use(['form', 'table', 'layer','laydate'], function () {
     var $ = layui.jquery,
