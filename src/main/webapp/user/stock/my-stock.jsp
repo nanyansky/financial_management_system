@@ -72,7 +72,7 @@
                 <div class="layui-form-item">
                     <label class="layui-form-label">卖出数量（手）</label>
                     <div class="layui-input-block">
-                        <input type="number" name="sellStockNum" class="layui-input" value="" placeholder="1手=100股" lay-verify="required" required>
+                        <input type="number" name="sellStockNum" class="layui-input" value="" placeholder="1手=100股" lay-verify="numberVerify" required>
                     </div>
                 </div>
 
@@ -111,6 +111,9 @@
         form.verify({
             numberVerify:function (value) {
                 var tmp =  $('#originNum').val();
+                if(value == null || value == ''){
+                    return '请先输入持有数量';
+                }
                 if(value > tmp){
                     return '出售数量不能大于' + tmp;
                 }

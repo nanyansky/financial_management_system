@@ -124,7 +124,7 @@
                 <div class="layui-form-item">
                     <label class="layui-form-label">股票数量（手）</label>
                     <div class="layui-input-block">
-                        <input type="number" name="stockNum" class="layui-input" value="" placeholder="1手=100股">
+                        <input type="number" name="stockNum" class="layui-input" value="" placeholder="1手=100股" lay-verify="numberVerify">
                     </div>
                 </div>
 
@@ -159,6 +159,15 @@
             laydate = layui.laydate,
             miniTab = layui.miniTab,
             util = layui.util
+
+        form.verify({
+            numberVerify:function (value) {
+                var tmp =  $('#originNum').val();
+                if(value == null || value == ''){
+                    return '请先输入购买数量';
+                }
+            }
+        })
 
         miniTab.listen();
 
@@ -262,7 +271,7 @@
 
         //监听表单提交事件
         form.on("submit(doSubmit)",function (data) {
-            $.post(url,data.field,function (result) {
+            $.post("url",data.field,function (result) {
                 if(result.code === 1){
                     //关闭窗口
                     layer.close(mainIndex);

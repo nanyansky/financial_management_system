@@ -44,20 +44,20 @@
                     <input type="hidden" name="assetsId">
                     <label class="layui-form-label">资产名称</label>
                     <div class="layui-input-block">
-                        <input type="text" name="assetsName" class="layui-input">
+                        <input type="text" name="assetsName" class="layui-input" lay-verify="required">
                     </div>
                 </div>
 
                 <div class="layui-form-item">
                     <label class="layui-form-label">资产位置</label>
                     <div class="layui-input-block">
-                        <input type="text" name="assetsLocation" class="layui-input">
+                        <input type="text" name="assetsLocation" class="layui-input" lay-verify="required">
                     </div>
                 </div>
                 <div class="layui-form-item">
                     <label class="layui-form-label">资产价值</label>
                     <div class="layui-input-block">
-                        <input type="text" name="assetsPrice" class="layui-input">
+                        <input type="text" name="assetsPrice" class="layui-input" lay-verify="required">
                     </div>
                 </div>
                 <div class="layui-form-item">
@@ -70,7 +70,7 @@
                 <div class="layui-form-item">
                     <label class="layui-form-label">资产备注</label>
                     <div class="layui-input-block">
-                        <input type="text" name="assetsRemark" class="layui-input">
+                        <input type="text" name="assetsRemark" class="layui-input" lay-verify="required">
                     </div>
                 </div>
 

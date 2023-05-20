@@ -78,7 +78,7 @@
                     <input type="hidden" name="debtId">
                     <label class="layui-form-label">债务名称</label>
                     <div class="layui-input-block">
-                        <input type="text" name="debtName" class="layui-input">
+                        <input type="text" name="debtName" class="layui-input" lay-verify="required">
                     </div>
                 </div>
 
@@ -95,7 +95,7 @@
                 <div class="layui-form-item">
                     <label class="layui-form-label">债务金额</label>
                     <div class="layui-input-block">
-                        <input type="text" name="debtPrice" class="layui-input">
+                        <input type="text" name="debtPrice" class="layui-input" lay-verify="required">
                     </div>
                 </div>
                 <div class="layui-form-item">
@@ -108,7 +108,7 @@
                 <div class="layui-form-item">
                     <label class="layui-form-label">债务备注</label>
                     <div class="layui-input-block">
-                        <input type="text" name="debtRemark" class="layui-input">
+                        <input type="text" name="debtRemark" class="layui-input" lay-verify="required">
                     </div>
                 </div>
                 <div class="layui-form-item">

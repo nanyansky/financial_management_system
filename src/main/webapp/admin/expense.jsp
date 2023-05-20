@@ -86,7 +86,7 @@
                     <label class="layui-form-label">用户名</label>
                     <div class="layui-input-block">
                         <input type="hidden" name="id">
-                        <select name="userName" lay-verify="" id="userfl">
+                        <select name="userName" lay-verify="required" id="userfl">
                             <option value="">请选择一个用户</option>
                         </select>
                     </div>
@@ -95,7 +95,7 @@
                 <div class="layui-form-item">
                     <label class="layui-form-label">支出分类</label>
                     <div class="layui-input-block">
-                        <select name="expenseTypeId" lay-verify="" id="fenlei-2">
+                        <select name="expenseTypeId" lay-verify="required" id="fenlei-2">
                             <option value="">请选择一个分类</option>
                         </select>
                     </div>
@@ -111,7 +111,7 @@
                 <div class="layui-form-item">
                     <label class="layui-form-label">支出时间</label>
                     <div class="layui-input-block">
-                        <input name="expenseTime" type="text" class="layui-input" id="expenseTime">
+                        <input name="expenseTime" type="text" class="layui-input" id="expenseTime" lay-verify="required">
                     </div>
                 </div>
 
