@@ -271,7 +271,7 @@
 
         //监听表单提交事件
         form.on("submit(doSubmit)",function (data) {
-            $.post("url",data.field,function (result) {
+            $.post(url,data.field,function (result) {
                 if(result.code === 1){
                     //关闭窗口
                     layer.close(mainIndex);
