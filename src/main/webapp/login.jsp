@@ -73,7 +73,7 @@
 
                 <div class="item">
                     <span class="icon icon-3"></span>
-                    <input type="password" name="password" lay-verify="required"  placeholder="请输入密码" maxlength="20">
+                    <input type="password" name="password" lay-verify="required|passwordLength"  placeholder="请输入密码" maxlength="20">
                     <span class="bind-password icon icon-4"></span>
                 </div>
 
@@ -104,6 +104,16 @@
         var $ = layui.jquery,
             form = layui.form,
             layer = layui.layer;
+
+        //检查输入的账号长度
+        form.verify({
+            passwordLength: function(value, item){
+                console.log(value.time().length);
+                if(value.time().length < 6){
+                    return '密码不能小于'+6+'个字符的长度';
+                }
+            }
+        });
 
         // 登录过期的时候，跳出ifram框架
         if (top.location != self.location) top.location = self.location;
