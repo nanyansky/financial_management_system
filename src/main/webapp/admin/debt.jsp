@@ -266,7 +266,7 @@
           //表单数据回写
           form.val("dataFrm",data)
           //添加修改的请求
-          url = "/user/updateDebt.actio"
+          url = "/user/updateDebt.action"
         }
       })
     }
