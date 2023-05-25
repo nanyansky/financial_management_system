@@ -105,11 +105,11 @@
             form = layui.form,
             layer = layui.layer;
 
-        //检查输入的账号长度
+        // 检查输入的账号长度
         form.verify({
-            passwordLength: function(value, item){
-                console.log(value.time().length);
-                if(value.time().length < 6){
+            passwordLength: function(value){
+                console.log(value.length);
+                if(value.length < 6){
                     return '密码不能小于'+6+'个字符的长度';
                 }
             }
