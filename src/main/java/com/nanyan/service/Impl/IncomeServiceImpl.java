@@ -111,14 +111,6 @@ public class IncomeServiceImpl implements IncomeService {
                 }
             }
 
-//            //获取Income数量
-//            incomeNumber = incomeDao.getIncomeNumber();
-//            //获取income列表
-//            incomeList = incomeDao.getIncomeListByPage(page,limit);
-//
-//            for (int i = 0; i < incomeList.size(); i++) {
-//                tmpMap.put(String.valueOf(i), JSON.toJSON(incomeList.get(i),serializeConfig));
-//            }
 
             dataMap.put("code",0);
             dataMap.put("count",incomeNumber);

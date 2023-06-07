@@ -180,6 +180,7 @@
                         return d.isAdmin === 1 ? "是" : "否";
                     }}
             ]]
+
         });
 
         $.ajax({
@@ -196,10 +197,5 @@
 
 
 </script>
-
-<%--<script type="text/html" id="xuhao">--%>
-<%--    {{d.LAY_TABLE_INDEX+1}}--%>
-<%--</script>--%>
-
 </body>
 </html>

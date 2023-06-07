@@ -172,7 +172,7 @@
 
     var optionRecords = {
       title: {
-        text: '收入支出报表'
+        text: '7日收入支出报表'
       },
       tooltip: {
         trigger: 'axis',

@@ -252,21 +252,6 @@ public class UserServiceImpl implements UserService {
                 }
             }
 
-//
-//            //获取User数量
-//            userNumber = userDao.getUserNumber();
-//            //获取User列表
-//            userList = userDao.getUserListByPage(page,limit);
-//
-//
-//
-//            for (int i = 0; i < userList.size(); i++) {
-//                tmpMap.put(String.valueOf(i), JSON.toJSON(userList.get(i),serializeConfig));
-//            }
-
-//            System.out.println(dataMap);
-
-
             dataMap.put("code",0);
             dataMap.put("count",userNumber);
             dataMap.put("data",tmpMap);
