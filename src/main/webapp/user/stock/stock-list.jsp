@@ -70,7 +70,7 @@
                             <label class="layui-form-label" style="width: 100px">行业板块</label>
                             <div class="layui-input-inline" style="width: 140px">
                                 <select name="industryCode" lay-verify="" id="fenlei-1">
-                                    <option value="sw_jsj">计算机</option>
+                                    <option value="-1">选择行业板块</option>
                                 </select>
                             </div>
                         </div>

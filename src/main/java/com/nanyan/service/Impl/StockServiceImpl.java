@@ -30,6 +30,7 @@ import java.sql.Timestamp;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.concurrent.TimeUnit;
 
 @Service
@@ -77,7 +78,9 @@ public class StockServiceImpl implements StockService {
         requestBody.put("pageSize",pageSize);
         requestBody.put("pageIndex",pageIndex);
         requestBody.put("asc",asc);
-        requestBody.put("industryCode",industryCode);
+        if(!Objects.equals(industryCode, "-1")){
+            requestBody.put("industryCode",industryCode);
+        }
 
         return StockDate.stockRank(requestBody);
     }
