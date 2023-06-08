@@ -178,7 +178,6 @@ perPageRows
      */
     public void addIncome(Income income){
         Session currentSession = sessionFactory.getCurrentSession();
-        income.setIncomeTime(new Timestamp(System.currentTimeMillis()));
         currentSession.save(income);
     }
 
