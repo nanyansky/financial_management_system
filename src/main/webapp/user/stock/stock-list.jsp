@@ -69,9 +69,8 @@
                         <div class="layui-inline">
                             <label class="layui-form-label" style="width: 100px">行业板块</label>
                             <div class="layui-input-inline" style="width: 140px">
-                                <%--                                <input type="text" name="userName" autocomplete="off" class="layui-input">--%>
                                 <select name="industryCode" lay-verify="" id="fenlei-1">
-                                    <option value="-1">选择行业板块</option>
+                                    <option value="sw_jsj">计算机</option>
                                 </select>
                             </div>
                         </div>
