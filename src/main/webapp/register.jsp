@@ -167,7 +167,7 @@
         })
 
 
-        // 进行登录操作
+        // 进行注册操作
         form.on('submit(userRegister)', function (data) {
             console.log(data);
             data = data.field;

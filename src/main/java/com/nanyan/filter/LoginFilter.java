@@ -30,7 +30,7 @@ public class LoginFilter implements Filter {
         int flag = 1;
         //获取本次请求URI
         String path = request.getServletPath();
-        System.out.println("拦截到请求: "+ path);
+        // System.out.println("拦截到请求: "+ path);
 
         //不需要拦截的请求
         String[] urls = {
@@ -43,14 +43,14 @@ public class LoginFilter implements Filter {
         for (String str : urls) {
             if (path.contains(str)) {
                 flag = 0;
-                System.out.println(path+"不需要拦截！");
+                // System.out.println(path+"不需要拦截！");
                 break;
             }
         }
 
         if(flag == 1){
             if(request.getSession().getAttribute("user") == null){
-                System.out.println("未登录，跳转至登录页面！");
+                // System.out.println("未登录，跳转至登录页面！");
                 response.sendRedirect(request.getContextPath()+"/login.jsp");
             }
             else {

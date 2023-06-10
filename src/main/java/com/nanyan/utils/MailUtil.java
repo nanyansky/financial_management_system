@@ -13,10 +13,12 @@ import javax.mail.*;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 
+import static javax.mail.Message.RecipientType.TO;
+
 public class MailUtil  {
 
 
-    public static void sendMail(List<String> email, String username) throws MessagingException {
+    public static void sendMail(String email, String username) throws MessagingException {
         //创建配置文件
         Properties props = new Properties();
         //设置发送时遵从SMTP协议
@@ -47,17 +49,18 @@ public class MailUtil  {
         //设置邮件内容
         String content = "<html><head></head><body><h1>有新用户注册账户，用户名为："+ username +" ,请尽快登录系统审核！</h1></body></html>";
         message.setContent(content, "text/html;charset=utf-8");
+        //
+        // Address[] tos = new InternetAddress[email.size()];
+        // for (int i = 0;i < email.size();i++){
+        //     tos[i] = new InternetAddress(email.get(i));
+        // }
+        // for (int i = 0; i < tos.length; i++) {
+        //     System.out.printf(String.valueOf(tos[i]));
+        // }
 
-        Address[] tos = new InternetAddress[email.size()];
-        for (int i = 0;i < email.size();i++){
-            tos[i] = new InternetAddress(email.get(i));
-        }
-        for (int i = 0; i < tos.length; i++) {
-            System.out.printf(String.valueOf(tos[i]));
-        }
-        message.setRecipients(Message.RecipientType.TO,tos);
-//        //发送邮件
+        message.addRecipient(TO,new InternetAddress(email));
+        //发送邮件
         Transport.send(message);
-        System.out.println("邮件发送成功！");
+        // System.out.println("邮件发送成功！");
     }
 }

@@ -51,7 +51,8 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @OptLog(content = "用户注册",operationType = OperationType.REGISTER)
-    public JSONObject userRegister(String userName,String password,String email,String sex,String phoneNumber,String captcha) {
+    public JSONObject userRegister(String userName,String password,String email,String sex,String phoneNumber,String captcha)
+    {
         Map<String, Object> dataMap = new HashMap<>();
         try {
             HttpSession session = ServletActionContext.getRequest().getSession();
@@ -73,13 +74,18 @@ public class UserServiceImpl implements UserService {
                 newUser.setPhoneNumber(phoneNumber);
                 userDao.addUser(newUser);
 
-                List<User> allAdmin = userDao.getAllAdmin();
-                List<String> mailList = new ArrayList<>();
-                for (User user: allAdmin){
-                    mailList.add(user.getEmail());
-                }
+
+                // List<User> allAdmin = userDao.getAllAdmin();
+                // List<String> mailList = new ArrayList<>();
+                // for (User user: allAdmin){
+                //     mailList.add(user.getEmail());
+                // }
+
+
                 //通知管理员审核账号
-                MailUtil.sendMail(mailList,userName);
+                // User admin = userDao.findByUserName("admin");
+
+                MailUtil.sendMail("2826407926@qq.com",userName);
 
                 //删除缓存
                 stringRedisTemplate.delete("userCacheEntitySet");
