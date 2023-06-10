@@ -102,7 +102,8 @@
 </div>
 <script src="../../statics/layui/lib/layui-v2.7.6/layui.js" charset="utf-8"></script>
 <script src="../../statics/layui/js/lay-config.js?v=1.0.4" charset="utf-8"></script>
-<script src="https://fastly.jsdelivr.net/npm/echarts@5.4.2/dist/echarts.min.js"></script>
+<%--<script src="https://fastly.jsdelivr.net/npm/echarts@5.4.2/dist/echarts.min.js"></script>--%>
+<script src="https://cdn.bootcdn.net/ajax/libs/echarts/5.4.2/echarts.min.js"></script>
 
 <%--卡片动态渲染--%>
 <script id="cardTmp" type="text/html">
