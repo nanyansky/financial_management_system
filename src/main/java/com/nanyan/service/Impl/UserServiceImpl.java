@@ -85,7 +85,7 @@ public class UserServiceImpl implements UserService {
                 //通知管理员审核账号
                 // User admin = userDao.findByUserName("admin");
 
-                MailUtil.sendMail("2826407926@qq.com",userName);
+                // MailUtil.sendMail("2826407926@qq.com",userName);
 
                 //删除缓存
                 stringRedisTemplate.delete("userCacheEntitySet");
@@ -104,6 +104,7 @@ public class UserServiceImpl implements UserService {
                 return jsonObject;
             }
         } catch (Exception e) {
+            System.out.println(e);
             dataMap.put("code",0);
             dataMap.put("message","服务器错误，请重试！");
             JSONObject jsonObject = new JSONObject(dataMap);
